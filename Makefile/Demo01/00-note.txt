@@ -1,0 +1,8 @@
+https://blog.csdn.net/liangwenhao1108/article/details/104915602 
+
+我的CSDN-Makefile博客中，五个版本makefile的源代码
+My csdn-makefile blog contains the source code for five versions of Makefile
+
+
+使用前，把Makefile1 后的1去掉，就可以直接使用了
+Before use, remove the 1 after Makefile1, and you can use it directly

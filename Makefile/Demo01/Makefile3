@@ -1,0 +1,8 @@
+target=app
+obj=add.o sub.o mult.o div.o main.o
+
+$(target):$(obj)
+	gcc $(obj) -o $(target)
+
+%.o:%.c
+	gcc -c $< -o $@
