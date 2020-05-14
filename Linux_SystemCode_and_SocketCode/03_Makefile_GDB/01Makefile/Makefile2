@@ -1,0 +1,21 @@
+app:add.o  div.o  main.o  mult.o  sub.o
+	gcc add.o  div.o  main.o  mult.o  sub.o -o app
+
+add.o:add.c
+	gcc -c add.c
+
+
+div.o:div.c
+	gcc -c div.c
+
+
+main.o:main.c
+	gcc -c main.c
+
+
+mult.o:mult.c
+	gcc -c mult.c
+
+
+sub.o:sub.c
+	gcc -c sub.c
