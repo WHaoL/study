@@ -14,12 +14,14 @@ int main()
         perror("socket");
         exit(0);
     }
-    //3.初始化本地地址信息：主要是绑定Port(接受数据使用)
+	
+    //2.初始化本地地址信息：主要是绑定Port(接受数据使用)
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
     addr.sin_port = htons(9898);
     addr.sin_addr.s_addr = INADDR_ANY;
     bind(fd,(struct sockaddr*)&addr,sizeof(addr));
+	
     //3.加入到多播组
     struct ip_mreqn mymreqn;
     mymreqn.imr_address.s_addr = INADDR_ANY;//本地IP

@@ -13,10 +13,12 @@ int main()
         perror("socket");
         exit(0);
     }
+	
     //2.设置组播属性
     struct in_addr myaddr;
     inet_pton(AF_INET,"192.168.184.132",&myaddr.s_addr);
     setsockopt(fd,IPPROTO_IP,IP_MULTICAST_IF,&myaddr,sizeof(myaddr));
+	
     //3.初始化组播的地址信息：发送时使用(组播端口和组播地址)
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;

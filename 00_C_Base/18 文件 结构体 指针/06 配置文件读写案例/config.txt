@@ -1,0 +1,25 @@
+#英雄Id
+heroId:1
+#英雄姓名
+heroName:琦玉
+#英雄攻击力
+heroAtk:99999
+#英雄防御力
+heroDef:99999
+#英雄简介
+heroInfo:无敌
+
+
+aaa
+bbb
+ccc
+
+// 有效信息中   key 冒号 value
+struct CoinfigInfo
+{
+   char key[64]; //索引
+   char value[64]; //具体值
+}
+
+struct ConfigInfo * infoArray = malloc(struct ConfigInfo * 5);
+//需求：提供函数，根据key获取对应的value

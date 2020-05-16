@@ -1,4 +1,5 @@
 // test_-DDEBUG.c
+// gcc test_-DDEBUG.c -o test_-DDEBUG  -D DEBUG
 #include <stdio.h>
 int main()
 {

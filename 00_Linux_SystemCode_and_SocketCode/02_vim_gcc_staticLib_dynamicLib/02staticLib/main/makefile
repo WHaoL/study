@@ -10,7 +10,7 @@ PROJECT     = execute
 # .o文件
 SrcSuf      = c
 ObjSuf      = o
-LibSuf      = so
+LibSuf      = a
 
 OBJFILES    = ./main.$(ObjSuf)\
 #---------------------------------------------------------
