@@ -12,7 +12,7 @@ INCLUDEPATH = -I./include/
 # .o文件
 SrcSuf      = c
 ObjSuf      = o
-LibSuf      = so
+LibSuf      = a
 
 OBJFILES    = ./add.$(ObjSuf)\
               ./div.$(ObjSuf)\

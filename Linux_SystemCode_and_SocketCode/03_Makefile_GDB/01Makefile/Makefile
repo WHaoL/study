@@ -1,14 +1,24 @@
 target=app
+
+#搜索指定目录下的指定格式的文件 .c
+#得到.c文件列表
 src=$(wildcard ./*.c)
-objs=$(patsubst %.c, %.o, $(src))
-$(target):$(objs)
-	gcc $(objs) -o $(target)
-	
+
+#将得到的文件列表中文件的后缀.c->.o
+obj=$(patsubst %.c,%.o,$(src))
+
+$(target):$(obj)
+	gcc $(obj) -o $(target)
+
 # 使用模式匹配
 %.o:%.c
 	gcc -c $< -o $@
 
-.pHONY:clean
+#声明为伪目标时，这个目标在磁盘上不生成实体，
+#也就不会进行 目标依赖存在与否、目标依赖时间对比 等一些操作了，
+#因此也就不会和磁盘上已经存在文件产生冲突
+# 在命令前加'-'，如果碰到错误会继续执行下面的指令，并不会中断执行
+# '-f' 强制执行命令，不会提示
+.PHONY:clean
 clean:
-	rm $(target) $(objs)
-
+	-rm $(obj) $(target) -f 

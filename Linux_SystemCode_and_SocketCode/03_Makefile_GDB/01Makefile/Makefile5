@@ -3,10 +3,14 @@ target=app
 #搜索指定目录下的指定格式的文件 .c
 #得到.c文件列表
 src=$(wildcard ./*.c)
+
 #将得到的文件列表中文件的后缀.c->.o
 obj=$(patsubst %.c,%.o,$(src))
+
 $(target):$(obj)
 	gcc $(obj) -o $(target)
+
+# 使用模式匹配
 %.o:%.c
 	gcc -c $< -o $@
 

@@ -1,2 +1,0 @@
-app:add.c  div.c  main.c  mult.c  sub.c
-	gcc add.c  div.c  main.c  mult.c  sub.c -o app
