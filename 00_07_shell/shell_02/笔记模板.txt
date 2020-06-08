@@ -1,0 +1,47 @@
+sort
+    命令从标准输入中读取数据然后按照字符串内容进行排序
+    -f 忽略字符大小写
+    -n 比较数值大小
+    -t 指定分割符，默认是空格或者tab
+    -k 指定分割后进行比较字段
+    -u 重复的行只显示一次
+    -r 反向排序
+    -R 打乱顺序
+
+uniq
+    去除重复的行,前提是重复的行连续
+    -c 显示每行重复的次数
+    -d 仅显示重复过的行
+    -u 仅显示不曾重复的行
+        sort < test.txt | uniq
+
+wc
+    -l 统计行数
+    -c 统计字节数
+    -w 统计单词数
+
+grep
+    global regular expression print
+    -c 只输出匹配行的计数
+    -i 不区分大小写
+    -H 文件名显示
+    -n 显示行号
+    -s 不显示不存在或无匹配文本的错误信息
+    -v 显示不包含匹配文本的所有行，这个参数经常用于过滤不想显示的行
+    -E 使用扩展的正则表达
+
+find
+
+xargs
+
+sed
+
+        p,  print           打印
+        a,  append          追加
+        i,  insert          插入
+        d,  delete          删除
+        s,  substitution    替换
+
+awk
+
+crontab

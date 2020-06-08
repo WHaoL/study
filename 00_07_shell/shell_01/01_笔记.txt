@@ -1,0 +1,497 @@
+1 为什么要学习shell
+    shell比较适合一些运维性质的工作
+
+    一些简单的工作就不要动高级编程语言 C/C++ 
+
+    分析日志，将其中的404错误打印出来，统计出错最多的URL
+    shell是有现成很多命令，可以直接得到结果
+
+
+
+
+
+2 确定当前用户的shell  
+    
+
+    查看环境变量
+        echo $SHELL
+
+    查看/etc/passwd
+        找到对应用户那一行的最后一列
+
+
+
+    修改当前用户的shell
+        chsh命令
+
+3 shell的内建命令
+
+    内建命令是不会启动一个新的进程的命令
+        cd
+        umask
+        ...
+
+        通过 man bash-builtins 来确定哪些是内建命令
+
+        which 命令找不到的的命令都认为内建
+
+
+
+
+4 shell的执行
+
+    #!/bin/sh                    第一行使用 #做注释 后面跟上 ! + 解释器的位置，指定使用哪个解析器 ，如果没有默认用sh
+    echo HelloWorld
+    cd ..
+    ls
+
+
+    第一种执行方式:
+        chmod a+x test.sh           添加可执行权限
+        ./test.sh                   直接./执行
+
+    第二种执行方式:
+        sh test.sh                  
+        这种执行方式不需要test.sh 有可执行权限，但是必须有可读权限
+        该脚本是作为一个参数传到 sh命令中，该sh命令就会读取这个文件
+
+
+        以上两种，正常应该使用第一种来执行脚本，因为调用者不需要关注该脚本是什么解析器
+        除非没有办法添加可执行权限，就使用第二种
+
+
+
+
+    第三种执行方式：
+        (cd .. ; ls)
+        小括号括起多条命令，命令之间使用分号分隔开来
+
+
+        以上三种方法都是开启一个子进程去执行命令
+
+
+    第四种执行方法：
+        source test.sh
+        . test.sh
+
+        将脚本中的每一条指令都加载到当前shell里边去执行，不会开启子进程去执行
+
+        source 经常用于加载一些环境配置
+            source /etc/profile
+            source ~/.bashrc
+
+
+
+5 变量
+    
+    shell中的变量默认都是字符串
+    
+    varname=value
+        等号两边不能留空格
+        变量定义就是声明
+
+    $varname
+    ${varname}
+        变量取值
+
+
+    删除变量
+
+        unset 变量名
+
+        直接删除某个变量，不管是普通的shell内变量还是环境变量都可以通过这种方式来删除
+
+
+
+6 变量的分类
+
+
+    shell内变量
+
+        全局变量
+            只要在shell脚本中没有任何修饰符修饰的变量都是全局的
+            生命周期，从该行脚本执行开始一直到脚本结束
+
+
+        局部变量
+
+            只能声明在函数中，以local作为修饰符，
+            生命周期，就从该行脚本执行开始一直到函数结束
+
+
+        shell内变量仅限于在当前shell进程中去使用，不能跨进程
+
+
+
+    环境变量
+        操作系统提供给进程的一些环境参数，这些参数可以被修改，任何进程都会有的变量
+        能够从父进程传递给子进程，单向传递，不能从子进程传递给父进程
+        其实就每个进程启动的时候都会从父进程拷贝一份环境变量，对环境变量的修改仅限于当前进程以及子进程
+
+        export varname=value
+        或者
+        varname=value
+        export varname
+
+
+7 文件名代换
+    * 匹配0个或多个任意字符
+        rm *.txt
+    ? 匹配一个任意字符
+        rm 02?.txt
+    [若干字符] 匹配方括号中任意一个字符的一次出现
+        rm 0[34]?.txt
+
+        最后匹配  031.txt
+                 042.txt
+
+    参数扩展
+
+        touch {a,b,c}.txt
+        等同于  touch a.txt b.txt c.txt
+        将花括号中的名字扩展开来
+
+        序列展开  touch {01..10}.txt
+            就会产生 01.txt -  10.txt  10个文件
+
+
+        touch {1..3}_{4..6}.txt
+            最后是9个文件
+
+    以上的参数代换其实是发生在命令执行之前的
+
+        touch {1,2,3}.txt
+        rm *.txt
+
+
+
+8 命令代换
+    开启一个进程去执行命令，将命令的标准输出 替换到当前的位置
+
+    `date`
+
+    $(date)
+
+    反引号和 $() 作用一样
+
+
+    需求：
+        脚本运行的时候会依赖当前的目录，将当前脚本所在目录计算出来
+
+        ls curPath=$(dirname $0)
+
+
+
+9 算数代换
+    只能用于整数简单计算+-*/
+
+    var=45            
+    echo $((var+3))   
+    echo $(($var-3))  
+    echo $[var/3]     
+    echo $[$var*3]    
+    echo $[$var%10]   
+                      
+    #进制转换         
+    echo $[8#10+11]  
+        以8进制来解析10   最后是10进制的8  
+        8+11 = 19 
+
+
+10 转义
+    两层含义
+        普通的字符转特殊字符
+            \r \n \t
+
+        特殊的字符转普通字符
+            \$SHELL
+
+
+    在shell中都是使用 \ 作为转义字符
+
+
+
+11 引号
+    单引号和双引号都是为了保持字符串的字面值
+
+    区别在于：双引号允许 变量扩展
+    echo 'hello $SHELL'
+    echo "hello $SHELL"
+
+
+    如果变量是作为一个单一参数来使用,习惯性的使用变量的时候加上双引号
+        var="a b"
+        touch $var
+        touch "$var"
+        rm $var
+
+        预防这些空格导致其他错误的操作
+
+
+
+
+12 shell中如何表示真假
+    
+    shell里以命令的返回结果来判断真假，main函数的返回值
+
+        成功返回0                真
+        失败返回非0              假
+
+        跟C语言数值判断相反
+
+    如何获取一条命令的返回值 ，使用一个特殊变量 $? ，会动态存储上一条指令的退出状态 
+
+13 条件测试
+    test  用来测试后面的条件真假  ，以退出状态返回
+    [ ]   中括号跟 test 一致  /usr/bin/[
+        使用[ 的测试需要以 ] 结束
+        注意，以中括号来进行测试的时候 中括号后要留空格
+
+    man test 可以查看到以下的内容
+       ( EXPRESSION )
+            判断 expression 真假
+
+       ! EXPRESSION
+            判断 expression 为假   ，跟C一样，取反
+
+       EXPRESSION1 -a EXPRESSION2
+            逻辑与，判断两个条件都为真
+                &&
+
+       EXPRESSION1 -o EXPRESSION2
+            逻辑或 ， 判断两个表达式至少有一个为真
+                ||
+
+       -n STRING
+            判断字符串不为空串
+
+       -z STRING
+            跟 -n 相反，判断字符串为空串
+
+       STRING1 = STRING2
+            
+            判断两个字符串相等
+
+
+       STRING1 != STRING2
+            判断字符串不等
+
+       INTEGER1 -eq INTEGER2
+            判断两个整数相等
+
+       INTEGER1 -ge INTEGER2
+            INTEGER1 >= INTEGER2
+
+       INTEGER1 -gt INTEGER2
+            INTEGER1 > INTEGER2
+
+       INTEGER1 -le INTEGER2
+              INTEGER1 <= INTEGER2
+
+       INTEGER1 -lt INTEGER2
+              INTEGER1 < INTEGER2
+
+       INTEGER1 -ne INTEGER2
+              INTEGER1 != INTEGER2
+
+       FILE1 -nt FILE2
+              FILE1 is newer (modification date) than FILE2
+              文件1 修改时间 比文件2修改时间要新
+
+       FILE1 -ot FILE2
+              FILE1 is older than FILE2
+              跟 -nt 相反
+
+        文件类型判断
+       -b FILE
+              FILE exists and is block special
+              判断文件是一个块设备
+
+       -c FILE
+              FILE exists and is character special
+              字符设备
+
+       -d FILE
+              FILE exists and is a directory
+              目录
+
+       -e FILE
+              FILE exists
+              单纯判断文件存在，不管文件是什么类型
+
+       -f FILE
+              FILE exists and is a regular file
+              判断文件是一个普通的文件
+
+       -h FILE
+              FILE exists and is a symbolic link (same as -L)
+       -L FILE
+              FILE exists and is a symbolic link (same as -h)
+
+              判断文件是一个符号链接
+       -k FILE
+              FILE exists and has its sticky bit set
+            判断文件设置了黏着位
+
+       -p FILE
+              FILE exists and is a named pipe
+              命名管道
+
+       -r FILE
+              FILE exists and read permission is granted
+              文件是否相对于当前用户有读权限
+
+       -w FILE
+              FILE exists and write permission is granted
+
+              文件是否相对于当前用户有写权限
+       -x FILE
+              FILE exists and execute (or search) permission is granted
+
+              文件是否相对于当前用户有执行权限
+
+
+       -s FILE
+              FILE exists and has a size greater than zero
+              判断文件不为空 ，大小大于0
+
+       -S FILE
+              FILE exists and is a socket
+              判断是否是一个socket文件
+
+14 if分支结构
+
+    if 命令|条件测试
+    then
+        ......
+        条件为真的时候执行的语句
+    elif 命令2|条件测试2  ; then      #if和then写在同一行要加分号
+        .......
+    else                            #else不需要加then
+        ......
+    fi
+
+
+    特殊的常量命令
+        :    空指令，返回结果总是真
+        true  返回结果总是真，不做任何事情
+        false 返回结果总是假
+
+
+
+    shell中从标准输入读取内容 ，存储到变量中
+        read 变量名 
+
+    && 类似C语言中的&& ，表示并且的意思
+
+        [ $a -eq 10 ] && [ $b -eq 20 ] 
+        可以多个条件测试表示逻辑与，同时具备短路特性
+
+        第一条语句执行结果为真，才去执行第二条语句
+
+            make && sudo make install
+
+    || 类似C语言的|| ，表示多条语句的逻辑或，也具备短路特性
+
+        rm 1.txt || echo "error"
+
+
+
+
+
+15 case 
+    C语言中的 switch 语句
+
+
+    switch(expression)
+    {
+    case val1:
+        ....
+        break;
+    case val2:
+        ....
+        break;
+    default:
+        .....
+        break;
+    }
+
+
+    case 表达式 in
+    值1|模式1..)
+        匹配后的动作.....
+        ;;              #两个分号类似C中的break
+    值2|模式2..)
+        匹配后的动作....
+        ;;
+    *)              #*能匹配任意字符，所以作为最后的匹配模式表示default
+        .....
+        ;;
+    esac
+
+
+16 for 循环
+
+    for 变量名 in 参数1 参数2 ....
+    do                                      #如果do跟for写在同一行，要添加;
+        ..每次循环  对应的变量的值是不一样的
+
+    done
+
+
+    遍历目录
+    for f in $(ls) ....
+
+    固定次数的循环遍历
+    for i in {1..100}  ....
+
+
+17 while循环
+
+    while 命令|条件测试
+    do
+        ........
+    done
+
+    break 和 continue 
+        也跟c语言中的 break 和 continue 一致
+
+
+18 位置参数和特殊变量
+    $0          相当于C语言main函数的argv[0]
+    $1、$2...    这些称为位置参数（Positional Parameter），相当于C语言main函数的argv[1]、argv[2]...
+    $#          相当于C语言main函数的argc - 1，注意这里的#后面不表示注释
+    $@          表示参数列表"$1" "$2" ...，例如可以用在for循环中的in后面。
+    $*          表示参数列表"$1" "$2" ...，同上
+    $?          上一条命令的Exit Status
+    $$          当前进程号
+
+
+
+    参数左移 shift
+
+    ./test.sh 1 2 3 4 5 6
+
+    shift 之后 参数的排列等同于 ，最左边的参数被移走
+    ./test.sh 2 3 4 5 6 
+
+
+    shift 对于操作不定参数比较常见
+
+
+    例子：写一个脚本 add.sh  加法计算器，将参数中所有整数都相加
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

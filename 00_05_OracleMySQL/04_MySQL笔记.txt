@@ -1,0 +1,400 @@
+1 表数据操作
+
+    首先创建表employee
+    create table employee(
+        id int,
+        name varchar(20),
+        sex int,
+        birthday date,
+        salary double,
+        entry_date date,
+        resume text
+    );
+    
+    添加数据
+    insert into employee values(1,'张三',1,'1983-04-27',15000,'2012-06-24','一个大牛');
+    insert into employee(id,name,sex,birthday,salary,entry_date,resume) values(2,'李四',1,'1984-02-22',10000,'2012-07-24','一个中牛');
+    insert into employee(id,name,sex,birthday,salary,entry_date,resume) values(3,'王五',0,'1985-08-28',7000,'2012-08-24','一个小虾');
+
+    
+    1 将所有员工薪水都增加500元。
+        update employee set salary = salary+500 
+    
+    2 将王五的员工薪水修改为10000元，resume改为也是一个中牛
+        update employee set salary = 10000 ,resume = '也是一个中牛' where name = '王五'
+    
+    3 查询员工的月薪以及年薪
+        select name,salary 月薪, salary * 13 年薪
+        from employee
+    
+    4 删除表中姓名为王五的记录
+        delete from employee where name = '王五'
+    
+    5 删除表中所有记录
+        delete from employee
+        mysql 中 默认 没有打开事务
+    
+    6 使用truncate删除表中记录
+        truncate table employee
+        
+2 综合查询：
+    创建学生表，记录学生的id、姓名、语文、英语、数学课程的成绩
+    create table student
+    (
+        id int,
+        name varchar(20),
+        chinese int,
+        english int,
+        math int
+    );
+    往表里边插入数据
+    insert into student(id,name,chinese,english,math) values(1, '黄真',80,85,90);
+    insert into student(id,name,chinese,english,math) values(2,'归辛树',90,95,95);
+    insert into student(id,name,chinese,english,math) values(3,'李寻欢',80,96,96);
+    insert into student(id,name,chinese,english,math) values(4,'叶开',81,97,85);
+    insert into student(id,name,chinese,english,math) values(5,'袁承志',85,84,90);
+    insert into student(id,name,chinese,english,math) values(6,'何红药',92,85,87);
+    insert into student(id,name,chinese,english,math) values(7,'何铁手',75,81,80);
+    insert into student(id,name,chinese,english,math) values(8,'夏雪宜',77,80,79);
+    insert into student(id,name,chinese,english,math) values(9,'任我行',95,85,85);
+    insert into student(id,name,chinese,english,math) values(10,'岳不群',94,85,84);
+
+    1.查询表中所有学生的信息
+    2.查询表中所有学生的姓名和对应的英语成绩
+    3.查询所有出现的英语成绩（去掉重复）
+    4.在所有学生英语分数上加10分特长分
+    5.统计每个学生的总分（要用别名）
+    6.查询姓名为何东的学生成绩
+    7.查询英语成绩大于90分的同学
+    8.查询英语分数在 85－95之间的同学
+    9.查询数学分数为84,90,91的同学
+    10.查询数学分>85，语文分>90的同学
+    11.对总分排序后输出，然后再按从高到低的顺序输出
+    12.对姓何的学生总成绩倒序输出
+    13.统计总分大于250的人数有多少？
+    14.求最高分和最低分
+    
+    --------------------------以上自主完成--------------------------------------
+
+    15.给学生表增加一列，class_id（班级） int类型
+        alter table student add class_id int
+
+    16.将学生id为1-5的修改class_id为1班，将学生id为6-10的修改class_id为2班
+      一个语句修改完成。
+        update student set class_id = ceil(id/5)  
+
+    17.求各个班英语的平均分 
+        select class_id , avg(english)
+        from student
+        group by class_id
+
+    18.求各个班的总成绩 
+        select class_id , sum(chinese+english+math)
+        from student
+        group by class_id
+
+    19.求总成绩大于1300的班级
+        select class_id , sum(chinese+english+math)
+        from student
+        group by class_id
+        having sum(chinese+english+math) > 1300
+    
+    
+    
+3 数据库的函数
+    用sql 求3+5*2表达式的值
+        select 3+5*2 from dual
+        from dual 语句在mysql中不是必须
+
+    求昨天、今天、明天、明年今日
+        在mysql中，没有sysdate ， 替换为now() 函数获取当前的时间
+        日期数据+1-1 单位是秒，会自动做一个隐式转换，转成数值型
+
+        select date_add(now(),interval -1 day) 昨天 , now() 今天 , date_add(now(),interval 1 day) 明天
+
+    求下一分钟，下一小时（addtime函数实现）
+        select now(),addtime(now(),'00:01:00'),addtime(now(),'01:00:00') 
+
+    使用字符串拼接，输出'hello'和 'mysql'拼接值
+        select concat('hello','mysql')
+
+        不能使用oracle 的 ||
+    
+    输出'hello中国'字符串长度
+        select length('hello中国')
+    
+    将当前日期以'dd-mm-yyyy' 形式转换成字符串输出
+        select date_format(now(),'%d-%m-%Y')
+
+    将字符串'31-01-2017' 以 'dd-mm-yyyy'形式转换回时间类型
+        select str_to_date('31-01-2017','%d-%m-%Y')
+    
+    
+4 多表查询
+    创建scott方案（数据库）以及对应表
+    
+    查询员工号、姓名、部门编号、部门名称
+        select empno,ename,e.deptno,d.dname
+        from emp e, dept d
+        where e.deptno = d.deptno
+
+        select empno,ename,e.deptno,d.dname
+        from emp e join dept d
+        on e.deptno = d.deptno
+
+    
+    显示员工号，姓名，薪水，薪水级别
+        select empno,ename,sal,grade
+        from emp e join salgrade s
+        on e.sal between s.losal and s.hisal
+    
+    显示部门编号、名称、人数        
+        select d.deptno,d.dname , count(empno)
+        from emp e right join dept d
+        on e.deptno = d.deptno
+        group by d.deptno,d.dname
+
+        select d.deptno,d.dname , count(empno)
+        from emp e ,dept d
+        where d.deptno= e.deptno(+) 
+        group by d.deptno,d.dname
+    
+    显示员工姓名以及主管姓名
+        自连接
+        select a.ename,a.mgr,b.empno,b.ename
+        from emp a left join emp b
+        on a.mgr = b.empno
+    
+        select concat(a.ename,'''s manager is ',ifnull(b.ename,'himself'))
+        from emp a left join emp b
+        on a.mgr = b.empno
+5 Top-N
+    查询emp表中工资前三名的员工信息
+        select *
+        from emp
+        order by sal desc 
+        limit 3
+    
+    查询emp表中工资排5-8名的员工信息
+        limit [m,]n 
+            m 表示跳过前面多少条数据
+            n 表示返回多少条数据
+
+
+        select *
+        from emp
+        order by sal desc 
+        limit 4,4
+
+
+
+6 表的约束
+    唯一  unique
+    非空  not null
+    主键（自增）  primary key
+    外键  foreign key
+
+        没有检查约束 check ,语法上还保留，实际不生效
+    
+    创建一个学生表：
+    (
+        id      学生的id  数值型  作为主键,
+        name    学生的姓名 字符串型 非空,
+        email   电子邮箱  字符串类型  唯一,
+        sex     性别    字符串类型   只能填 '男' 或 '女',
+        deptno  学生所在部门号   以  dept表的deptno为外键参照
+    )
+
+
+    create table student
+    (
+        id int primary key auto_increment,
+        name varchar(30) not null,
+        email varchar(64) unique,
+        sex varchar(10) check(sex in ('男','女')),
+        deptno int ,
+        constraint fk_student_deptno foreign key(deptno ) references dept(deptno)   
+            on delete set null
+            on update cascade 
+    )
+
+
+    列级约束，就是定义每一列的时候直接定义约束的类型
+    表级约束，就是定义整个表的约束，在所有列都定义完之后，再单独写约束，常见定义多列的主键，多列外键
+
+    insert into student(name,email,sex,deptno) values('aaa','aaa@itcast.cn','其他',40)
+
+
+7 mysql如何打开事务
+
+
+    autocommit  自动提交 ，默认 为true 1 
+
+    set autocommit=0  将自动提交关闭其实就是打开手动提交，打开事务
+
+show variables like 'character%';
+    查看当前会话的环境变量，观察当前会话每个部分使用的字符集
+| character_set_client     | utf8                       |
+| character_set_connection | utf8                       |
+| character_set_database   | utf8                       |
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8                       |
+| character_set_server     | latin1                     |
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ 
+
+
+
+
+    最终解决乱码问题的方案：将以上这些字符集调整统一即可
+
+
+
+    2 终端软件 xshell secure crt 等
+
+    3 linux shell 环境下的环境变量
+        locale 去查看这些编码
+
+8 mysql 编程的基础
+
+    mysql提供了很多api ，支持不同语言
+
+    以下包需要通过一些方式来安装
+        apt-get install libmysqlclient-dev
+        yum install limysqlclient
+
+    头文件
+        mysql.h
+    库文件
+        libmysqlclient.a
+
+
+    C语言的API，三种类型
+
+        1 初始化
+            环境初始化，建立连接
+
+            MYSQL *mysql_init(MYSQL *mysql)
+
+                失败返回NULL
+                返回的句柄，句柄不直接使用，而是给其他API来调用
+
+
+            mysql_real_connect() 连接到MySQL服务器。
+            MYSQL *mysql_real_connect(
+                MYSQL *mysql, 
+                const char *host,            //服务器ip
+                const char *user,            //root
+                const char *passwd,          //123456
+                const char *db,              //scott 
+                unsigned int port,           //3306
+                const char *unix_socket,     //本地套接字
+                unsigned long client_flag    //0
+            )
+            如果连接成功，返回MYSQL*连接句柄。如果连接失败，返回NULL。
+            对于成功的连接，返回值与第1个参数的值相同。
+
+        2 业务处理
+            执行sql ，curd的操作
+
+
+            int mysql_query(MYSQL *mysql, const char *query)
+                如果查询成功，返回0。如果出现错误，返回非0值。
+
+
+
+            检索结果集
+            MYSQL_RES *mysql_store_result(MYSQL *mysql)
+                如果成功返回非空，否则返回NULL
+
+            继续解开结果集里边的数据获取每一行每一列的内容
+            MYSQL_ROW mysql_fetch_row(MYSQL_RES *result)
+                该函数返回结果集中的一行数据，连续调用就会连续遍历每一行数据，直到返回NULL
+
+                typedef char **MYSQL_ROW
+
+                返回的一行数据就是字符串数组
+
+
+            unsigned int mysql_num_fields(MYSQL_RES *result)
+                返回结果集的列数
+
+            MYSQL_FIELD *mysql_fetch_fields(MYSQL_RES *result)
+                返回每一列的字段信息，包括名字
+
+        3 垃圾回收
+            使用完成结果集之后要释放
+            void mysql_free_result(MYSQL_RES *result)
+
+
+            环境销毁，断开连接
+
+            mysql_close() 关闭服务器连接。
+
+            void mysql_close(MYSQL *mysql)
+
+
+
+
+        开发需求：
+            实现一个类似于 mysql的客户端 ，能够读取用户的输入的数据，拿去给服务器执行，获取结果集后打印输出
+
+        开发计划：
+            1 实现连接
+            2 实现插入/删除/更新
+            3 实现查询
+                返回结果集打印
+            4 实现跟用户的交互 
+
+                使用死循环一直读取标注你输入的数据，每当有数据进来就执行SQL语句
+
+                终端提示符:
+                    hello> 
+
+                退出条件:
+                    1 ctrl + d  ->  EOF 
+                        read 会返回 ，而且 返回值 是 0
+                    2 quit / exit
+
+
+
+
+
+
+    额外的API补充
+        my_bool mysql_autocommit(MYSQL *mysql, my_bool mode)
+            打开或者关闭 自动提交 ，关闭自动提交就是为了开启事务
+        mysql_commit()
+        mysql_rollback()
+
+
+
+
+    网页：
+        用户名:______        itcast' or '1'='1  
+        密码:________       
+
+        select xxx
+        from user
+        where name = 'xxxxx'  and password = 'xxxxx'
+
+        防御措施：
+            严格判断用户输入的数据，遇到特殊的符号，就要转义处理
+
+
+        对数据库的操作，使用预处理API
+        预处理语句使用方式：
+            1 先创建预处理语句
+            2 先扔给服务器去解析这个语句
+            3 将该填的数据传递给服务器，让服务器去执行
+
+
+
+
+
+
+
+
+
+
+

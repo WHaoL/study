@@ -1,0 +1,4 @@
+this is stdout
+this is stdout
+this is stdout
+this is stdout
