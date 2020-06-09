@@ -1,12 +1,11 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
+//#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 using namespace std;
 #include <stdexcept> // std ±ê×¼   exceptÒì³£
 
 class Person
 {
 public:
-
 	Person(int age)
 	{
 		if (age < 0 || age > 150)
@@ -27,18 +26,17 @@ void test01()
 	{
 		Person p1(1000);
 	}
-	catch (exception & e)
+	catch (exception &e)
 	{
-		cout << e.what() <<endl;
+		cout << e.what() << endl;
 	}
-
-
 }
 
-int main(){
+int main()
+{
 
 	test01();
 
-	system("pause");
+	//system("pause");
 	return EXIT_SUCCESS;
 }

@@ -1,9 +1,10 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
-using namespace std;
+//#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 #include <string>
+#include <typeinfo>
+using namespace std;
 
-template<class T1 ,class T2>
+template <class T1, class T2>
 class Person
 {
 public:
@@ -23,20 +24,20 @@ public:
 };
 
 //1、指定传入类型  推荐
-void doWork(Person<string, int>&p)
+void doWork(Person<string, int> &p) // 类模板对象做函数参数----1、指定传入类型  推荐
 {
 	p.showPerson();
 }
 
 void test01()
 {
-	Person <string, int>p1("Tom", 19);
+	Person<string, int> p1("Tom", 19);
 	doWork(p1);
 }
 
 //2、参数模板化
-template<class T1 ,class T2>
-void doWork2(Person<T1, T2>&p)
+template <class T1, class T2>
+void doWork2(Person<T1, T2> &p) // 类模板对象做函数参数----2、参数模板化
 {
 	cout << "T1的类型: " << typeid(T1).name() << endl;
 	cout << "T2的类型: " << typeid(T2).name() << endl;
@@ -45,13 +46,13 @@ void doWork2(Person<T1, T2>&p)
 
 void test02()
 {
-	Person <string, int>p2("Jerry", 19);
+	Person<string, int> p2("Jerry", 19);
 	doWork2(p2);
 }
 
 //3、整个类 模板化
-template<class T>
-void doWork3( T & p)
+template <class T>
+void doWork3(T &p)
 {
 	cout << "T的类型： " << typeid(T).name() << endl;
 	p.showPerson();
@@ -59,14 +60,16 @@ void doWork3( T & p)
 
 void test03()
 {
-	Person <string, int>p3("Jerry", 29);
+	Person<string, int> p3("Jerry", 29);
 	doWork3(p3);
 }
 
-int main(){
-
+int main()
+{
+	test01();
+	test02();
 	test03();
 
-	system("pause");
+	//system("pause");
 	return EXIT_SUCCESS;
 }

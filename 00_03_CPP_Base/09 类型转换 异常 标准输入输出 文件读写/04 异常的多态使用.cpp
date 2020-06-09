@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 //异常 抽象 异常的基类
@@ -10,7 +10,7 @@ public:
 };
 
 //空指针的异常类
-class NULLPointer :public BaseException
+class NULLPointer : public BaseException
 {
 public:
 	void printError()
@@ -20,7 +20,7 @@ public:
 };
 
 //数组访问越界
-class OutOfRange :public BaseException
+class OutOfRange : public BaseException
 {
 public:
 	void printError()
@@ -41,15 +41,15 @@ void test01()
 	{
 		func();
 	}
-	catch (BaseException & e)
+	catch (BaseException &e)
 	{
 		e.printError();
 	}
 }
 
-int main(){
+int main()
+{
 	test01();
-
 
 	system("pause");
 	return EXIT_SUCCESS;

@@ -1,7 +1,7 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
+//#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 using namespace std;
-#include <iomanip>  //控制符的头文件
+#include <iomanip> //控制符的头文件
 
 /*
 cout.put() //向缓冲区写字符
@@ -20,40 +20,40 @@ void test01()
 }
 
 //1通过流成员函数
-void test02(){
+void test02()
+{
 
 	int number = 99;
-	cout.width(5);  //设置宽度
-	cout.fill('*');  //填充
-	cout.setf(ios::left);  //左对齐
-	cout.unsetf(ios::dec); //卸载十进制
-	cout.setf(ios::hex); //设置十六进制
-	cout.setf(ios::showbase);  //显示基数
+	cout.width(5);			  //设置宽度
+	cout.fill('*');			  //填充
+	cout.setf(ios::left);	  //左对齐
+	cout.unsetf(ios::dec);	  //卸载十进制
+	cout.setf(ios::hex);	  //设置十六进制
+	cout.setf(ios::showbase); //显示基数
 	cout.unsetf(ios::hex);
-	cout.setf(ios::oct);  //设置八进制
+	cout.setf(ios::oct); //设置八进制
 	cout << number << endl;
 }
 
 //2 通过控制符
-void test03(){
+void test03()
+{
 
 	int number = 99;
-	cout << setw(20)  //设置宽度
-		 << setfill('~')  //设置填充
-		 << setiosflags(ios::showbase)  //显示基数
-		 << setiosflags(ios::left) //设置左对齐
-		 << hex   //十六进制
+	cout << setw(20)				   //设置宽度
+		 << setfill('~')			   //设置填充
+		 << setiosflags(ios::showbase) //显示基数
+		 << setiosflags(ios::left)	   //设置左对齐
+		 << hex						   //十六进制
 		 << number
 		 << endl;
-
 }
 
-
-
-int main(){
+int main()
+{
 
 	test03();
 
-	system("pause");
+	//system("pause");
 	return EXIT_SUCCESS;
 }
