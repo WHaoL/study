@@ -1,5 +1,5 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
+//#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 using namespace std;
 #include <vector>
 #include <algorithm>
@@ -7,11 +7,12 @@ using namespace std;
 #include <functional>
 
 /*
+find(iterator beg, iterator end, value)
 find算法 查找元素
-@param beg 容器开始迭代器
-@param end 容器结束迭代器
-@param value 查找的元素
-@return 返回查找元素的位置
+	@param beg 容器开始迭代器 
+	@param end 容器结束迭代器 
+	@param value 查找的元素 
+	@return 返回查找元素的位置的迭代器，若是没找到返回 end() 
 */
 class GreaterFive
 {
@@ -24,7 +25,7 @@ public:
 
 void test01()
 {
-	vector<int>v;
+	vector<int> v;
 	for (int i = 0; i < 10; i++)
 	{
 		v.push_back(i);
@@ -52,7 +53,8 @@ void test01()
 		cout << "未找到" << endl;
 	}
 }
-//find_if 自定义类型数据查找
+
+//find_if 自定义类型数据 的查找
 class Person
 {
 public:
@@ -62,7 +64,7 @@ public:
 		this->m_Age = age;
 	}
 
-	bool operator==(const Person & p)
+	bool operator==(const Person &p)
 	{
 		return this->m_Name == p.m_Name && this->m_Age == p.m_Age;
 	}
@@ -73,7 +75,7 @@ public:
 
 void test02()
 {
-	vector<Person>v;
+	vector<Person> v;
 	Person p1("aaa", 10);
 	Person p2("bbb", 20);
 	Person p3("ccc", 30);
@@ -95,23 +97,30 @@ void test02()
 	}
 }
 
-class myCompare:public binary_function<Person*,Person*,bool>
+class myCompare : public binary_function<Person *, Person *, bool>
 {
 public:
-	bool operator()(Person * p1 , Person * p2)const
+	bool operator()(Person *p1, Person *p2) const
 	{
-		if (p1->m_Name == p2->m_Name  && p1->m_Age == p2->m_Age)
+		if (p1->m_Name == p2->m_Name && p1->m_Age == p2->m_Age)
 		{
 			return true;
 		}
 		return false;
 	}
-
 };
-
+//find_if 自定义类型数据 的查找
+/*
+find_if(iterator beg, iterator end, callback);
+find_if 算法 条件查找 
+	@param beg 容器开始迭代器 
+	@param end 容器结束迭代器 
+	@param callback 回调函数或者谓词(返回 bool 类型的函数对象) 
+	@return 会返回一个指向被找到对象的迭代器，如果没有找到对象，会返回这个 序列的结束迭代器。
+*/
 void test03()
 {
-	vector<Person*>v;
+	vector<Person *> v;
 	Person p1("aaa", 10);
 	Person p2("bbb", 20);
 	Person p3("ccc", 30);
@@ -124,9 +133,9 @@ void test03()
 	v.push_back(&p4);
 	v.push_back(&p5);
 
-	Person * person = new Person("bbb", 20);
+	Person *person = new Person("bbb", 20);
 
-	vector<Person *>::iterator ret = find_if(v.begin(), v.end(), bind2nd( myCompare(), person ));
+	vector<Person *>::iterator ret = find_if(v.begin(), v.end(), bind2nd(myCompare(), person));
 
 	if (ret != v.end())
 	{
@@ -136,20 +145,19 @@ void test03()
 	{
 		cout << "未找到" << endl;
 	}
-
 }
 
-
 /*
+adjacent_find(iterator beg, iterator end, _callback);
 adjacent_find算法 查找相邻重复元素
-@param beg 容器开始迭代器
-@param end 容器结束迭代器
-@param  _callback 回调函数或者谓词(返回bool类型的函数对象)
-@return 返回相邻元素的第一个位置的迭代器
+	@param beg 容器开始迭代器
+	@param end 容器结束迭代器
+	@param  _callback 回调函数或者谓词(返回bool类型的函数对象)
+	@return 返回相邻元素的第一个位置的迭代器
 */
 void test04()
 {
-	vector<int>v;
+	vector<int> v;
 	v.push_back(1);
 	v.push_back(2);
 	v.push_back(3);
@@ -172,16 +180,17 @@ void test04()
 }
 
 /*
+bool binary_search(iterator beg, iterator end, value);
 binary_search算法 二分查找法
-注意: 在无序序列中不可用
-@param beg 容器开始迭代器
-@param end 容器结束迭代器
-@param value 查找的元素
-@return bool 查找返回true 否则false
+注意: 在无序序列中不可用（无序的话，需要先排序）
+	@param beg 容器开始迭代器
+	@param end 容器结束迭代器
+	@param value 查找的元素
+	@return bool 查找返回true 否则false
 */
 void test05()
 {
-	vector<int>v;
+	vector<int> v;
 	for (int i = 0; i < 10; i++)
 	{
 		v.push_back(i);
@@ -200,16 +209,17 @@ void test05()
 }
 
 /*
-count算法 统计元素出现次数
-@param beg 容器开始迭代器
-@param end 容器结束迭代器
-@param  value回调函数或者谓词(返回bool类型的函数对象)
-@return int返回元素个数
+count(iterator beg, iterator end, value);
+count 算法 按值-统计元素出现次数 
+	@param beg 容器开始迭代器
+	@param end 容器结束迭代器
+	@param value 查找的元素 
+	@return int返回元素个数
 */
 
 void test06()
 {
-	vector<int>v;
+	vector<int> v;
 	for (int i = 0; i < 10; i++)
 	{
 		v.push_back(i);
@@ -220,17 +230,17 @@ void test06()
 	v.push_back(5);
 
 	//统计5的元素个数  按值统计个数
-    int num	= count(v.begin(), v.end(), 5);
+	int num = count(v.begin(), v.end(), 5);
 	cout << "5的个数为：" << num << endl;
-
 }
 
 /*
-count_if算法 统计元素出现次数
-@param beg 容器开始迭代器
-@param end 容器结束迭代器
-@param  callback 回调函数或者谓词(返回bool类型的函数对象)
-@return int返回元素个数
+count_if(iterator beg, iterator end, _callback);
+count_if 算法 按条件-统计元素出现次数 
+	@param beg 容器开始迭代器
+	@param end 容器结束迭代器
+	@param  callback 回调函数或者谓词(返回bool类型的函数对象)
+	@return int返回元素个数
 */
 class GreaterFive1
 {
@@ -239,11 +249,10 @@ public:
 	{
 		return val >= 5;
 	}
-
 };
 void test07()
 {
-	vector<int>v;
+	vector<int> v;
 	// 0 1 2 3 4 5 6 7 8 9 5 5 5 5
 	for (int i = 0; i < 10; i++)
 	{
@@ -259,7 +268,8 @@ void test07()
 	cout << "大于等于5的个数为：" << num << endl;
 }
 
-int main(){
+int main()
+{
 	//test01();
 	//test02();
 	//test03();
@@ -268,8 +278,6 @@ int main(){
 	//test06();
 	test07();
 
-
-
-	system("pause");
-	return EXIT_SUCCESS;
+	//system("pause");
+	return 0;
 }

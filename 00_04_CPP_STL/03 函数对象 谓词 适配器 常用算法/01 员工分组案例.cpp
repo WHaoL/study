@@ -47,41 +47,38 @@ void setGroup(vector<Worker> &v, multimap<int, Worker> &m)
 {
 	for (vector<Worker>::iterator it = v.begin(); it != v.end(); it++)
 	{
-		int dId = rand() % 3; // 0 ~ 2
-		//将部门编号 和 人员 插入到map容器中
-		m.insert(make_pair(dId, *it));
+		int dId = rand() % 3;		   // 0 ~ 2
+		m.insert(make_pair(dId, *it)); //将部门编号 和 人员 插入到map容器中
+									   //multimap会按照key自动排序
 	}
 }
 
 void showGroup(multimap<int, Worker> &m)
 {
-	cout << "财务部门人员信息如下：" << endl;
-
 	// 0 A   0 B   1 C  2  D  2 E
-	multimap<int, Worker>::iterator pos = m.find(CAIWU);
 
-	int num = m.count(CAIWU);
-	int index = 0;
+	multimap<int, Worker>::iterator pos = m.find(CAIWU); //查询：CAIWU部门是否有员工
+	int num = m.count(CAIWU);							 //计算：CAIWU部门员工个数
+	int index = 0;										 //用来：依次遍历num个员工
+	cout << "CAIWU财务部门人员信息如下------总员工数为 num = " << num << endl;
 	for (; pos != m.end() && index < num; pos++, index++)
 	{
 		cout << "姓名： " << pos->second.m_Name << " 工资： " << pos->second.m_Money << endl;
 	}
 
-	cout << "人力部门人员信息如下：" << endl;
 	pos = m.find(RENLI);
-
 	num = m.count(RENLI);
 	index = 0;
+	cout << "RENLI人力部门人员信息如下------总员工数为 num = " << num << endl;
 	for (; pos != m.end() && index < num; pos++, index++)
 	{
 		cout << "姓名： " << pos->second.m_Name << " 工资： " << pos->second.m_Money << endl;
 	}
 
-	cout << "研发部门人员信息如下： " << endl;
 	pos = m.find(YANFA);
-
 	num = m.count(YANFA);
 	index = 0;
+	cout << "YNAFA研发部门人员信息如下------总员工数为 num = " << num << endl;
 	for (; pos != m.end() && index < num; pos++, index++)
 	{
 		cout << "姓名： " << pos->second.m_Name << " 工资： " << pos->second.m_Money << endl;
@@ -90,26 +87,19 @@ void showGroup(multimap<int, Worker> &m)
 
 void test01()
 {
-	//随机数种子
-	srand((unsigned int)time(NULL));
 
-	//存放员工的容器
-	vector<Worker> v;
-
-	//创建5名员工
-	createWorker(v);
+	srand((unsigned int)time(NULL)); //随机数种子
+	vector<Worker> v;				 //存放员工的容器
+	createWorker(v);				 //创建5名员工
 
 	//for (vector<Worker>::iterator it = v.begin(); it != v.end();it++)
 	//{
 	//	cout << "姓名： " << it->m_Name << " 工资： " << it->m_Money << endl;
 	//}
 
-	//员工分组
-	multimap<int, Worker> m;
-	setGroup(v, m);
-
-	//分部门显示人员
-	showGroup(m);
+	multimap<int, Worker> m; // 存放员工部门和员工信息
+	setGroup(v, m);			 //员工分发到各个部门
+	showGroup(m);			 //分部门显示人员
 }
 
 int main()

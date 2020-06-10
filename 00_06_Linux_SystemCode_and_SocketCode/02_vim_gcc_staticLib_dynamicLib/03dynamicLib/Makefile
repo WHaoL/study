@@ -11,14 +11,13 @@ INCLUDEPATH = -I./include/
 #---------------------------------------------------------
 CC          = gcc
 LD          = gcc
-
-LIBEXPORT   = -fvisibility=hidden
-.DEFINES    = -DTRACE_LOG
 #---------------------------------
-# 预处理、编译阶段选项
+# 编译依赖项
 CFlag       = -w -g -ggdb -fshort-wchar -std=c11 -fPIC $(INCLUDEPATH)
 #---------------------------------
-#链接选项
+# 链接依赖项
+LIBEXPORT   = -fvisibility=hidden
+.DEFINES    = -DTRACE_LOG
 CxxFlage    = -shared  $(LIBEXPORT) $(.DEFINES)
 #---------------------------------------------------------
 # .o文件
