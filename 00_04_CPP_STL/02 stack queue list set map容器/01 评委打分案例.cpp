@@ -1,17 +1,15 @@
 /*
-	create by zhangtao 
-	2019 4 16
+	create by liangwenhao 
 	void createPerson(vector<Person>v)  创建选手 参数 传入容器
 */
-
-#define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
-using namespace std;
+//#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 #include <string>
 #include <vector>
 #include <deque>
 #include <algorithm>
 #include <ctime>
+using namespace std;
 
 /*
 有5名选手：选手ABCDE，10个评委分别对每一名选手打分，去除最高分，去除评委中最低分，取平均分。
@@ -31,15 +29,14 @@ public:
 		this->m_Score = score;
 	}
 	string m_Name; //姓名
-	int m_Score; //平均分
+	int m_Score;   //平均分
 };
 
-
 //创建选手
-void createPerson(vector<Person>&v)
+void createPerson(vector<Person> &v)
 {
 	string nameSeed = "ABCDE";
-	for (int i = 0; i < 5;i++)
+	for (int i = 0; i < 5; i++)
 	{
 		string name = "选手";
 		name += nameSeed[i];
@@ -52,15 +49,15 @@ void createPerson(vector<Person>&v)
 	}
 }
 
-void setScore(vector<Person>&v)
+void setScore(vector<Person> &v)
 {
-	for (vector<Person>::iterator it = v.begin(); it != v.end();it++)
+	for (vector<Person>::iterator it = v.begin(); it != v.end(); it++)
 	{
 		//准备deque容器 存放 评委分数
-		deque<int>d;
-		for (int i = 0; i < 10;i++)
+		deque<int> d;
+		for (int i = 0; i < 10; i++)
 		{
-			int score = rand() % 41 + 60;// 60 ~ 100
+			int score = rand() % 41 + 60; // 60 ~ 100
 			d.push_back(score);
 		}
 
@@ -89,12 +86,10 @@ void setScore(vector<Person>&v)
 
 		//将平均分 赋值给Person
 		it->m_Score = avg;
-
 	}
-
 }
 
-void showScore(vector<Person>&v)
+void showScore(vector<Person> &v)
 {
 	for (vector<Person>::iterator it = v.begin(); it != v.end(); it++)
 	{
@@ -102,8 +97,8 @@ void showScore(vector<Person>&v)
 	}
 }
 
-
-int main(){
+int main()
+{
 
 	//随机数种子
 	srand((unsigned int)time(NULL));
@@ -111,7 +106,7 @@ int main(){
 	//1、设计选手类
 
 	//2、创建存放选手容器
-	vector<Person>v;
+	vector<Person> v;
 	//3、创建5名选手
 	createPerson(v);
 
@@ -121,14 +116,6 @@ int main(){
 	//5、打印平均分
 	showScore(v);
 
-
-	////测试容器
-	//for (vector<Person>::iterator it = v.begin(); it != v.end();it++)
-	//{
-	//	cout << "姓名： " << (*it).m_Name << " 分数： " << it->m_Score << endl;
-	//}
-
-
-	system("pause");
+	//system("pause");
 	return EXIT_SUCCESS;
 }
