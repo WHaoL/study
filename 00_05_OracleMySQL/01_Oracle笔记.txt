@@ -65,9 +65,8 @@
         select * from tab;
 
 5 简单查询：
-
-        select * from 表名
-        select 列名1 as "别名1",列名2,表达式.... from 表名
+	select * from 表名
+    select 列名1 as "别名1",列名2,表达式.... from 表名
 
     查询emp表的所有数据
         select * from emp

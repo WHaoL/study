@@ -61,9 +61,9 @@
     要查询的数据再同一张表，但是不在同一行，表自己跟自己做表连接
 
     查询员工信息：将员工的主管名字也显示出来（KING的主管是他自己）
-        select a.ename||'''s manager is '||nvl(b.ename,'his wife')
-        from emp a ,emp b
-        where a.mgr = b.empno (+)
+        select e.ename||'''s manager is '||nvl(e2.ename,'his wife')
+        from emp e ,emp e2
+        where e.mgr = e2.empno (+)
 
         sql中的字符串，使用两个单引号来转义输出单个单引号
     
