@@ -1,3 +1,17 @@
+// prepare
+// 使用 MySQL的预处理语句 编写代码
+// 对MySQL数据库的操作，使用预处理API
+
+// 预处理：先解析好你的SQL语句，然后下次客户端直接扔每个字段的值过来，就带入进来
+// 优点：
+//		对于多次使用的SQL语句(比如插入大量数据时)，不用频繁的解析SQL语句(节省了时间)；
+//  	防止SQL注入
+
+//  预处理语句使用方式：
+//		1 先创建预处理语句
+//      2 先扔给服务器去解析这个语句
+//      3 将该填的数据传递给服务器，让服务器去执行
+
 #include <mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,9 +41,11 @@ int main(int argc, char **argv)
 	MYSQL_BIND bind[3];
 	my_ulonglong affected_rows;
 	int param_count;
+    
 	short small_data;
 	int int_data;
 	char str_data[STRING_SIZE];
+    
 	unsigned long str_length;
 	bool is_null;
 
