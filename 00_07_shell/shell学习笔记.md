@@ -1,0 +1,1063 @@
+# 1. 为什么要学习shell
+
+> shell比较适合一些运维性质的工作
+>
+> 一些简单的工作就不要动高级编程语言 C/C++ 
+>
+> 分析日志，将其中的404错误打印出来，统计出错最多的URL
+>
+> shell是有现成很多命令，可以直接得到结果
+>
+> 
+>
+> > 硬件资源、硬盘、内存、网卡...
+> >
+> > 系统内核
+> >
+> > 系统调用API (read/write...)
+> >
+> > 图形界面 或者 shell(将用户的操作指令转化为系统调用)
+> >
+> > ------------------------------上面的各项(自上而下)：是从内到外 依次被包含---------------------------------------
+> >
+> > 用户的操作指令
+
+# 2. shell基础
+
+## 2.1 确定当前用户的shell
+
+    确定当前用户的shell
+        法一：查看环境变量
+        	[root@lwh ~]# echo $SHELL
+    		/bin/bash
+        法二：查看/etc/passwd
+            找到对应用户那一行的最后一列
+     
+    修改当前用户使用的shell
+        chsh命令
+
+## 2.2 shell的内建命令
+
+    shell的内建命令，是不会启动一个新的进程的
+        cd、umask、alias、exit...
+    	
+    which 命令找不到的的命令都认为是内建命令
+    	
+    通过 man bash-builtins 查看有哪些内建命令
+
+## 2.3 shell的执行
+
+### test.sh
+
+```shell
+# !/bin/bash # 第一行使用 #做注释 后面跟上!+解析器的位置，指定使用哪个解析器 ，如果没有默认用sh
+             # ./test.sh执行时,会直接使用这个解析器来解析下面的程序
+echo Hello world
+cd ..
+tree
+```
+
+```shell
+# 直接执行报错，因为没有可执行权限
+[root@lwh testShell]# ./test.sh
+-bash: ./test.sh: Permission denied
+[root@lwh testShell]# ll test.sh 
+-rw-r--r--. 1 root root 41 Jun 15 18:06 test.sh 
+
+# 给予可执行权限之后，就可以执行这个sh文件了
+[root@lwh testShell]# chmod a+x test.sh 
+[root@lwh testShell]# ll test.sh 
+-rwxr-xr-x. 1 root root 41 Jun 15 18:06 test.sh
+```
+
+```shell
+# 执行sh文件
+
+
+# 第一种执行方式:
+    chmod a+x test.sh # 添加可执行权限
+    ./test.sh         # 直接./执行
+[root@lwh testShell]# ./test.sh 
+Hello world
+.
+├── Makefile
+├── test.c
+└── testShell
+    └── test.sh
+
+1 directory, 3 files
+[root@lwh testShell]# 
+
+#第二种执行方式:
+    sh test.sh                  
+    #这种执行方式不需要test.sh 有可执行权限，但是必须有可读权限
+    #该脚本是作为一个参数传到 sh命令中，该sh命令就会读取这个文件
+[root@lwh testShell]# sh test.sh 
+Hello world
+.
+├── Makefile
+├── test.c
+└── testShell
+    └── test.sh
+
+1 directory, 3 files
+[root@lwh testShell]# 
+
+
+# 以上两种，正常应该使用第一种来执行脚本，因为调用者不需要关注该脚本是什么解析器
+# 除非没有办法添加可执行权限，就使用第二种  
+
+
+#第三种执行方式：
+    (cd .. ; ls)
+#   小括号括起多条命令，命令之间使用分号分隔开来
+
+
+
+# 以上三种方法都是开启一个子进程去执行命令
+
+
+
+#第四种执行方法：
+	#将脚本中的每一条指令都加载到当前shell里边去执行，不会开启子进程去执行
+    source test.sh  # source与. 在此处时一样的
+    . test.sh       # source与. 在此处时一样的
+[root@lwh testShell]# source ./test.sh 
+Hello world
+.
+├── Makefile
+├── test.c
+└── testShell
+    └── test.sh
+
+1 directory, 3 files
+[root@lwh test]# 
+#会发现当前目录已经变了，因为这个不开启子进程，而是在当前进程中执行
+[root@lwh testShell]#  . ./test.sh 
+Hello world
+.
+├── Makefile
+├── test.c
+└── testShell
+    └── test.sh
+
+1 directory, 3 files
+[root@lwh test]# 
+#会发现当前目录已经变了，因为这个不开启子进程，而是在当前进程中执行
+
+    
+
+source #经常用于加载一些环境配置
+	source /etc/profile
+	source ~/.bashrc
+	..
+```
+
+# 3. shell 基础语法
+
+## 3.1 变量    
+
+    shell中的变量默认都是字符串
+    
+    varname=value
+        等号两边不能留空格
+        变量定义就是声明
+    
+    $varname
+    ${varname}
+        变量取值
+
+
+    删除变量
+    
+        unset 变量名
+    
+        直接删除某个变量，不管是普通的shell内变量还是环境变量都可以通过这种方式来删除
+
+
+
+6 变量的分类
+
+
+    shell内变量
+    
+        全局变量
+            只要在shell脚本中没有任何修饰符修饰的变量都是全局的
+            生命周期，从该行脚本执行开始一直到脚本结束
+
+
+        局部变量
+    
+            只能声明在函数中，以local作为修饰符，
+            生命周期，就从该行脚本执行开始一直到函数结束
+
+
+        shell内变量仅限于在当前shell进程中去使用，不能跨进程
+
+
+
+    环境变量
+        操作系统提供给进程的一些环境参数，这些参数可以被修改，任何进程都会有的变量
+        能够从父进程传递给子进程，单向传递，不能从子进程传递给父进程
+        其实就每个进程启动的时候都会从父进程拷贝一份环境变量，对环境变量的修改仅限于当前进程以及子进程
+    
+        export varname=value
+        或者
+        varname=value
+        export varname
+
+
+7 文件名代换
+    * 匹配0个或多个任意字符
+        rm *.txt
+    ? 匹配一个任意字符
+        rm 02?.txt
+    [若干字符] 匹配方括号中任意一个字符的一次出现
+        rm 0[34]?.txt
+
+        最后匹配  031.txt
+                 042.txt
+    
+    参数扩展
+    
+        touch {a,b,c}.txt
+        等同于  touch a.txt b.txt c.txt
+        将花括号中的名字扩展开来
+    
+        序列展开  touch {01..10}.txt
+            就会产生 01.txt -  10.txt  10个文件
+
+
+        touch {1..3}_{4..6}.txt
+            最后是9个文件
+    
+    以上的参数代换其实是发生在命令执行之前的
+    
+        touch {1,2,3}.txt
+        rm *.txt
+
+
+
+8 命令代换
+    开启一个进程去执行命令，将命令的标准输出 替换到当前的位置
+
+    `date`
+    
+    $(date)
+    
+    反引号和 $() 作用一样
+
+
+    需求：
+        脚本运行的时候会依赖当前的目录，将当前脚本所在目录计算出来
+    
+        ls curPath=$(dirname $0)
+
+
+
+9 算数代换
+    只能用于整数简单计算+-*/
+
+    var=45            
+    echo $((var+3))   
+    echo $(($var-3))  
+    echo $[var/3]     
+    echo $[$var*3]    
+    echo $[$var%10]   
+                      
+    #进制转换         
+    echo $[8#10+11]  
+        以8进制来解析10   最后是10进制的8  
+        8+11 = 19 
+
+
+10 转义
+    两层含义
+        普通的字符转特殊字符
+            \r \n \t
+
+        特殊的字符转普通字符
+            \$SHELL
+
+
+    在shell中都是使用 \ 作为转义字符
+
+
+
+11 引号
+    单引号和双引号都是为了保持字符串的字面值
+
+    区别在于：双引号允许 变量扩展
+    echo 'hello $SHELL'
+    echo "hello $SHELL"
+
+
+    如果变量是作为一个单一参数来使用,习惯性的使用变量的时候加上双引号
+        var="a b"
+        touch $var
+        touch "$var"
+        rm $var
+    
+        预防这些空格导致其他错误的操作
+
+
+
+
+12 shell中如何表示真假
+    
+    shell里以命令的返回结果来判断真假，main函数的返回值
+    
+        成功返回0                真
+        失败返回非0              假
+    
+        跟C语言数值判断相反
+    
+    如何获取一条命令的返回值 ，使用一个特殊变量 $? ，会动态存储上一条指令的退出状态 
+
+13 条件测试
+    test  用来测试后面的条件真假  ，以退出状态返回
+    [ ]   中括号跟 test 一致  /usr/bin/[
+        使用[ 的测试需要以 ] 结束
+        注意，以中括号来进行测试的时候 中括号后要留空格
+
+    man test 可以查看到以下的内容
+       ( EXPRESSION )
+            判断 expression 真假
+    
+       ! EXPRESSION
+            判断 expression 为假   ，跟C一样，取反
+    
+       EXPRESSION1 -a EXPRESSION2
+            逻辑与，判断两个条件都为真
+                &&
+    
+       EXPRESSION1 -o EXPRESSION2
+            逻辑或 ， 判断两个表达式至少有一个为真
+                ||
+    
+       -n STRING
+            判断字符串不为空串
+    
+       -z STRING
+            跟 -n 相反，判断字符串为空串
+    
+       STRING1 = STRING2
+            
+            判断两个字符串相等
+
+
+       STRING1 != STRING2
+            判断字符串不等
+    
+       INTEGER1 -eq INTEGER2
+            判断两个整数相等
+    
+       INTEGER1 -ge INTEGER2
+            INTEGER1 >= INTEGER2
+    
+       INTEGER1 -gt INTEGER2
+            INTEGER1 > INTEGER2
+    
+       INTEGER1 -le INTEGER2
+              INTEGER1 <= INTEGER2
+    
+       INTEGER1 -lt INTEGER2
+              INTEGER1 < INTEGER2
+    
+       INTEGER1 -ne INTEGER2
+              INTEGER1 != INTEGER2
+    
+       FILE1 -nt FILE2
+              FILE1 is newer (modification date) than FILE2
+              文件1 修改时间 比文件2修改时间要新
+    
+       FILE1 -ot FILE2
+              FILE1 is older than FILE2
+              跟 -nt 相反
+    
+        文件类型判断
+       -b FILE
+              FILE exists and is block special
+              判断文件是一个块设备
+    
+       -c FILE
+              FILE exists and is character special
+              字符设备
+    
+       -d FILE
+              FILE exists and is a directory
+              目录
+    
+       -e FILE
+              FILE exists
+              单纯判断文件存在，不管文件是什么类型
+    
+       -f FILE
+              FILE exists and is a regular file
+              判断文件是一个普通的文件
+    
+       -h FILE
+              FILE exists and is a symbolic link (same as -L)
+       -L FILE
+              FILE exists and is a symbolic link (same as -h)
+    
+              判断文件是一个符号链接
+       -k FILE
+              FILE exists and has its sticky bit set
+            判断文件设置了黏着位
+    
+       -p FILE
+              FILE exists and is a named pipe
+              命名管道
+    
+       -r FILE
+              FILE exists and read permission is granted
+              文件是否相对于当前用户有读权限
+    
+       -w FILE
+              FILE exists and write permission is granted
+    
+              文件是否相对于当前用户有写权限
+       -x FILE
+              FILE exists and execute (or search) permission is granted
+    
+              文件是否相对于当前用户有执行权限
+
+
+       -s FILE
+              FILE exists and has a size greater than zero
+              判断文件不为空 ，大小大于0
+    
+       -S FILE
+              FILE exists and is a socket
+              判断是否是一个socket文件
+
+14 if分支结构
+
+    if 命令|条件测试
+    then
+        ......
+        条件为真的时候执行的语句
+    elif 命令2|条件测试2  ; then      #if和then写在同一行要加分号
+        .......
+    else                            #else不需要加then
+        ......
+    fi
+
+
+    特殊的常量命令
+        :    空指令，返回结果总是真
+        true  返回结果总是真，不做任何事情
+        false 返回结果总是假
+
+
+
+    shell中从标准输入读取内容 ，存储到变量中
+        read 变量名 
+    
+    && 类似C语言中的&& ，表示并且的意思
+    
+        [ $a -eq 10 ] && [ $b -eq 20 ] 
+        可以多个条件测试表示逻辑与，同时具备短路特性
+    
+        第一条语句执行结果为真，才去执行第二条语句
+    
+            make && sudo make install
+    
+    || 类似C语言的|| ，表示多条语句的逻辑或，也具备短路特性
+    
+        rm 1.txt || echo "error"
+
+
+
+
+
+15 case 
+    C语言中的 switch 语句
+
+
+    switch(expression)
+    {
+    case val1:
+        ....
+        break;
+    case val2:
+        ....
+        break;
+    default:
+        .....
+        break;
+    }
+
+
+    case 表达式 in
+    值1|模式1..)
+        匹配后的动作.....
+        ;;              #两个分号类似C中的break
+    值2|模式2..)
+        匹配后的动作....
+        ;;
+    *)              #*能匹配任意字符，所以作为最后的匹配模式表示default
+        .....
+        ;;
+    esac
+
+
+16 for 循环
+
+    for 变量名 in 参数1 参数2 ....
+    do                                      #如果do跟for写在同一行，要添加;
+        ..每次循环  对应的变量的值是不一样的
+    
+    done
+
+
+    遍历目录
+    for f in $(ls) ....
+    
+    固定次数的循环遍历
+    for i in {1..100}  ....
+
+
+17 while循环
+
+    while 命令|条件测试
+    do
+        ........
+    done
+    
+    break 和 continue 
+        也跟c语言中的 break 和 continue 一致
+
+
+18 位置参数和特殊变量
+    $0          相当于C语言main函数的argv[0]
+    $1、$2...    这些称为位置参数（Positional Parameter），相当于C语言main函数的argv[1]、argv[2]...
+    $#          相当于C语言main函数的argc - 1，注意这里的#后面不表示注释
+    $@          表示参数列表"$1" "$2" ...，例如可以用在for循环中的in后面。
+    $*          表示参数列表"$1" "$2" ...，同上
+    $?          上一条命令的Exit Status
+    $$          当前进程号
+
+
+
+    参数左移 shift
+    
+    ./test.sh 1 2 3 4 5 6
+    
+    shift 之后 参数的排列等同于 ，最左边的参数被移走
+    ./test.sh 2 3 4 5 6 
+
+
+    shift 对于操作不定参数比较常见
+
+
+    例子：写一个脚本 add.sh  加法计算器，将参数中所有整数都相加
+
+
+
+
+
+
+
+
+
+
+
+
+
+1 输入输出
+    输入 read
+    echo [option] string
+        -e 解析转义字符
+        -n 不回车换行。默认情况echo回显的内容后面跟一个回车换行。
+        echo "hello\n\n"
+        echo -e "hello\n\n"
+        echo "hello"
+
+    printf 格式字符串  参数1 参数2 ..
+        跟C语言的printf一致
+
+
+2 管道
+    pipe
+
+    命令1 | 命令2 ....
+    
+        竖线的作用就是将前面进程的标准输出重定向到后面进程的标准输入  ( 正常标准错误输出是不会重定向 )
+
+
+    more
+        提供对文本的滚动操作
+        回车单行滚动，空格翻页
+    
+    less 命令
+        也跟more差不多，支持更多类似于vim的操作，能够进行查找，回滚...
+
+
+3 tee命令
+    
+    命令 | tee [-a] 文件名
+    
+    读取标准输入的内容，也原样输出到标准输出，同时存一份到文件
+    
+        运行游戏服务器，日志一下就刷屏，使用tee命令，来进行跟踪，同时将日志存到一个文件里边，如果
+        错过了什么重要的日志可以查看文件
+    
+        -a 
+            以追加的方式来打开文件，默认是直接覆盖
+
+4 文件重定向
+    cmd > file              把标准输出重定向到新文件中
+    cmd >> file             追加
+    cmd >file 2>file2
+
+        0 标准输入
+        1 标注输出
+        2 标准错误输出
+    
+         标准输出重定向到file 标准错误输出重定向到file2
+
+
+    cmd > file 2>&1         标准出错也重定向到1所指向的file里
+        2>&1  文件描述符2也重定向到文件描述符1的位置
+            标准错误输出也重定向到标准输出的位置
+    
+    cmd >> file 2>&1
+    cmd < file1             输入定向到文件里
+        将file1 读取处理扔到命令的标准输入
+    cmd < &fd               把文件描述符fd作为标准输入
+        很少用
+    cmd > &fd               把文件描述符fd作为标准输出
+    
+    cmd < &-                关闭标准输入
+
+5 函数
+
+    function 函数名()    #括号中没有形参列表
+    {
+        xxxxxxx
+        local var=xxx      #局部变量
+        return 0
+    }
+
+
+    函数的定义中function 或者小括号 最多只能省一个
+    
+    local 定义局部变量
+    
+    return 只能返回整数，作为该函数的退出状态 
+        如果没有return语句，函数默认的退出状态就是最后一条命令执行的退出状态
+        如果想返回字符串，就使用命令代换的形式来获取返回值
+
+
+    函数的调用，当做一个普通命令来调用
+        函数名  参数1 参数2 参数3 ....
+    
+        函数中通过$1 $2.. 来获取函数的参数
+
+
+    函数支持递归
+        需求：遍历当前目录的所有文件，是普通文件就 xxx is a file
+                是目录 就输出 xxx is a directory
+            还要同时遍历子目录中的文件
+
+6 shell脚本的调试方法
+
+    -n 读一遍脚本，但是不执行，只是查看语法错误
+    -v 一边执行一遍输出读到的脚本
+    -x 最常用的 ，执行的过程中输出执行的语句，包括变量的值也会输出出来
+        输出的信息 + 表示调试信息，如果有多个++ 表示开启了子进程
+
+
+    启动调试的方法
+        1 bash -x test.sh
+    
+        2 在脚本的第一句话开启  #!/bin/bash -x
+    
+        3 在脚本运行的过程中
+            set -x   #开启调试
+                .....  一段代码
+            set +x   #关闭调试
+
+7 正则表达式
+练习:
+
+    1 以S开头的字符串
+        ^S
+    
+        使用^表示字符串的开头匹配
+    
+    2 以数字结尾的字符串
+        匹配一个数字
+            [0123456789]        将所有数字枚举出来，使用中括号括起来表示匹配其中字符的一次出现
+            [0-9]               同上，是一个区间的形式
+            \d                  同上
+        匹配字符串结束 $
+    
+        [0-9]$
+    
+    3 匹配空字符串(没有任何字符)
+        ^$
+
+
+    4 字符串只包含三个数字
+        ^\d\d\d$
+    
+        ^[0-9]{3}$
+    
+            {n} 表示前面的单元重复n次
+
+
+    5 字符串只有3到5个字母
+        {m,n}   m表示前面单元最少重复次数，n表示最多重复次数
+    
+        匹配字母
+        [a-zA-Z]    多个区间之间不要留空格
+    
+        ^[a-zA-Z]{3,5}$
+
+
+    6 匹配不是a-z的任意字符
+        [^a-z]   中括号中第一个字符是^，表示区间取反
+
+
+    7 字符串有0到1个数字或者字母或者下划线
+        [0-9a-zA-Z_]
+            \w      同上
+        ^\w{0,1}$
+        ^\w?$
+            ? 表示前面的单元重复 0-1次 等同于 {0,1}
+
+
+    8 字符串有1个或多个空白符号(\t\n\r等)
+        \s   代替这些空白字符 
+    
+        ^\s{1,}$
+    
+        ^\s+$
+            + 等同于 {1,}  ,表示前面的单元重复1-n次
+
+
+    9 字符串有0个或者若干个任意字符(除了\n)
+        .   表示除了\n 的任意字符
+    
+        ^.*$
+    
+            * 表示前面的单元重复0-n次
+
+
+        ?    0-1
+        +    1-n
+        *    0-n
+
+
+
+    10 匹配0或任意多组ABC，比如ABC，ABCABCABC
+    
+        将ABC组合成为一个单元,使用小括号
+    
+        ^(ABC)*$
+
+
+    11 字符串要么是ABC，要么是123
+        选择关系使用 | ，表示左右两边的正则做选择
+    
+        ^ABC|123$
+            这样写就会变成要么ABC开头，要么123结束
+    
+        ^ABC$|^123$
+        ^(ABC|123)$       小括号能够限制竖线选择范围
+
+
+    12 字符串只有一个点号
+        ^.$   错误
+        .号是特殊字符，要考虑转义 , 还是使用\
+    
+        ^\.$
+
+
+    13 匹配十进制3位整数
+        100-999
+    
+        ^[1-9][0-9][0-9]$
+
+
+        0-999       排除011这类
+            分段
+            1位数
+                ^[0-9]$
+            2位数
+                10-99
+                ^[1-9][0-9]$
+    
+            将以上3段连在一起，做选择
+            ^([0-9]|[1-9][0-9]{1,2})$
+
+
+
+    14 匹配0-255的整数
+        常用于匹配用户输入的ip地址
+        分段
+            1位数
+                ^[0-9]$
+            2位数
+                10-99
+                ^[1-9][0-9]$
+    
+            3位数
+                100-255
+    
+                继续分段
+                    100-199
+                        1[0-9]{2}
+    
+                    200-249
+                        2[0-4][0-9]
+    
+                    250-255
+                        25[0-5]
+    
+        匹配端口号 0-65535
+
+8 正则的分类
+
+
+    基础正则 basic
+        ?+{}|()   是普通字符
+    
+    扩展的正则 extended
+        ?+{}|()  是特殊字符
+    
+    perl正则 
+        目前我们学习的，也是编程中最常用
+        建立在扩展正则之上，添加了一堆特殊字符
+            \s \d \w ....
+
+9 sort
+    命令从标准输入中读取数据然后按照字符串内容进行排序
+        -f 忽略字符大小写
+        -n 比较数值大小
+        -t 指定分割符，默认是空格或者tab
+        -k 指定分割后进行比较字段
+        -u 重复的行只显示一次
+        -r 反向排序
+        -R 打乱顺序
+
+    sort -t: -n -k3 < /etc/passwd    
+
+10 uniq
+    去除重复的行,前提是重复的行连续
+    -c 显示每行重复的次数
+    -d 仅显示重复过的行
+    -u 仅显示不曾重复的行
+        sort < test.txt | uniq
+
+11 wc
+    word countter
+
+    -l 统计行数
+    -c 统计字节数
+    -w 统计单词数
+    
+    wc -l *.cpp 
+        计算代码行数
+
+
+12 grep
+    global regular expression print
+    egrep = grep -E
+    fgrep = grep -F
+    rgrep = grep -r
+
+
+    -c 只输出匹配行的计数
+    -i 不区分大小写
+    -H 文件名显示
+    -n 显示行号
+    -s 不显示不存在或无匹配文本的错误信息
+    -v 显示不包含匹配文本的所有行，这个参数经常用于过滤不想显示的行
+        反选
+    -E 使用扩展的正则表达
+        grep正常情况下是使用basic正则
+    
+    -P 使用perl的正则表达式
+    
+    -F 固定字符串匹配，不会将字符串当做正则表达式来解析
+    
+    -r 递归
+        同时搜索目录
+
+
+
+13 find
+    find pathname -options [-print -exec -ok ...]
+        find . -name "aaa"
+
+    pathname: find命令所查找的目录路径。例如用.来表示当前目录，用/来表示系统根目录，递归查找。
+    -print： find命令将匹配的文件输出到标准输出。
+    -exec： find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为'command' {} \;
+            注意{}内部无空格，和\；之间含有一个空格分隔符。
+    
+        find . -name "*.txt" -exec mv {} {}.png \;
+            查找当前目录的txt文件，然后将txt文件添加一个后缀.png
+    
+            -exec 就是每次找到文件之后要执行什么命令
+                mv {} {}.png        这里的花括号是会被找到的文件名替换的
+                mv 6.txt 6.txt.png    
+                \; 表示该命令的结束 反斜杠不能省略
+
+
+    -ok： 和-exec的作用相同，
+           只不过以一种更为安全的模式来执行该参数所给出的shell命令，
+           在执行每一个命令之前，都会给出提示，让用户来确定是否执行。
+           只有用户明确输入y才会执行后边的语句
+
+
+    -name 按照文件名查找文件。
+    -perm 按照文件权限来查找文件。
+        find . -perm 777
+    
+    -user 按照文件属主来查找文件。
+    -group 按照文件所属的组来查找文件。
+    -mtime -n +n 按照文件的更改时间来查找文件，-n表示文件更改时间距现在n天以内，
+        +n表示文件更改时间距现在n天以前。find命令还有-atime和-ctime 选项，但它们都和-m time选项。
+    
+    -nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。
+    -nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。
+    -newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。
+
+
+    -type 查找某一类型的文件，诸如：
+        b - 块设备文件。
+        d - 目录。
+        c - 字符设备文件。
+        p - 管道文件。
+        l - 符号链接文件。
+        f - 普通文件。
+        s - socket 文件
+    
+    -size n：[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。
+    -depth 在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。
+    -fstype 查找位于某一类型文件系统中的文件，这些文件系统类型通常可以在配置文件/etc/fstab中找到，该配
+    置文件中包含了本系统中有关文件系统的信息。
+    -mount 在查找文件时不跨越文件系统mount点。
+    -follow 如果find命令遇到符号链接文件，就跟踪至链接所指向的文件。
+
+
+
+14 xargs
+
+    主要作用就是将标准输入读取到的参数排成一行
+    主要是配合其他命令来使用
+        test.txt 里边有 aa bb
+    cat test.txt | xargs touch 
+    
+        最终xargs会将 aa bb 两个参数排成一行，跟到touch后面
+            touch aa bb
+
+
+        docker ps -aq | xargs docker rm -f 
+            删除所有的docker容器
+    
+    xargs 可以指定替换字符串
+    
+    find . -name "*.txt" | xargs -I{} mv {} b
+    
+        -I{}  表示指定替换字符串是{}   之前标准输入的内容的参数将会替换后面命令的{}
+
+
+15 sed
+    文件内容 ->  sed + 脚本  ->  文件内容2 
+    sed option 'script' file1 file2 ...             sed 参数  ‘脚本(/pattern/action)’ 待处理文件
+    sed option -f scriptfile file1 file2 ...        sed 参数 –f ‘脚本文件’ 待处理文件
+
+        p,  print           打印
+        a,  append          追加
+        i,  insert          插入
+        d,  delete          删除
+        s,  substitution    替换
+
+
+        sed '2d' test.txt
+            删除第二行的内容
+    
+        /pattern/action    符合某个模式就执行什么动作
+    
+        sed -n '/123/p' test.txt   只要该行有123的就输出，其他不管
+    
+        sed 's/<[a-zA-Z/]*>//g' testfile 
+            将html内容中的标签全部干掉
+
+16 awk
+    awk是一个命令，也是一个脚本语言
+
+    awk option 'script' file1 file2 ...
+    awk option -f scriptfile file1 file2 ...
+
+
+    awk -F: '{print $1}'   /etc/passwd
+    
+        提取passwd 文件的第一列 ，以:作为分隔符   注意其中脚本要使用单引号
+        因为双引号还支持变量扩展
+    
+    脚本的语法内容
+    {actions}
+        每一行文本都无条件的执行某些动作
+    /pattern/{actions}
+        该行文本匹配了模式，就执行某些动作
+    condition{actions}
+        只要满足某个条件就执行某些动作
+        有两个特殊条件
+    
+        BEGIN{actions} 在遍历文本第一行之前会执行的动
+        END{actions}   在遍历文本最后一行之后会执行的动作
+
+
+
+    ProductA 30
+    ProductB 76
+    ProductC 55
+    
+    如果库存量少于75 提示要重新订货
+        $2<75 {
+            print $1,$2,"reorder";
+        }
+        $2>=75 {
+            print $1,$2;
+        }
+    
+    使用BEGIN 和 END，实现：输出列名  产品名 + 库存量    ，输出结果要显示库存总量
+    
+        BEGIN{
+            #输出表头
+            printf("产品名\t库名\n");
+    
+            #定义一个变量，存储库存总量
+            sum=0;
+        }
+        $2<75 {
+            print $1,$2,"reorder";
+        }
+        $2>=75 {
+            print $1,$2;
+        }
+        {
+            sum+=$2;
+        }
+        END{
+            printf("库存总量:%d\n",sum);
+        }
+    
+    awk是比较强大的工具，能够做一些数理统计等操作....
+
+
+
+
+
+
+
+
+
+
+crontab
