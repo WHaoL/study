@@ -1,11 +1,12 @@
 #!/bin/bash
 
-begintime=$(date)
+begintime=$(date) # 执行date，并把值存入变量begintime
 
-sleep 3
+sleep 3 # 等待3s
 
-endtime=`date`
+endtime=`date` # 执行date，并把值存入变量endtime
 
 
-echo $begintime $endtime
+echo $begintime  
+echo $endtime
 

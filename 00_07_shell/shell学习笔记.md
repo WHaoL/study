@@ -26,28 +26,28 @@
 
 ## 2.1 确定当前用户的shell
 
-    确定当前用户的shell
-        法一：查看环境变量
-        	[root@lwh ~]# echo $SHELL
-    		/bin/bash
-        法二：查看/etc/passwd
-            找到对应用户那一行的最后一列
-     
-    修改当前用户使用的shell
-        chsh命令
+>确定当前用户的shell
+>    法一：查看环境变量
+>    	[root@lwh ~]# echo $SHELL
+>		/bin/bash
+>    法二：查看/etc/passwd
+>        找到对应用户那一行的最后一列
+>
+>修改当前用户使用的shell
+>    chsh命令
 
 ## 2.2 shell的内建命令
 
-    shell的内建命令，是不会启动一个新的进程的
-        cd、umask、alias、exit...
-    	
-    which 命令找不到的的命令都认为是内建命令
-    	
-    通过 man bash-builtins 查看有哪些内建命令
+>shell的内建命令，是不会启动一个新的进程的
+>    cd、umask、alias、exit...
+>	
+>which 命令找不到的的命令都认为是内建命令
+>	
+>通过 man bash-builtins 查看有哪些内建命令
 
 ## 2.3 shell的执行
 
-### test.sh
+### test.sh 01
 
 ```shell
 # !/bin/bash # 第一行使用 #做注释 后面跟上!+解析器的位置，指定使用哪个解析器 ，如果没有默认用sh
@@ -155,28 +155,33 @@ source #经常用于加载一些环境配置
 
 # 3. shell 基础语法
 
-## 3.1 变量    
+## 3.1 变量   
 
-    shell中的变量默认都是字符串
-    
-    varname=value
-        等号两边不能留空格
-        变量定义就是声明
-    
-    $varname
-    ${varname}
-        变量取值
+### 1.变量的定义 
 
+> shell中的变量默认都是字符串
+>
+> varname=value
+>     等号两边不能留空格
+>     变量定义就是声明
+>     定义和声明的同时要赋初值
+>
+> 
+>
+> 变量取值
+>
+> ​    $varname
+> ​    ${varname}
 
-    删除变量
-    
-        unset 变量名
-    
-        直接删除某个变量，不管是普通的shell内变量还是环境变量都可以通过这种方式来删除
+### 2.删除变量
 
+> 删除变量
+>     unset 变量名
+>     直接删除某个变量，不管是普通的shell内变量还是环境变量都可以通过这种方式来删除
 
+## 3.2 变量的分类
 
-6 变量的分类
+### 1. shell内变量：全局变量、局部变量
 
 
     shell内变量
@@ -184,127 +189,382 @@ source #经常用于加载一些环境配置
         全局变量
             只要在shell脚本中没有任何修饰符修饰的变量都是全局的
             生命周期，从该行脚本执行开始一直到脚本结束
-
-
         局部变量
-    
             只能声明在函数中，以local作为修饰符，
             生命周期，就从该行脚本执行开始一直到函数结束
+            
+    shell内变量仅限于在当前shell进程中去使用，不能跨进程
+
+### 2. 环境变量
+
+```shell
+环境变量
+    操作系统提供给进程的一些环境参数，这些参数可以被修改，任何进程都会有的变量
+    能够从父进程传递给子进程，单向传递，不能从子进程传递给父进程
+    其实就每个进程启动的时候都会从父进程拷贝一份环境变量，对环境变量的修改仅限于当前进程以及子进程
+
+    export varname=value
+    或者
+    varname=value
+    export varname
+```
+
+#### test.sh 02 
+
+```shell
+################test.sh 文件内容如下################
+#!/bin/bash
+a="Hello"
+aa="world"
+
+#取值时，推荐给变量加上 {},便于编译器区分，也便于我们阅读
+echo ${a}a
+
+#################
+
+function testfun
+{
+        #此处的b是全局变量
+        b="123"
+
+        #此处的c是局部变量      
+        local c="456"
+}
+
+#执行testfun函数
+testfun
+
+echo b:$b
+echo c:$c
+##################
+
+#调用子脚本 创建子进程来执行新的sh文件
+# shell内变量仅限于在当前shell进程中去使用，不能跨进程
+# 所以子进程是拿不到父进程的全局变量的
+#./test_sub.sh
+
+#把test_sub.sh的代码加载到当前进程去执行，这样执行就不会开新的子线程了
+#这样test_sub.sh是能取到test.sh的全局变量的
+#source ./test_sub.sh
+
+export env_var="这是一个环境变量"
+#调用子脚本
+./test_sub.sh
+#再次输出环境变量
+echo "parentscript 输出 env_var:"$env_var
+```
+
+#### test_sub.sh 02 
+
+```shell
+################test_sub.sh 文件内容如下################
+#!/bin/bash
+#子脚本
+#输出父脚本的全局变量
+echo "subscript a:"$a
+
+echo "subscript 输出 env_var:"$env_var
+
+#子进程修改环境变量
+export env_var="子进程修改了的环境变量"
+```
+
+```shell
+##执行
+[root@lwh testShell]# ./test.sh 
+Helloa
+b:123
+c:
+subscript a:
+subscript 输出 env_var:这是一个环境变量
+parentscript 输出 env_var:这是一个环境变量
+[root@lwh testShell]# 
+```
+
+## 3.3 文件名代换
+
+```shell
+# * 匹配0个或多个任意字符
+	rm *.txt
+
+# ? 匹配一个任意字符
+	rm 02?.txt
+
+# [若干字符] 匹配方括号中任意一个字符的一次出现
+	rm 0[34]?.txt
+    # [34]匹配3或者4
+    # ？匹配一个任意字符
 
 
-        shell内变量仅限于在当前shell进程中去使用，不能跨进程
 
 
 
-    环境变量
-        操作系统提供给进程的一些环境参数，这些参数可以被修改，任何进程都会有的变量
-        能够从父进程传递给子进程，单向传递，不能从子进程传递给父进程
-        其实就每个进程启动的时候都会从父进程拷贝一份环境变量，对环境变量的修改仅限于当前进程以及子进程
+
+```
+
+
+```shell
+# 参数扩展
+# 参数展开    
     
-        export varname=value
-        或者
-        varname=value
-        export varname
-
-
-7 文件名代换
-    * 匹配0个或多个任意字符
-        rm *.txt
-    ? 匹配一个任意字符
-        rm 02?.txt
-    [若干字符] 匹配方括号中任意一个字符的一次出现
-        rm 0[34]?.txt
-
-        最后匹配  031.txt
-                 042.txt
+    touch {a,b,c}.txt
+    # 等同于  touch a.txt b.txt c.txt
+    # 将花括号中的名字扩展开来
+	
+	touch {01..10}.txt
+        # 就会产生 01.txt ... 10.txt  10个文件
     
-    参数扩展
-    
-        touch {a,b,c}.txt
-        等同于  touch a.txt b.txt c.txt
-        将花括号中的名字扩展开来
-    
-        序列展开  touch {01..10}.txt
-            就会产生 01.txt -  10.txt  10个文件
+    touch {1..3}_{4..6}.txt
+        #最后是9个文件
+    	[root@lwh test]# touch {1,2,3}_{4,5,6}.txt
+		[root@lwh test]# ls
+        1_4.txt  1_5.txt  1_6.txt  
+        2_4.txt  2_5.txt  2_6.txt  
+        3_4.txt  3_5.txt  3_6.txt
+
+	mkdir day{01..05}
+		# 产生day01 ... day05 5个文件夹
+	
+	mkdir -p day{01..tree}/0{1_doc,2_code,3_resource,4_note}
+	    # 产生day01 ... day05 5个文件夹
+	    # 并在5个文件夹下产生01_doc,02_code,03_resource,04_note4个子文件夹
+    	[root@lwh test]# mkdir -p day{01..05}/0{1_doc,2_code,3_resource,4_note}
+        [root@lwh test]# tree
+        .
+        ├── day01
+        │   ├── 01_doc
+        │   ├── 02_code
+        │   ├── 03_resource
+        │   └── 04_note
+        ├── day02
+        │   ├── 01_doc
+        │   ├── 02_code
+        │   ├── 03_resource
+        │   └── 04_note
+        ├── day03
+        │   ├── 01_doc
+        │   ├── 02_code
+        │   ├── 03_resource
+        │   └── 04_note
+        ├── day04
+        │   ├── 01_doc
+        │   ├── 02_code
+        │   ├── 03_resource
+        │   └── 04_note
+        └── day05
+            ├── 01_doc
+            ├── 02_code
+            ├── 03_resource
+            └── 04_note
+```
+
+```shell
+
+# 以上的参数代换其实是发生在命令执行之前的
+# 如
+    touch {1,2,3}.txt
+    rm *.txt # rm 收到的参数是 1.txt 2.txt 3.txt  
+# 我们写个测试程序：打印参数
+```
+
+### main.c 03
+
+```c
+#include <stdio.h>
+int main(int argc, char **argv)
+{
+    int i;
+    for(i=0;i<argc;++i)
+    {
+        printf("arg[%d]:%s\n",i,argv[i]);
+    }
+    return 0;
+}
+```
+
+```shell
+[root@lwh testShell]# ls *.txt
+1.txt  2.txt  3.txt
+
+[root@lwh testShell]# gcc test_argc.c -o exe 
+
+[root@lwh testShell]# ./exe *.txt
+argv[0]:./exe
+argv[1]:1.txt
+argv[2]:2.txt
+argv[3]:3.txt
+[root@lwh testShell]# 
+```
 
 
-        touch {1..3}_{4..6}.txt
-            最后是9个文件
-    
-    以上的参数代换其实是发生在命令执行之前的
-    
-        touch {1,2,3}.txt
-        rm *.txt
 
-
-
-8 命令代换
-    开启一个进程去执行命令，将命令的标准输出 替换到当前的位置
-
-    `date`
+## 3.4 命令代换
+    反引号 ` ESC下面那个，用反引号扩起来的也是一条命令
+    反引号：开启一个进程去执行命令，将命令的标准输出 替换到当前的位置
     
-    $(date)
-    
+    `date`	等价于	$(date)
     反引号和 $() 作用一样
-
-
-    需求：
-        脚本运行的时候会依赖当前的目录，将当前脚本所在目录计算出来
     
-        ls curPath=$(dirname $0)
+    用处：
+    	需要将某个命令的标准输出存起来，就要想到命令代换 ``  
+    	把输出的内容存到变量里
+
+### test.sh 04
+
+```shell
+#!/bin/bash
+begintime=$(date) # 执行date，并把值存入变量begintime
+sleep 3           # 等待3s
+endtime=`date`    # 执行date，并把值存入变量endtime
+echo ${begintime} 
+echo ${endtime}
+
+[root@lwh testShell]# ./test.sh 
+Tue Jun 16 19:12:32 CST 2020 
+Tue Jun 16 19:12:35 CST 2020
+```
+
+### curPath.sh 04 
 
 
-
-9 算数代换
-    只能用于整数简单计算+-*/
-
-    var=45            
-    echo $((var+3))   
-    echo $(($var-3))  
-    echo $[var/3]     
-    echo $[$var*3]    
-    echo $[$var%10]   
-                      
-    #进制转换         
-    echo $[8#10+11]  
-        以8进制来解析10   最后是10进制的8  
-        8+11 = 19 
-
-
-10 转义
-    两层含义
-        普通的字符转特殊字符
-            \r \n \t
-
-        特殊的字符转普通字符
-            \$SHELL
-
-
-    在shell中都是使用 \ 作为转义字符
-
-
-
-11 引号
-    单引号和双引号都是为了保持字符串的字面值
-
-    区别在于：双引号允许 变量扩展
-    echo 'hello $SHELL'
-    echo "hello $SHELL"
-
-
-    如果变量是作为一个单一参数来使用,习惯性的使用变量的时候加上双引号
-        var="a b"
-        touch $var
-        touch "$var"
-        rm $var
+```shell
+#题目：
+#    1.脚本运行的时候会依赖当前的目录：将当前脚本所在目录(路径)计算出来
+#    2.通过ls 的方式列出当前脚本所在目录的所有文件
     
-        预防这些空格导致其他错误的操作
+    ls curPath=$(dirname $0)
+    # $0 就是main函数的argv[0]
+```
+
+版本1：计算出的是相对路径
+
+```shell
+ #!/bin/bash
+ curPath=$(dirname  $0)
+ echo "curPath:" ${curPath}
+ ls ${curPath}
+
+
+[root@lwh testShell]# ./test.sh 
+curPath: .
+test.sh
+```
+
+版本2：计算出的是绝对路径
+
+```shell
+#!/bin/bash
+curPath=$(cd `dirname $0`;pwd)
+echo "curPath:" ${curPath}
+ls ${curPath}
+
+[root@lwh testShell]# ./test.sh 
+curPath: /home/lwh/Desktop/study/test/testShell
+test.sh
+```
 
 
 
+## 3.5 算数代换
 
-12 shell中如何表示真假
-    
+> shell中的变量默认都是字符串
+>
+> 使用$(( )) 用于算术计算
+>
+> ​	(( ))中的shell变量取值，将(默认是字符串)转换成整数，同样含义的$[]等价
+>
+> ​	只能用于整数简单计算+-*/
+
+### test.sh 05
+
+```shell
+#!/bin/bash
+var=45
+echo $((var+3))  
+echo $(($var-3)) # 最里面的$加不加都可以，没影响
+echo $[var/3]
+echo $[$var*3]
+echo $[$var%10]
+
+# 进制转换
+# 以8进制来解析10   最后是10进制的8  ： 结果是10进制的19
+echo $[8#10+11]
+```
+
+## 3.6 转义字符
+```shell
+#在shell中都是使用 \ 作为转义字符
+
+#两层含义
+#    普通的字符转特殊字符
+        \r \n \t
+#    特殊的字符转普通字符
+        \$SHELL
+        
+[root@lwh testShell]# echo \$SHELL
+$SHELL
+[root@lwh testShell]# echo \\
+\
+
+[root@lwh testShell]# echo "abc\tABC"
+abc\tABC
+[root@lwh testShell]# echo -e "abc\tABC" # 加上-e就会转义了
+abc	ABC
+```
+
+## 3.7 引号
+```shell
+# 单引号和双引号都是为了保持字符串的字面值
+# 区别在于：双引号允许 变量扩展
+
+echo 'hello $SHELL'
+echo "hello $SHELL"
+
+[root@lwh testShell]# echo 'hello $SHELL'
+hello $SHELL
+[root@lwh testShell]# echo "hello $SHELL"
+hello /bin/bash
+```
+
+
+```shell
+# 如果变量是作为一个单一参数来使用：习惯性的使用变量的时候加上双引号
+    var="a b"
+    touch $var  
+    touch "$var"
+    rm $var
+ # 预防这些空格导致其他错误的操作
+```
+
+```shell
+#!/bin/bash
+var="G A"
+touch ${var}.txt # 不加""时，直接替换过来，创建了两个文件，分别是A.txt和G
+curPath=$(cd `dirname $0`;pwd)
+ls ${curPath}
+
+ 
+[root@lwh testShell]# ./test.sh 
+A.txt  G  test.sh
+
+```
+
+```shell
+#!/bin/bash
+var="G A"
+touch "${var}".txt # 加""时，创建了一个文件 G A.txt 
+                   # 文件的名字中间有一个空格，规范做法是名字中不要有空格
+curPath=$(cd `dirname $0`;pwd)
+ls ${curPath}
+
+
+[root@lwh testShell]# ./test.sh 
+G A.txt  test.sh
+```
+
+# 4. shell脚本语法    
+
+    shell中如何表示真假
     shell里以命令的返回结果来判断真假，main函数的返回值
     
         成功返回0                真
