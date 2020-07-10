@@ -1,17 +1,15 @@
 #!/bin/bash
-
 echo "Input password"
-read input
-counter=1
-while [ "$input" != "secret" ]
-do
-    if [ "$counter" -gt 4 ]
+read Input
+count=1
+while [ "$Input" != "secret" ]
+do  
+    if [ "$count" -gt 4 ]
     then
-        echo "Fails 5 times ,exit"
-        break
-    fi
+        echo "Fail $count times , exit "
+    fi 
 
-    echo "Pease try again"
-    read input
-    counter=$[counter+1]
+    echo "Please try again"
+    read Input
+    count=$[$count+1]
 done

@@ -294,12 +294,6 @@ parentscript 输出 env_var:这是一个环境变量
 	rm 0[34]?.txt
     # [34]匹配3或者4
     # ？匹配一个任意字符
-
-
-
-
-
-
 ```
 
 
@@ -312,7 +306,7 @@ parentscript 输出 env_var:这是一个环境变量
     # 将花括号中的名字扩展开来
 	
 	touch {01..10}.txt
-        # 就会产生 01.txt ... 10.txt  10个文件
+        # 就会产生 01.txt 02.txt ... 10.txt  10个文件
     
     touch {1..3}_{4..6}.txt
         #最后是9个文件
@@ -325,7 +319,7 @@ parentscript 输出 env_var:这是一个环境变量
 	mkdir day{01..05}
 		# 产生day01 ... day05 5个文件夹
 	
-	mkdir -p day{01..tree}/0{1_doc,2_code,3_resource,4_note}
+	mkdir -p day{01..05}/0{1_doc,2_code,3_resource,4_note}
 	    # 产生day01 ... day05 5个文件夹
 	    # 并在5个文件夹下产生01_doc,02_code,03_resource,04_note4个子文件夹
     	[root@lwh test]# mkdir -p day{01..05}/0{1_doc,2_code,3_resource,4_note}
@@ -373,33 +367,34 @@ parentscript 输出 env_var:这是一个环境变量
 #include <stdio.h>
 int main(int argc, char **argv)
 {
-    int i;
-    for(i=0;i<argc;++i)
+    int i = 0;
+    for (i = 0; i < argc; ++i)
     {
-        printf("arg[%d]:%s\n",i,argv[i]);
+        printf("argv[%d]:%s\n", i, argv[i]);
     }
     return 0;
 }
 ```
 
 ```shell
-[root@lwh testShell]# ls *.txt
-1.txt  2.txt  3.txt
+[root@lwh testshell]# ls *.txt
+0_10.txt  0_11.txt  1_10.txt  1_11.txt
 
 [root@lwh testShell]# gcc test_argc.c -o exe 
 
 [root@lwh testShell]# ./exe *.txt
-argv[0]:./exe
-argv[1]:1.txt
-argv[2]:2.txt
-argv[3]:3.txt
+argv[0]:./main
+argv[1]:0_10.txt
+argv[2]:0_11.txt
+argv[3]:1_10.txt
+argv[4]:1_11.txt
 [root@lwh testShell]# 
 ```
 
 
 
 ## 3.4 命令代换
-    反引号 ` ESC下面那个，用反引号扩起来的也是一条命令
+    反引号 ` ：ESC下面那个，用反引号扩起来的也是一条命令
     反引号：开启一个进程去执行命令，将命令的标准输出 替换到当前的位置
     
     `date`	等价于	$(date)
@@ -432,7 +427,8 @@ Tue Jun 16 19:12:35 CST 2020
 #    1.脚本运行的时候会依赖当前的目录：将当前脚本所在目录(路径)计算出来
 #    2.通过ls 的方式列出当前脚本所在目录的所有文件
     
-    ls curPath=$(dirname $0)
+    ls curPath=$(dirname $0) 
+    # $0 相当于C语言main函数的argv[0]
     # $0 就是main函数的argv[0]
 ```
 
@@ -564,180 +560,207 @@ G A.txt  test.sh
 
 # 4. shell脚本语法    
 
-    shell中如何表示真假
-    shell里以命令的返回结果来判断真假，main函数的返回值
-    
-        成功返回0                真
-        失败返回非0              假
-    
-        跟C语言数值判断相反
-    
-    如何获取一条命令的返回值 ，使用一个特殊变量 $? ，会动态存储上一条指令的退出状态 
+## 1.条件测试
 
-13 条件测试
-    test  用来测试后面的条件真假  ，以退出状态返回
-    [ ]   中括号跟 test 一致  /usr/bin/[
+### 1.1 真假
+
+    shell中如何表示真假
+    
+    shell里以命令的返回结果来判断真假，main函数的返回值
+        	成功返回0                真
+        	失败返回非0              假
+    		跟C语言数值判断相反
+
+```
+如何获取一条命令的返回值 ，使用一个特殊变量 $? ，会动态存储上一条指令的退出状态(返回值) 
+	echo $?
+```
+
+### 1.2 条件测试
+
+```
+条件测试
+    1、test  用来测试后面的条件真假  ，以退出状态返回
+    	Shell中的 test 命令用于检查某个条件是否成立，它可以进行数值、字符和文件三个方面的测试。
+    2、[ ]   中括号跟 test 一致  ( /usr/bin/[ )
         使用[ 的测试需要以 ] 结束
         注意，以中括号来进行测试的时候 中括号后要留空格
+        	[ 3 -gt 2 ]
+        	echo $?
+```
 
-    man test 可以查看到以下的内容
-       ( EXPRESSION )
-            判断 expression 真假
-    
-       ! EXPRESSION
-            判断 expression 为假   ，跟C一样，取反
-    
-       EXPRESSION1 -a EXPRESSION2
-            逻辑与，判断两个条件都为真
-                &&
-    
-       EXPRESSION1 -o EXPRESSION2
-            逻辑或 ， 判断两个表达式至少有一个为真
-                ||
-    
-       -n STRING
-            判断字符串不为空串
-    
-       -z STRING
-            跟 -n 相反，判断字符串为空串
-    
-       STRING1 = STRING2
-            
-            判断两个字符串相等
+- man test 可以查看到以下的内容
 
+| 表达式/参数                | 说明                                                         |
+| -------------------------- | ------------------------------------------------------------ |
+| ( EXPRESSION )             | 判断 expression 真假                                         |
+| ! EXPRESSION               | 判断 expression 为假   ，跟C一样，取反                       |
+| EXPRESSION1 -a EXPRESSION2 | 逻辑与，两个条件都为真,才为真  <br />相当于：&&              |
+| EXPRESSION1 -o EXPRESSION2 | 逻辑或 ， 两个表达式至少有一个为真 <br /> 相当于：\|\|       |
+| -n STRING                  | 判断字符串：不为空串 <br />    为空串，返回非零值，即为假<br />    不是空串，返回0，即为真 |
+| -z STRING                  | 判断字符串：为空串<br />    跟 -n 相反                       |
+| STRING1 = STRING2          | 判断两个字符串相等                                           |
+| STRING1 != STRING2         | 判断两个字符串不等                                           |
+| INTEGER1 -eq INTEGER2      | 判断两个整数相等                                             |
+| INTEGER1 -ge INTEGER2      | INTEGER1 >= INTEGER2                                         |
+| INTEGER1 -gt INTEGER2      | INTEGER1 > INTEGER2                                          |
+| INTEGER1 -le INTEGER2      | INTEGER1 <= INTEGER2                                         |
+| INTEGER1 -lt INTEGER2      | INTEGER1 < INTEGER2                                          |
+| INTEGER1 -ne INTEGER2      | INTEGER1 != INTEGER2                                         |
+| 文件判断                   |                                                              |
+| FILE1 -nt FILE2            | FILE1 is newer (modification date) than FILE2<br/>文件1 修改时间 比文件2修改时间要新 |
+| FILE1 -ot FILE2            | FILE1 is older than FILE2<br/>跟 -nt 相反                    |
+| -b FILE                    | FILE exists and is block special<br/>判断文件是不是一个：块设备 |
+| -c FILE                    | FILE exists and is character special<br/>判断文件是不是一个：字符设备 |
+| -d FILE                    | FILE exists and is a directory<br/>判断文件是不是一个：目录  |
+| -e FILE                    | FILE exists<br/>判断文件：是否存在，不管文件是什么类型       |
+| -f FILE                    | FILE exists and is a regular file<br/>判断文件：是一个普通的文件 |
+| -g FILE                    | FILE exists and is set-group-ID<br />判断文件：是否被设置了组ID |
+| -h FILE                    | FILE exists and is a symbolic link (same as -L)              |
+| -L FILE                    | FILE exists and is a symbolic link (same as -h)<br/> 判断文件是一个符号链接 |
+| -k FILE                    | FILE exists and has its sticky bit set<br/>判断文件设置了黏着位 |
+| -p FILE                    | FILE exists and is a named pipe<br/>命名管道                 |
+| -r FILE                    | FILE exists and read permission is granted<br/>文件是否相对于当前用户有读权限 |
+| -w FILE                    | FILE exists and write permission is granted<br/>文件是否相对于当前用户有写权限 |
+| -x FILE                    | FILE exists and execute (or search) permission is granted<br/>文件是否相对于当前用户有执行权限 |
+| -s FILE                    | FILE exists and has a size greater than zero<br/>判断文件不为空 ，文件大小大于0 |
+| -S FILE                    | FILE exists and is a socket<br/>判断是否是一个socket文件     |
 
-       STRING1 != STRING2
-            判断字符串不等
-    
-       INTEGER1 -eq INTEGER2
-            判断两个整数相等
-    
-       INTEGER1 -ge INTEGER2
-            INTEGER1 >= INTEGER2
-    
-       INTEGER1 -gt INTEGER2
-            INTEGER1 > INTEGER2
-    
-       INTEGER1 -le INTEGER2
-              INTEGER1 <= INTEGER2
-    
-       INTEGER1 -lt INTEGER2
-              INTEGER1 < INTEGER2
-    
-       INTEGER1 -ne INTEGER2
-              INTEGER1 != INTEGER2
-    
-       FILE1 -nt FILE2
-              FILE1 is newer (modification date) than FILE2
-              文件1 修改时间 比文件2修改时间要新
-    
-       FILE1 -ot FILE2
-              FILE1 is older than FILE2
-              跟 -nt 相反
-    
-        文件类型判断
-       -b FILE
-              FILE exists and is block special
-              判断文件是一个块设备
-    
-       -c FILE
-              FILE exists and is character special
-              字符设备
-    
-       -d FILE
-              FILE exists and is a directory
-              目录
-    
-       -e FILE
-              FILE exists
-              单纯判断文件存在，不管文件是什么类型
-    
-       -f FILE
-              FILE exists and is a regular file
-              判断文件是一个普通的文件
-    
-       -h FILE
-              FILE exists and is a symbolic link (same as -L)
-       -L FILE
-              FILE exists and is a symbolic link (same as -h)
-    
-              判断文件是一个符号链接
-       -k FILE
-              FILE exists and has its sticky bit set
-            判断文件设置了黏着位
-    
-       -p FILE
-              FILE exists and is a named pipe
-              命名管道
-    
-       -r FILE
-              FILE exists and read permission is granted
-              文件是否相对于当前用户有读权限
-    
-       -w FILE
-              FILE exists and write permission is granted
-    
-              文件是否相对于当前用户有写权限
-       -x FILE
-              FILE exists and execute (or search) permission is granted
-    
-              文件是否相对于当前用户有执行权限
+## 2.分支结构
 
-
-       -s FILE
-              FILE exists and has a size greater than zero
-              判断文件不为空 ，大小大于0
-    
-       -S FILE
-              FILE exists and is a socket
-              判断是否是一个socket文件
-
-14 if分支结构
+### 2.1 if/then/elif/then/else/fi
 
     if 命令|条件测试
     then
-        ......
-        条件为真的时候执行的语句
-    elif 命令2|条件测试2  ; then      #if和then写在同一行要加分号
+        ...... #条件为真的时候执行的语句
+        
+    elif 命令2|条件测试2  ; then      #if和then写在同一行时要加分号
         .......
     else                            #else不需要加then
         ......
     fi
 
+#### Demo1 test.sh
 
-    特殊的常量命令
-        :    空指令，返回结果总是真
-        true  返回结果总是真，不做任何事情
-        false 返回结果总是假
+```shell
+#!/bin/bash
+if test 3 -gt 2
+then 
+    echo "3>2"
+else
+    echo "3<=2"
+fi
+```
+
+```shell
+[root@lwh testshell]# ./test.sh 
+3>2
+```
+
+#### Demo2 test.sh
+
+特殊的常量命令
+
+```
+特殊的常量命令
+    :     空指令，返回结果总是真
+    true  返回结果总是真，不做任何事情 
+    false 返回结果总是假
+```
+
+```shell
+#!/bin/bash
+target=/home
+
+#if [ -d "$target" ]
+if test -d "$target"
+then
+    echo "$target is a directory"
+else 
+    echo "$target is not a directory"
+fi
+
+
+if false
+then
+    echo "Always true"
+else
+    echo "Always false"
+fi
+```
+
+```shell
+[root@lwh testshell]# ./test.sh 
+/home is a file
+Always false
+```
+
+#### Demo3 read.sh
+
+- 从标准输入读取内容
+
+```
+shell中：从标准输入读取内容 ，存储到变量中
+	read 变量名 
+
+&& 类似C语言中的&& ，表示并且的意思
+[ $a -eq 10 ] && [ $b -eq 20 ] 
+可以多个条件测试表示逻辑与，同时具备短路特性
+
+第一条语句执行结果为真，才去执行第二条语句
+    make && sudo make install
+
+|| 类似C语言的|| ，表示多条语句的逻辑或，也具备短路特性
+	rm 1.txt || echo "error"
+	# rm 1.txt 执行成功就不会 输出error；执行失败 就会输出error
+```
 
 
 
-    shell中从标准输入读取内容 ，存储到变量中
-        read 变量名 
-    
-    && 类似C语言中的&& ，表示并且的意思
-    
-        [ $a -eq 10 ] && [ $b -eq 20 ] 
-        可以多个条件测试表示逻辑与，同时具备短路特性
-    
-        第一条语句执行结果为真，才去执行第二条语句
-    
-            make && sudo make install
-    
-    || 类似C语言的|| ，表示多条语句的逻辑或，也具备短路特性
-    
-        rm 1.txt || echo "error"
+```shell
+#!/bin/bash
+echo "Is it morning? please answer [yes/no]"
+read YES_OR_NO #从标准输入中读取字符串存储到变量中
+
+if [ "$YES_OR_NO" = "yes" ]
+then
+    echo "Good morning!"
+elif [ "$YES_OR_NO" = "no" ]
+then 
+    echo "Good afternoon!"
+else
+    echo "$YES_OR_NO not recognize,please answer yes or no"
+fi
+
+a=10
+b=301
+
+if [ $a -eq 10 ] && [ $b -eq 30 ]
+then    
+    echo "皆相等"
+else    
+    echo "不等"
+fi
+```
+
+```shell
+[root@lwh testshell]# ./testshell.sh 
+Is it morning? please answer [yes/no]
+yes
+Good morning!
+不等
+[root@lwh testshell]# 
+```
 
 
 
+### 2.2 case/esac 
 
 
-15 case 
-    C语言中的 switch 语句
-
-
-    switch(expression)
-    {
+```c
+// C语言中的 switch 语句
+switch(expression)
+{
     case val1:
         ....
         break;
@@ -747,87 +770,277 @@ G A.txt  test.sh
     default:
         .....
         break;
-    }
+}
+```
 
 
     case 表达式 in
-    值1|模式1..)
-        匹配后的动作.....
-        ;;              #两个分号类似C中的break
-    值2|模式2..)
-        匹配后的动作....
-        ;;
-    *)              #*能匹配任意字符，所以作为最后的匹配模式表示default
-        .....
-        ;;
+        值1|模式1..)
+            匹配后的动作.....
+            ;;              #两个分号类似C中的break
+        值2|模式2..)
+            匹配后的动作....
+            ;;
+        *)                  # * 能匹配任意字符，所以作为最后的匹配模式表示default
+            .....
+            ;;
     esac
 
+#### Demo1 test.sh
 
-16 for 循环
+```shell
+#!/bin/bash
+echo "Is it morning? please answer [yes/no]"
+read YES_OR_NO #从标准输入中读取字符串存储到变量中
 
-    for 变量名 in 参数1 参数2 ....
-    do                                      #如果do跟for写在同一行，要添加;
-        ..每次循环  对应的变量的值是不一样的
-    
-    done
+case "$YES_OR_NO" in
+    [Yy] | [Yy][Ee][Ss])
+        echo "Good morning!"
+        ;;
+    [Nn] | [Nn][Oo])
+        echo "Good afternoon!"
+        ;;
+    *)
+        echo "$YES_OR_NO not recognize,please answer yes or no"
+        ;;
+esac
+```
+
+```shell
+[root@lwh testshell]# ./test.sh 
+Is it morning? please answer [yes/no]
+YeS
+Good morning!
+```
+
+## 3. 循环
+
+### 3.1 for/do/done
+
+```shell
+# 语法
+for 变量名 in 参数1 参数2 .... # 相当于对集合中的元素进行遍历
+do     # 如果do跟for写在同一行，要添加;
+    .. # 每次循环  对应的变量的值是不一样的
+done
+```
 
 
-    遍历目录
-    for f in $(ls) ....
-    
-    固定次数的循环遍历
-    for i in {1..100}  ....
+```shell
+# 遍历目录
+for f in $(ls) ....
 
+# 固定次数的循环遍历
+for i in {1..100}  ....
+```
 
-17 while循环
+#### Demo1 test.sh
+
+```shell
+#!/bin/bash
+for fruit in apple banana pear
+do
+    echo "I like $fruit"
+done
+
+for f in `ls`
+do 
+    if [ -f "$f" ]
+    then 
+        echo "$f is a regular file"
+    elif [ -d "$f" ]
+    then 
+        echo "$f is a directory"
+    fi
+done 
+
+sum=0
+for i in {1..100}
+do  
+    sum=$(($sum+$i)) # sum=$[$sum+$i]
+done 
+echo $sum
+```
+
+```shell
+[root@lwh testshell]# ./testshell.sh 
+I like apple
+I like banana
+I like pear
+main.c is a regular file
+testshell.sh is a regular file
+5050
+```
+
+### 3.2 while/do
 
     while 命令|条件测试
     do
         ........
     done
     
+    
+    
     break 和 continue 
         也跟c语言中的 break 和 continue 一致
 
+#### Demo1 test.sh
 
-18 位置参数和特殊变量
-    $0          相当于C语言main函数的argv[0]
-    $1、$2...    这些称为位置参数（Positional Parameter），相当于C语言main函数的argv[1]、argv[2]...
-    $#          相当于C语言main函数的argc - 1，注意这里的#后面不表示注释
-    $@          表示参数列表"$1" "$2" ...，例如可以用在for循环中的in后面。
-    $*          表示参数列表"$1" "$2" ...，同上
-    $?          上一条命令的Exit Status
-    $$          当前进程号
+```shell
+#!/bin/bash
+echo "Input password"
+read Input
+count=1
+while [ "$Input" != "secret" ]
+do  
+    if [ "$count" -gt 4 ]
+    then
+        echo "Fail $count times , exit "
+    fi 
 
+    echo "Please try again"
+    read Input
+    count=$[$count+1]
+done
+```
 
+```shell
+[root@lwh testshell]# ./testshell.sh 
+Input password
+a
+Please try again
+b
+Please try again
+c
+Please try again
+d
+Please try again
+f
+Fail 5 times , exit 
+Please try again
+secret
+```
 
-    参数左移 shift
-    
-    ./test.sh 1 2 3 4 5 6
-    
-    shift 之后 参数的排列等同于 ，最左边的参数被移走
-    ./test.sh 2 3 4 5 6 
+## 4. 位置参数和特殊变量
 
+```
+$0          相当于C语言main函数的argv[0]
+$1、$2...    这些称为位置参数（Positional Parameter），相当于C语言main函数的argv[1]、argv[2]...
+$#          相当于C语言main函数的argc-1(即实际参数的个数)，注意这里的#后面不表示注释
+$@          表示参数列表"$1" "$2" ...，例如可以用在for循环中的in后面。
+$*          表示参数列表"$1" "$2" ...，同上
+$?          上一条命令的Exit Status
+$$          当前进程号
 
-    shift 对于操作不定参数比较常见
+参数左移 shift n # 把参数列表左移n
 
+./test.sh 1 2 3 4 5 6
 
-    例子：写一个脚本 add.sh  加法计算器，将参数中所有整数都相加
+shift 之后 参数的排列等同于 ，最左边的参数被移走
+./test.sh 2 3 4 5 6
 
+shift 对于操作不定参数比较常见
 
+例子：写一个脚本 add.sh  加法计算器，将参数中所有整数都相加
+```
 
+#### Demo1 test.sh
 
+```shell
+#!/bin/bash
 
+echo "============================"
+echo '$0:'$0
+echo '$1:'$1
+echo '$2:'$2
+echo '$3:'$3
+echo '$4:'$4
+echo '$5:'$5
+echo '$6:'$6
+echo '$#:'$#
+echo '$@:'$@
+echo '$*:'$*
+echo '$$:'$$
+echo "============================"
+shift
+echo '$0:'$0
+echo '$1:'$1
+echo '$2:'$2
+echo '$3:'$3
+echo '$4:'$4
+echo '$5:'$5
+echo '$6:'$6
+echo '$#:'$#
+echo '$@:'$@
+echo '$*:'$*
+echo '$$:'$$
+echo "============================"
+```
 
+```shell
+[root@lwh testshell]# ./test.sh  1 2 3 4 5 6 7 8 9 10 11
+============================
+$0:./testshell.sh
+$1:1
+$2:2
+$3:3
+$4:4
+$5:5
+$6:6
+$#:11
+$@:1 2 3 4 5 6 7 8 9 10 11
+$*:1 2 3 4 5 6 7 8 9 10 11
+$$:52522
+============================
+$0:./testshell.sh
+$1:2
+$2:3
+$3:4
+$4:5
+$5:6
+$6:7
+$#:10
+$@:2 3 4 5 6 7 8 9 10 11
+$*:2 3 4 5 6 7 8 9 10 11
+$$:52522
+============================
+[root@lwh testshell]# 
+```
 
+#### Demo2 add.sh
 
+```shell
+#!/bin/bash
+sum=0
+# for i in $@
+# do 
+#     sum=$[$sum+$i]
+# done
+# echo $sum
 
+while [ -n "$1" ]
+do
+    sum=$(( $sum + $1 ))
+    echo $@
+    shift 1
+done
+echo $sum
+```
 
+```shell
+[root@lwh testshell]# ./add.sh  1 2 3
+1 2 3
+2 3
+3
+6
+```
 
+## 5. 输入输出
 
+### 1. echo printf
 
-1 输入输出
-    输入 read
+```
+输入 read
     echo [option] string
         -e 解析转义字符
         -n 不回车换行。默认情况echo回显的内容后面跟一个回车换行。
@@ -835,28 +1048,67 @@ G A.txt  test.sh
         echo -e "hello\n\n"
         echo "hello"
 
-    printf 格式字符串  参数1 参数2 ..
-        跟C语言的printf一致
 
+printf 格式字符串  参数1 参数2 ..
+    跟C语言的printf一致
+```
 
-2 管道
+#### Demo test.sh
+
+```shell
+#!/bin/bash
+
+echo -n "abc" # 不换行
+echo  "123"   # 换行
+echo "def"    # 换行
+echo "123"    # 换行
+
+echo -n -e "abc\tdef\n" # -e 转义
+
+printf "hijklmn%sopq%drst\n" "AAAAAAAA" 123123123123
+```
+
+```shell
+[root@lwh testshell]# ./test.sh 
+abc123
+def
+123
+abc     def
+hijklmnAAAAAAAAopq123123123123rst
+```
+
+### 2. 管道
+
     pipe
-
-    命令1 | 命令2 ....
+    	命令1 | 命令2 ....
     
-        竖线的作用就是将前面进程的标准输出重定向到后面进程的标准输入  ( 正常标准错误输出是不会重定向 )
+    竖线的作用
+    	将前面进程的标准输出重定向到后面进程的标准输入
+    	注意：正常情况下，标准错误输出是不会重定向的
 
 
     more
         提供对文本的滚动操作
         回车单行滚动，空格翻页
     
-    less 命令
-        也跟more差不多，支持更多类似于vim的操作，能够进行查找，回滚...
-
-
-3 tee命令
+    	# cat /var/log/anaconda/syslog | more
     
+    less 命令
+        也跟more差不多，支持更多类似于vim的操作：能够进行查找，回滚...
+        # cat /var/log/anaconda/syslog | less
+
+
+
+#### 管道编程Demo main.c
+
+```c
+
+```
+
+
+
+### 
+
     命令 | tee [-a] 文件名
     
     读取标准输入的内容，也原样输出到标准输出，同时存一份到文件
@@ -867,10 +1119,10 @@ G A.txt  test.sh
         -a 
             以追加的方式来打开文件，默认是直接覆盖
 
-4 文件重定向
-    cmd > file              把标准输出重定向到新文件中
-    cmd >> file             追加
-    cmd >file 2>file2
+### 4. 文件重定向
+​    cmd > file              把标准输出重定向到新文件中
+​    cmd >> file             追加
+​    cmd >file 2>file2
 
         0 标准输入
         1 标注输出
@@ -892,7 +1144,7 @@ G A.txt  test.sh
     
     cmd < &-                关闭标准输入
 
-5 函数
+## 6. 函数
 
     function 函数名()    #括号中没有形参列表
     {
@@ -922,7 +1174,7 @@ G A.txt  test.sh
                 是目录 就输出 xxx is a directory
             还要同时遍历子目录中的文件
 
-6 shell脚本的调试方法
+# 5. shell脚本的调试方法
 
     -n 读一遍脚本，但是不执行，只是查看语法错误
     -v 一边执行一遍输出读到的脚本
@@ -940,7 +1192,7 @@ G A.txt  test.sh
                 .....  一段代码
             set +x   #关闭调试
 
-7 正则表达式
+# 6. 正则表达式
 练习:
 
     1 以S开头的字符串
@@ -1123,12 +1375,11 @@ G A.txt  test.sh
     wc -l *.cpp 
         计算代码行数
 
-
-12 grep
-    global regular expression print
-    egrep = grep -E
-    fgrep = grep -F
-    rgrep = grep -r
+# grep
+​    global regular expression print
+​    egrep = grep -E
+​    fgrep = grep -F
+​    rgrep = grep -r
 
 
     -c 只输出匹配行的计数
@@ -1150,9 +1401,9 @@ G A.txt  test.sh
 
 
 
-13 find
-    find pathname -options [-print -exec -ok ...]
-        find . -name "aaa"
+# find
+​    find pathname -options [-print -exec -ok ...]
+​        find . -name "aaa"
 
     pathname: find命令所查找的目录路径。例如用.来表示当前目录，用/来表示系统根目录，递归查找。
     -print： find命令将匹配的文件输出到标准输出。
@@ -1226,11 +1477,10 @@ G A.txt  test.sh
     
         -I{}  表示指定替换字符串是{}   之前标准输入的内容的参数将会替换后面命令的{}
 
-
-15 sed
-    文件内容 ->  sed + 脚本  ->  文件内容2 
-    sed option 'script' file1 file2 ...             sed 参数  ‘脚本(/pattern/action)’ 待处理文件
-    sed option -f scriptfile file1 file2 ...        sed 参数 –f ‘脚本文件’ 待处理文件
+# sed
+​    文件内容 ->  sed + 脚本  ->  文件内容2 
+​    sed option 'script' file1 file2 ...             sed 参数  ‘脚本(/pattern/action)’ 待处理文件
+​    sed option -f scriptfile file1 file2 ...        sed 参数 –f ‘脚本文件’ 待处理文件
 
         p,  print           打印
         a,  append          追加
@@ -1249,8 +1499,8 @@ G A.txt  test.sh
         sed 's/<[a-zA-Z/]*>//g' testfile 
             将html内容中的标签全部干掉
 
-16 awk
-    awk是一个命令，也是一个脚本语言
+# awk
+​    awk是一个命令，也是一个脚本语言
 
     awk option 'script' file1 file2 ...
     awk option -f scriptfile file1 file2 ...

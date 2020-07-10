@@ -1,12 +1,12 @@
 #!/bin/bash
 target=/home
 
-#if [ -f "$target" ]
-if test -f "$target"
+#if [ -d "$target" ]
+if test -d "$target"
 then
-    echo "$target is a file"
-else
-    echo "$target is not a file"
+    echo "$target is a directory"
+else 
+    echo "$target is not a directory"
 fi
 
 
