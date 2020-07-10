@@ -3,39 +3,39 @@
 #include<string.h>
 #include<stdlib.h>
 
-//×Ö·ûÊı×é¶¨Òå·½Ê½
+//å­—ç¬¦æ•°ç»„å®šä¹‰æ–¹å¼
 void test01()
 {
-	char ch[5]; //ÉùÃ÷×Ö·ûÊı×é £¬Ã¿¸öÔªËØÊÇ charÀàĞÍ£¬Ò»¹²ÓĞ5¸öÔªËØ
+	char ch[5]; //å£°æ˜å­—ç¬¦æ•°ç»„ ï¼Œæ¯ä¸ªå…ƒç´ æ˜¯ charç±»å‹ï¼Œä¸€å…±æœ‰5ä¸ªå…ƒç´ 
 	printf("sizeof = %d\n", sizeof(ch));
 }
 
-//²Ù×÷×Ö·ûÊı×é
+//æ“ä½œå­—ç¬¦æ•°ç»„
 void test02()
 {
-	//Öğ¸ö³õÊ¼»¯×Ö·ûÊı×é
-	//char arr[5] = { 'h', 'e', 'l', 'l', 'o' }; //error ÒòÎªÃ»ÓĞ\0 Êä³öÂÒÂë
-	//char arr[6] = { 'h', 'e', 'l', 'l', 'o','\0' }; // '\0' ±¾ÖÊ¾ÍÊÇ0
+	//é€ä¸ªåˆå§‹åŒ–å­—ç¬¦æ•°ç»„
+	//char arr[5] = { 'h', 'e', 'l', 'l', 'o' }; //error å› ä¸ºæ²¡æœ‰\0 è¾“å‡ºä¹±ç 
+	//char arr[6] = { 'h', 'e', 'l', 'l', 'o','\0' }; // '\0' æœ¬è´¨å°±æ˜¯0
 
-	char arr[] = "hello"; //×Ô´ø \0
+	char arr[] = "hello"; //è‡ªå¸¦ \0
 
-	//±éÀú×Ö·ûÊı×é
+	//éå†å­—ç¬¦æ•°ç»„
 	//for (int i = 0; i < sizeof(arr) / sizeof(char); i++)
 	//{
 	//	printf("%c", arr[i]);
 	//}
 	//printf("\n");
 
-	printf("%s\n", arr); //%s ´Ó¿ªÊ¼ arr  µ½½áÊø \0
+	printf("%s\n", arr); //%s ä»å¼€å§‹ arr  åˆ°ç»“æŸ \0
 }
 
-//×Ö·û´®Í³¼Æ
+//å­—ç¬¦ä¸²ç»Ÿè®¡
 void  test03()
 {
 	char buf1[32] = "hello world";
 
-	printf("%d\n", strlen(buf1));//strlen(×Ö·ûÊı×éÃû) Í³¼Æ×Ö·û´®³¤¶È  ²»Í³¼Æ\0
-	printf("%d\n", sizeof(buf1));//Í³¼ÆÊı×éÕ¼ÓÃÄÚ´æ¿Õ¼ä´óĞ¡
+	printf("%d\n", strlen(buf1));//strlen(å­—ç¬¦æ•°ç»„å) ç»Ÿè®¡å­—ç¬¦ä¸²é•¿åº¦  ä¸ç»Ÿè®¡\0
+	printf("%d\n", sizeof(buf1));//ç»Ÿè®¡æ•°ç»„å ç”¨å†…å­˜ç©ºé—´å¤§å°
 
 
 	char buf2[] = "hello world";
@@ -43,7 +43,7 @@ void  test03()
 	printf("buf2 sizeof = %d\n", sizeof(buf2));//12
 
 	char buf3[] = "hello\0world";
-	printf("buf3 strlen = %d\n", strlen(buf3));//5  Í³¼Æµ½\0½áÊø
+	printf("buf3 strlen = %d\n", strlen(buf3));//5  ç»Ÿè®¡åˆ°\0ç»“æŸ
 	printf("buf3 sizeof = %d\n", sizeof(buf3));//12 
 
 	//  / / \\ 1 \123 a b c \xac h e h e
@@ -55,43 +55,43 @@ void  test03()
 }
 
 
-//×Ö·ûÊı×éÊäÈë
+//å­—ç¬¦æ•°ç»„è¾“å…¥
 void test04()
 {
-	//´´½¨×Ö·ûÊı×é²¢ÇÒ³õÊ¼»¯Îª¿Õ
+	//åˆ›å»ºå­—ç¬¦æ•°ç»„å¹¶ä¸”åˆå§‹åŒ–ä¸ºç©º
 	//char buf[16] = "";
 	char buf[16] = {0};
 
-	scanf("%s", buf); //Óöµ½¿Õ¸ñ ½áÊøÊäÈë
+	scanf("%s", buf); //é‡åˆ°ç©ºæ ¼ ç»“æŸè¾“å…¥
 	printf("%s\n", buf);
 }
 
-//gets ²»ÍÆ¼ö
+//gets ä¸æ¨è
 void test05()
 {
 	char buf[16] = { 0 };
 	gets(buf);
-	//¿ÉÒÔÊäÈë¿Õ¸ñÔÚ×Ö·ûÊı×éÖĞ
-	//²»»á¼ì²âÊı¾İÊÇ·ñÒç³ö£¬Ò»µ©Òç³ö£¨Ô½½ç£©·Ç³£²Ù×÷ÄÚ´æ£¬³ÌĞòÖÕÖ¹
+	//å¯ä»¥è¾“å…¥ç©ºæ ¼åœ¨å­—ç¬¦æ•°ç»„ä¸­
+	//ä¸ä¼šæ£€æµ‹æ•°æ®æ˜¯å¦æº¢å‡ºï¼Œä¸€æ—¦æº¢å‡ºï¼ˆè¶Šç•Œï¼‰éå¸¸æ“ä½œå†…å­˜ï¼Œç¨‹åºç»ˆæ­¢
 	printf("%s\n", buf);
 }
 
-//fgets() ÍÆ¼ö
+//fgets() æ¨è
 void test06()
 {
 	char buf[16] = { 0 };
-	fgets(buf, sizeof(buf), stdin); //stdin±ê×¼ÊäÈëÉè±¸ ´ú±í¼üÅÌ
+	fgets(buf, sizeof(buf), stdin); //stdinæ ‡å‡†è¾“å…¥è®¾å¤‡ ä»£è¡¨é”®ç›˜
 	printf("%s\n", buf);
 }
 
-//×Ö·û´®Êä³ö puts  fputs
+//å­—ç¬¦ä¸²è¾“å‡º puts  fputs
 void test07()
 {
 	char buf[16] = "hello world";
 
-	printf("%s\n", buf); //³£ÓÃ
-	puts(buf); //×Ô´ø»»ĞĞ
-	fputs(buf, stdout); //stdout´ú±í±ê×¼Êä³öÉè±¸ ÆÁÄ»   ²»´ø»»ĞĞ
+	printf("%s\n", buf); //å¸¸ç”¨
+	puts(buf); //è‡ªå¸¦æ¢è¡Œ
+	fputs(buf, stdout); //stdoutä»£è¡¨æ ‡å‡†è¾“å‡ºè®¾å¤‡ å±å¹•   ä¸å¸¦æ¢è¡Œ
 
 }
 

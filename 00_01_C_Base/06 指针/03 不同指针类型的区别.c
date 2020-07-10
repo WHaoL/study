@@ -3,8 +3,8 @@
 #include<string.h>
 #include<stdlib.h>
 
-//��ͬ���͵�ָ�������
-//1��ָ������Ŀ�Ȳ�ͬ��+1֮����Ծ���ֽ�����ͬ��
+//不同类型的指针的区别
+//1、指针变量的跨度不同（+1之后跳跃的字节数不同）
 void test01()
 {
 	char * p1 = NULL;
@@ -20,7 +20,7 @@ void test01()
 	printf("p3 + 1 = %d\n", p3 + 1);
 }
 
-//2�������õ�ʱ��ȡ�����ֽ�����ͬ
+//2、解引用的时候，取出的字节数不同
 void test02()
 {
 	int num = 0x01020304;

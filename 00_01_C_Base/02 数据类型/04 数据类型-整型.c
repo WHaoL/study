@@ -3,7 +3,7 @@
 #include<string.h>
 #include<stdlib.h>
 
-//ÕûĞÍ
+//æ•´å‹
 // short  int  long  longlong 
 
 void test01()
@@ -22,25 +22,25 @@ void test01()
 	printf("num4 = %lld\n", num4);
 }
 
-//ÓĞ·ûºÅºÍÎŞ·ûºÅ ³£Á¿
+//æœ‰ç¬¦å·å’Œæ— ç¬¦å· å¸¸é‡
 void test02()
 {
-	printf("%d\n", 10); //ÓĞ·ûºÅÕûĞÍint  ÓÃ%d½øĞĞÊä³ö
+	printf("%d\n", 10); //æœ‰ç¬¦å·æ•´å‹int  ç”¨%dè¿›è¡Œè¾“å‡º
 
-	printf("%u\n", 10U); //ÎŞ·ûºÅÕûĞÍint  ÓÃ%u½øĞĞÊä³ö
+	printf("%u\n", 10U); //æ— ç¬¦å·æ•´å‹int  ç”¨%uè¿›è¡Œè¾“å‡º
 
-	printf("%ld\n", 10L); //ÓĞ·ûºÅÕûĞÍ long  ÓÃ%ld½øĞĞÊä³ö
+	printf("%ld\n", 10L); //æœ‰ç¬¦å·æ•´å‹ long  ç”¨%ldè¿›è¡Œè¾“å‡º
 
-	printf("%lu\n", 10UL); // ÎŞ·ûºÅÕûĞÍlong  ÓÃ%lu½øĞĞÊä³ö
+	printf("%lu\n", 10UL); // æ— ç¬¦å·æ•´å‹long  ç”¨%luè¿›è¡Œè¾“å‡º
 }
 
-//ÓĞ·ûºÅºÍÎŞ·ûºÅ ±äÁ¿
+//æœ‰ç¬¦å·å’Œæ— ç¬¦å· å˜é‡
 void test03()
 {
-	signed int a = 10; //Ä¬ÈÏÊÇÓĞ·ûºÅµÄ±äÁ¿ £¬ÔÚÇ°ÃæÒş²ØµÄ¼ÓÁË¹Ø¼ü×Ö signed
+	signed int a = 10; //é»˜è®¤æ˜¯æœ‰ç¬¦å·çš„å˜é‡ ï¼Œåœ¨å‰é¢éšè—çš„åŠ äº†å…³é”®å­— signed
 	printf("%d\n", a);
 
-	unsigned int a2 = 10; //ÎŞ·ûºÅÕûĞÍ±äÁ¿ unsigned½øĞĞĞŞÊÎ
+	unsigned int a2 = 10; //æ— ç¬¦å·æ•´å‹å˜é‡ unsignedè¿›è¡Œä¿®é¥°
 	printf("%u\n", a2);
 
 }

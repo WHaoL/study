@@ -9,16 +9,16 @@ void test01()
 	int * p = &a;
 	int ** pp = &p;
 
-	printf("&a = %d\n", &a); //a±äÁ¿µÄµØÖ·
-	printf("p = %d\n", p);   //pµÄÖµ  ¾ÍÊÇ a±äÁ¿µÄµØÖ·
-	printf("*p = %d\n", *p); //aµÄÖµ
-	printf("&p = %d\n", &p); //p±äÁ¿µÄµØÖ·
+	printf("&a = %d\n", &a); //aå˜é‡çš„åœ°å€
+	printf("p = %d\n", p);   //pçš„å€¼  å°±æ˜¯ aå˜é‡çš„åœ°å€
+	printf("*p = %d\n", *p); //açš„å€¼
+	printf("&p = %d\n", &p); //på˜é‡çš„åœ°å€
 
-	printf("pp = %d\n", pp);  //ppµÄÖµ  ¾ÍÊÇ p±äÁ¿µÄµØÖ·
-	printf("*pp = %d\n", *pp); //*ppÊÇ pµÄÖµ   ¾ÍÊÇ a±äÁ¿µÄµØÖ· 
-	printf("**pp = %d\n", **pp); // **pp aµÄÖµ
+	printf("pp = %d\n", pp);  //ppçš„å€¼  å°±æ˜¯ på˜é‡çš„åœ°å€
+	printf("*pp = %d\n", *pp); //*ppæ˜¯ pçš„å€¼   å°±æ˜¯ aå˜é‡çš„åœ°å€ 
+	printf("**pp = %d\n", **pp); // **pp açš„å€¼
 
-	printf("&pp = %d\n", &pp); //ppµÄµØÖ· 
+	printf("&pp = %d\n", &pp); //ppçš„åœ°å€ 
 }
 
 int main(){

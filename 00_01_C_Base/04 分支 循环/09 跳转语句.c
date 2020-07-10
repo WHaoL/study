@@ -4,10 +4,10 @@
 #include<stdlib.h>
 
 
-//break  £º 
-// 1  switch ÖÐÌø³ö·ÖÖ§£¬ 
-// 2  Ñ­»·ÖÐÍË³öµ±²ãÑ­»·£¬ 
-// 3  Ç¶Ì×Ñ­»·ÖÐÍË³ö ÄÚ²ãÑ­»·
+//break  ï¼š 
+// 1  switch ä¸­è·³å‡ºåˆ†æ”¯ï¼Œ 
+// 2  å¾ªçŽ¯ä¸­é€€å‡ºå½“å±‚å¾ªçŽ¯ï¼Œ 
+// 3  åµŒå¥—å¾ªçŽ¯ä¸­é€€å‡º å†…å±‚å¾ªçŽ¯
 void test01()
 {
 	for (int i = 0; i < 10;i++)
@@ -28,20 +28,20 @@ void test01()
 //continue
 void test02()
 {
-	//Ìø¹ý±¾´ÎÊ£ÓàµÄ´úÂë£¬Ö´ÐÐÏÂÒ»´ÎµÄÑ­»·
+	//è·³è¿‡æœ¬æ¬¡å‰©ä½™çš„ä»£ç ï¼Œæ‰§è¡Œä¸‹ä¸€æ¬¡çš„å¾ªçŽ¯
 
 	for (int i = 0; i < 100;i++)
 	{
 		if (i % 2 == 0)
 		{	
-			continue; //²»»áÍË³öÑ­»·£¬¶øbreak »áÍË³öÑ­»·
+			continue; //ä¸ä¼šé€€å‡ºå¾ªçŽ¯ï¼Œè€Œbreak ä¼šé€€å‡ºå¾ªçŽ¯
 		}
 		printf("i = %d\n", i);
 	}
 }
 
-//goto  ÎÞÌõ¼þÌø×ªÓï¾ä
-//ÓÉÓÚÈÝÒ×ÈÃ³ÌÐò»ìÂÒ£¬²»½¨ÒéÓÃ
+//goto  æ— æ¡ä»¶è·³è½¬è¯­å¥
+//ç”±äºŽå®¹æ˜“è®©ç¨‹åºæ··ä¹±ï¼Œä¸å»ºè®®ç”¨
 void test03()
 {
 	printf("1\n");

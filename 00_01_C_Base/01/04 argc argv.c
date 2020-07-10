@@ -3,18 +3,18 @@
 #include<string.h>
 #include<stdlib.h>
 
-//ÃüÁîÐÐ´«Èë²ÎÊý
-//argc ÃüÁîÐÐ±äÁ¿ÊýÁ¿  
-//argv ¾ßÌåÃüÁîÊý×é
+//å‘½ä»¤è¡Œä¼ å…¥å‚æ•°
+//argc å‘½ä»¤è¡Œå˜é‡æ•°é‡  
+//argv å…·ä½“å‘½ä»¤æ•°ç»„
 int main(int argc ,char * argv[])
 {
-	printf("ÃüÁîÐÐ±äÁ¿ÊýÁ¿ = %d\n", argc);
+	printf("å‘½ä»¤è¡Œå˜é‡æ•°é‡ = %d\n", argc);
 
-	//Èç¹ûÃüÁîÊýÁ¿´óÓÚ1
+	//å¦‚æžœå‘½ä»¤æ•°é‡å¤§äºŽ1
 	//-std = c99
 	if (argc > 1)
 	{
-		//ÀûÓÃÑ­»· ´òÓ¡³öËùÓÐÃüÁî¾ßÌåÊÇÊ²Ã´ÐÅÏ¢
+		//åˆ©ç”¨å¾ªçŽ¯ æ‰“å°å‡ºæ‰€æœ‰å‘½ä»¤å…·ä½“æ˜¯ä»€ä¹ˆä¿¡æ¯
 		//int i = 0;
 		for (int i = 0; i < argc;i++)
 		{

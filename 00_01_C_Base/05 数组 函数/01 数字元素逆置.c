@@ -4,36 +4,36 @@
 #include<stdlib.h>
 
 //1 3 5 2 4 
-//ÄæÖÃºó
+//é€†ç½®å
 //4 2 5 3 1 
 
 void test01()
 {
 	int arr[6] = { 1,3,5,2,4,6 };
 
-	printf("ÄæÖÃÇ°µÄ±éÀú½á¹ûÎª:\n");
+	printf("é€†ç½®å‰çš„éå†ç»“æœä¸º:\n");
 	for (int i = 0; i <sizeof(arr) / sizeof(int); i++)
 	{
 		printf("%d ", arr[i]);
 	}
 	printf("\n");
 
-	//ÄæÖÃ
-	int start = 0; //ÆğÊ¼½»»»ÏÂ±ê
-	int end = sizeof(arr) / sizeof(int)-1; //×îºóÒ»¸öÔªËØµÄÏÂ±ê
+	//é€†ç½®
+	int start = 0; //èµ·å§‹äº¤æ¢ä¸‹æ ‡
+	int end = sizeof(arr) / sizeof(int)-1; //æœ€åä¸€ä¸ªå…ƒç´ çš„ä¸‹æ ‡
 
 	while (start<end)
 	{
-		//´´½¨ÁÙÊ±±éÀú
+		//åˆ›å»ºä¸´æ—¶éå†
 		int temp = arr[start];
 		arr[start] = arr[end];
 		arr[end] = temp;
 
-		//ÏÂ±ê¸üĞÂ
+		//ä¸‹æ ‡æ›´æ–°
 		start++;
 		end--;
 	}
-	printf("ÄæÖÃºóµÄ±éÀú½á¹ûÎª:\n");
+	printf("é€†ç½®åçš„éå†ç»“æœä¸º:\n");
 	for (int i = 0; i < sizeof(arr) / sizeof(int); i++)
 	{
 		printf("%d ", arr[i]);

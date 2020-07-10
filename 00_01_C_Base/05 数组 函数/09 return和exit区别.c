@@ -8,16 +8,16 @@ void test01()
 	printf("01\n");
 	printf("02\n");
 	printf("03\n");
-	return;  //ÍË³öµ±Ç°º¯Êı
+	return;  //é€€å‡ºå½“å‰å‡½æ•°
 	//system("pause");
-	//exit(0); //ÍË³ö³ÌĞò
+	//exit(0); //é€€å‡ºç¨‹åº
 	printf("04\n");
 	printf("05\n");
 	printf("06\n");
 
 }
-//return µÄ½á¹ûÎª£º 1 2 3  01 02 03 4 5 6 
-//exit µÄ½á¹ûÎª£º 1 2 3 01 02 03 
+//return çš„ç»“æœä¸ºï¼š 1 2 3  01 02 03 4 5 6 
+//exit çš„ç»“æœä¸ºï¼š 1 2 3 01 02 03 
 int main(){
 
 	printf("1\n");

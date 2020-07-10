@@ -3,42 +3,42 @@
 #include<string.h>
 #include<stdlib.h>
 
-//ÕûĞÍÊı¾İ ÊäÈë
+//æ•´å‹æ•°æ® è¾“å…¥
 void test01()
 {
 	int num = 0;
-	printf("ÇëÖØĞÂ¸ønum¸³Öµ\n");
+	printf("è¯·é‡æ–°ç»™numèµ‹å€¼\n");
 
-	//scanf(¸ñÊ½»¯ÄÚÈİ£¬ÊäÈëÊı¾İµÄµØÖ·)
-	//scanfÓĞ×èÈûĞĞÎª£¬µÈ´ıÓÃ»§µÄÊäÈë
+	//scanf(æ ¼å¼åŒ–å†…å®¹ï¼Œè¾“å…¥æ•°æ®çš„åœ°å€)
+	//scanfæœ‰é˜»å¡è¡Œä¸ºï¼Œç­‰å¾…ç”¨æˆ·çš„è¾“å…¥
 	scanf("%d", &num);
 
 	printf("num = %d\n",num);
 }
 
-//×Ö·ûĞÍÊäÈë
+//å­—ç¬¦å‹è¾“å…¥
 void test02()
 {
 	char ch = 'a';
-	printf("ÇëÖØĞÂ¸øch¸³Öµ\n");
+	printf("è¯·é‡æ–°ç»™chèµ‹å€¼\n");
 	scanf("%c", &ch);
 	printf("ch = %c\n", ch);
 }
 
-//¸¡µãĞÍÊäÈë
+//æµ®ç‚¹å‹è¾“å…¥
 void test03()
 {
 	double d = 0;
-	printf("ÇëÖØĞÂ¸ød¸³Öµ\n");
+	printf("è¯·é‡æ–°ç»™dèµ‹å€¼\n");
 	scanf("%lf", &d);
 	printf("d = %.2lf\n", d);
 }
 
-//×Ö·û´® ÊäÈë
+//å­—ç¬¦ä¸² è¾“å…¥
 void test04()
 {
 	char ch[64] = "";
-	printf("ÇëÖØĞÂ¸øch¸³Öµ\n");
+	printf("è¯·é‡æ–°ç»™chèµ‹å€¼\n");
 
 	scanf("%s", ch);
 	printf("ch = %s\n", ch);
@@ -47,19 +47,19 @@ void test04()
 void test05()
 {
 	int num = 0;
-	printf("ÇëÖØĞÂ¸ønum¸³Öµ\n");
+	printf("è¯·é‡æ–°ç»™numèµ‹å€¼\n");
 	scanf("%d", &num); //\n
 	printf("num = %d\n", num);
 
 	char ch1;
-	ch1 =getchar();//´Ó»º³åÇøÖĞ»ñÈ¡Ò»¸ö×Ö·û
+	ch1 =getchar();//ä»ç¼“å†²åŒºä¸­è·å–ä¸€ä¸ªå­—ç¬¦
 
 	char ch = 'a';
-	printf("ÇëÖØĞÂ¸øch¸³Öµ\n");
+	printf("è¯·é‡æ–°ç»™chèµ‹å€¼\n");
 	scanf("%c", &ch);
 	printf("ch = %c\n", ch);
 
-	putchar('a'); //ÏòÆÁÄ»ÖĞ´òÓ¡1¸ö×Ö·û
+	putchar('a'); //å‘å±å¹•ä¸­æ‰“å°1ä¸ªå­—ç¬¦
 }
 
 int main(){

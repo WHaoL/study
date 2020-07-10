@@ -3,46 +3,46 @@
 #include<string.h>
 #include<stdlib.h>
 
-//Êý×éµÄ¶¨Òå
-//Êý×é£º¾ÍÊÇÒ»¸ö¼¯ºÏ£¬ÀïÃæ´æ·ÅÊÇÏàÍ¬ÀàÐÍµÄÊý¾ÝÔªËØ
-//Êý¾ÝÔªËØÖ®¼äµÄµØÖ·Î»ÖÃÊÇÁ¬ÐøµÄ
+//æ•°ç»„çš„å®šä¹‰
+//æ•°ç»„ï¼šå°±æ˜¯ä¸€ä¸ªé›†åˆï¼Œé‡Œé¢å­˜æ”¾æ˜¯ç›¸åŒç±»åž‹çš„æ•°æ®å…ƒç´ 
+//æ•°æ®å…ƒç´ ä¹‹é—´çš„åœ°å€ä½ç½®æ˜¯è¿žç»­çš„
 
 void test01()
 {
-	//¶¨Òå·½Ê½1
-	//Êý¾ÝÀàÐÍ  Êý×éÃû [ÔªËØ¸öÊý];
-	//³õÊ¼µÄÊý¾ÝÊÇËæ»ú
-	int score[10]; // Êý×éÃû score £¬ Êý×éÖÐ´æ·Å×î¶à10¸öÊý¾Ý£¬Ã¿¸öÊý¾ÝµÄÊý¾ÝÀàÐÍ  int
+	//å®šä¹‰æ–¹å¼1
+	//æ•°æ®ç±»åž‹  æ•°ç»„å [å…ƒç´ ä¸ªæ•°];
+	//åˆå§‹çš„æ•°æ®æ˜¯éšæœº
+	int score[10]; // æ•°ç»„å score ï¼Œ æ•°ç»„ä¸­å­˜æ”¾æœ€å¤š10ä¸ªæ•°æ®ï¼Œæ¯ä¸ªæ•°æ®çš„æ•°æ®ç±»åž‹  int
 
-	//¸øÊý×éÔªËØ¸³Öµ
-	//´Ó0¿ªÊ¼Ë÷ÒýÎ»ÖÃ
+	//ç»™æ•°ç»„å…ƒç´ èµ‹å€¼
+	//ä»Ž0å¼€å§‹ç´¢å¼•ä½ç½®
 	score[0] = 100;
 	score[1] = 99;
 	score[2] = 98;
 	score[9] = 60;
-	//score[10] = 100; //ÏÂ±êÔ½½ç
+	//score[10] = 100; //ä¸‹æ ‡è¶Šç•Œ
 
-	//ÀûÓÃÏÂ±ê·¨Êä³ö
+	//åˆ©ç”¨ä¸‹æ ‡æ³•è¾“å‡º
 	//printf("%d\n", score[0]);
 	//printf("%d\n", score[1]);
 	//printf("%d\n", score[2]);
 	//printf("%d\n", score[9]);
 
 
-	//¶¨Òå·½Ê½2
-	//Êý¾ÝÀàÐÍ  Êý×éÃû [ÔªËØ¸öÊý] = {Öµ1£¬Öµ2 £¬Öµ3 ...}
+	//å®šä¹‰æ–¹å¼2
+	//æ•°æ®ç±»åž‹  æ•°ç»„å [å…ƒç´ ä¸ªæ•°] = {å€¼1ï¼Œå€¼2 ï¼Œå€¼3 ...}
 
 	int score2[10] = { 0,1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	//int score2[10] = { 0, 1, 2, 3, 4, 5}; //²»×ãµÄ10¸öÊý¾Ý£¬Ê£ÓàµÄÎ»ÖÃÓÃ0Ìî³ä
-	//int score2[10] = { [1] = 10 , [5] = 50 , [7] = 70};  //²¿·Ö³õÊ¼»¯
+	//int score2[10] = { 0, 1, 2, 3, 4, 5}; //ä¸è¶³çš„10ä¸ªæ•°æ®ï¼Œå‰©ä½™çš„ä½ç½®ç”¨0å¡«å……
+	//int score2[10] = { [1] = 10 , [5] = 50 , [7] = 70};  //éƒ¨åˆ†åˆå§‹åŒ–
 
 	//for (int i = 0; i < 10; i++)
 	//{
 	//	printf("%d\n", score2[i]);
 	//}
 	//
-	//¶¨Òå·½Ê½3
-	//Êý¾ÝÀàÐÍ  Êý×éÃû[] = {Öµ1£¬Öµ2 £¬Öµ3 ...}
+	//å®šä¹‰æ–¹å¼3
+	//æ•°æ®ç±»åž‹  æ•°ç»„å[] = {å€¼1ï¼Œå€¼2 ï¼Œå€¼3 ...}
 	int score3[] = { 1, 2, 3, 4, 5 ,6,7,8};
 
 	for (int i = 0; i < 8; i++)
@@ -53,53 +53,53 @@ void test01()
 
 
 
-//Ò»Î¬Êý×éÃû³Æ
+//ä¸€ç»´æ•°ç»„åç§°
 void test02()
 {
 	int arr[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	//1¡¢Í³¼ÆÕû¸öÊý×éÕ¼ÓÃÄÚ´æ¿Õ¼ä´óÐ¡
+	//1ã€ç»Ÿè®¡æ•´ä¸ªæ•°ç»„å ç”¨å†…å­˜ç©ºé—´å¤§å°
 	printf("sizeof arr =  %d\n", sizeof(arr));
-	printf("Ã¿¸öÊý¾ÝÕ¼ÓÃ¿Õ¼ä´óÐ¡ = %d\n", sizeof(arr[0]));
-	printf("Êý×éÖÐÔªËØµÄ¸öÊý = %d\n", sizeof (arr) / sizeof(int));
+	printf("æ¯ä¸ªæ•°æ®å ç”¨ç©ºé—´å¤§å° = %d\n", sizeof(arr[0]));
+	printf("æ•°ç»„ä¸­å…ƒç´ çš„ä¸ªæ•° = %d\n", sizeof (arr) / sizeof(int));
 
-	//2¡¢Í¨¹ýÊý×éµÄÃû³Æ£¬»ñÈ¡µ½Êý×éµÄÊ×µØÖ·
-	printf("Êý×éµÄÊ×µØÖ·Îª:%x\n", arr);  //%p¿ÉÒÔÓÃÊ®Áù½øÖÆÏÔÊ¾  %dÓÃÊ®½øÖÆÏÔÊ¾µØÖ·
-	//printf("Êý×éµÄÊ×µØÖ·Îª:%p\n", arr);
+	//2ã€é€šè¿‡æ•°ç»„çš„åç§°ï¼ŒèŽ·å–åˆ°æ•°ç»„çš„é¦–åœ°å€
+	printf("æ•°ç»„çš„é¦–åœ°å€ä¸º:%x\n", arr);  //%på¯ä»¥ç”¨åå…­è¿›åˆ¶æ˜¾ç¤º  %dç”¨åè¿›åˆ¶æ˜¾ç¤ºåœ°å€
+	//printf("æ•°ç»„çš„é¦–åœ°å€ä¸º:%p\n", arr);
 
 
-	printf("Êý×éÖÐµÚÒ»¸öÔªËØµÄµØÖ·£º%d\n", &arr[0]);
-	printf("Êý×éÖÐµÚ¶þ¸öÔªËØµÄµØÖ·£º%d\n", &arr[1]);
-	printf("Êý×éÖÐµÚÈý¸öÔªËØµÄµØÖ·£º%d\n", &arr[2]);
+	printf("æ•°ç»„ä¸­ç¬¬ä¸€ä¸ªå…ƒç´ çš„åœ°å€ï¼š%d\n", &arr[0]);
+	printf("æ•°ç»„ä¸­ç¬¬äºŒä¸ªå…ƒç´ çš„åœ°å€ï¼š%d\n", &arr[1]);
+	printf("æ•°ç»„ä¸­ç¬¬ä¸‰ä¸ªå…ƒç´ çš„åœ°å€ï¼š%d\n", &arr[2]);
 
-	//Êý×éÃû³£Á¿£¬²»¿ÉÒÔ¸³Öµ
-	//arr = 100; error²»¿ÉÒÔ¸øÊý×éÃû¸³Öµ
+	//æ•°ç»„åå¸¸é‡ï¼Œä¸å¯ä»¥èµ‹å€¼
+	//arr = 100; errorä¸å¯ä»¥ç»™æ•°ç»„åèµ‹å€¼
 
 
 }
 
-//ÎåÖ»Ð¡Öí³ÆÌåÖØ
+//äº”åªå°çŒªç§°ä½“é‡
 void test03()
 {
 	int arr[5] = { 300, 350, 1500, 400, 1000 };
 
-	//ÊÖ¶¯ÊäÈëÎåÖ»ÖíÌåÖØ
+	//æ‰‹åŠ¨è¾“å…¥äº”åªçŒªä½“é‡
 	//for (int i = 0; i < 5; i++)
 	//{
 	//	scanf("%d", &arr[i]);
 	//}
 
-	//ÔÚÊý×éÖÐÕÒµ½×î´óÖµ
-	int max = 0; //ÈÏ¶¨µÚÒ»¸öÊý¾ÍÊÇ×î´óÖµ £¬¼ÇÂ¼ÏÂ±ê
-	int num = sizeof(arr) / sizeof(int); //Êý×éÔªËØ¸öÊý
+	//åœ¨æ•°ç»„ä¸­æ‰¾åˆ°æœ€å¤§å€¼
+	int max = 0; //è®¤å®šç¬¬ä¸€ä¸ªæ•°å°±æ˜¯æœ€å¤§å€¼ ï¼Œè®°å½•ä¸‹æ ‡
+	int num = sizeof(arr) / sizeof(int); //æ•°ç»„å…ƒç´ ä¸ªæ•°
 	for (int i = 1; i < num;i++)
 	{
-		if (arr[i]> arr[max]) //ËµÃ÷±éÀúµÄÏÂ±êµÄÔªËØ¸ü´ó
+		if (arr[i]> arr[max]) //è¯´æ˜ŽéåŽ†çš„ä¸‹æ ‡çš„å…ƒç´ æ›´å¤§
 		{
 			max = i;
 		}
 	}
 
-	printf("×îÖØµÄÖíÊÇ%d ºÅ ×îÖØµÄÌåÖØÎª£º%d\n",max + 1,arr[max]);
+	printf("æœ€é‡çš„çŒªæ˜¯%d å· æœ€é‡çš„ä½“é‡ä¸ºï¼š%d\n",max + 1,arr[max]);
 
 }
 

@@ -5,30 +5,30 @@
 
 #define DAY 7
 
-//³£Á¿ ÔÚ³ÌÐòÔËÐÐÆÚ¼ä ²»¿ÉÒÔ¸Ä±äµÄÁ¿
+//å¸¸é‡ åœ¨ç¨‹åºè¿è¡ŒæœŸé—´ ä¸å¯ä»¥æ”¹å˜çš„é‡
 void test01()
 {
-	//Ò»¹²ÓÐ5ÖÖ±íÏÖµÄÐÎÊ½
+	//ä¸€å…±æœ‰5ç§è¡¨çŽ°çš„å½¢å¼
 
-	//1¡¢ÊýÖµ³£Á¿(ÕûÊýÐÍ³£Á¿£¨ÕûÊý£© ¡¢ÊµÊýÐÍ³£Á¿£¨Ð¡Êý£©)  
+	//1ã€æ•°å€¼å¸¸é‡(æ•´æ•°åž‹å¸¸é‡ï¼ˆæ•´æ•°ï¼‰ ã€å®žæ•°åž‹å¸¸é‡ï¼ˆå°æ•°ï¼‰)  
 	// 100 200 300  3.14   1.1 2.2 3.3
-	//100 = 200; //error ³£Á¿ÊÇ²»¿ÉÒÔÐÞ¸ÄµÄ£¡
+	//100 = 200; //error å¸¸é‡æ˜¯ä¸å¯ä»¥ä¿®æ”¹çš„ï¼
 
-	//2¡¢×Ö·û³£Á¿  'a' 'b' 'c' '\n' '\t'
+	//2ã€å­—ç¬¦å¸¸é‡  'a' 'b' 'c' '\n' '\t'
 	//'a' = 'b'; error
 
-	//3¡¢×Ö·û´®³£Á¿  "hello world"
+	//3ã€å­—ç¬¦ä¸²å¸¸é‡  "hello world"
 	//"hello world" = "aaaa"; error
 
-	//4¡¢·ûºÅ³£Á¿  £¨ºê³£Á¿£©
-	//ÀûÓÃ #define 
-	printf("Ò»ÖÜÒ»¹²ÓÐ%dÌì\n", DAY);
+	//4ã€ç¬¦å·å¸¸é‡  ï¼ˆå®å¸¸é‡ï¼‰
+	//åˆ©ç”¨ #define 
+	printf("ä¸€å‘¨ä¸€å…±æœ‰%då¤©\n", DAY);
 	//DAY = 14; error
 
-	//5¡¢const ÐÞÊÎµÄ±äÁ¿ 
+	//5ã€const ä¿®é¥°çš„å˜é‡ 
 	const int month = 12;
-	printf("Ò»ÄêÒ»¹²ÓÐ%dÔÂ\n", month);
-	//month = 24;  error  ´ËÊ±ÊÇÒ»¸ö³£Á¿ÁË ²»¿ÉÒÔÐÞ¸Ä
+	printf("ä¸€å¹´ä¸€å…±æœ‰%dæœˆ\n", month);
+	//month = 24;  error  æ­¤æ—¶æ˜¯ä¸€ä¸ªå¸¸é‡äº† ä¸å¯ä»¥ä¿®æ”¹
 	
 }
 
