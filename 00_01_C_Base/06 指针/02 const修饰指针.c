@@ -3,43 +3,43 @@
 #include<string.h>
 #include<stdlib.h>
 
-//1¡¢const ĞŞÊÎµÄ *      ³ÆÎª³£Á¿Ö¸Õë
+//1ã€const ä¿®é¥°çš„ *      ç§°ä¸ºå¸¸é‡æŒ‡é’ˆ
 void test01()
 {
 	int a = 10;
-	const int  *p = &a; //*pÖ»¶Á  p¿É¶Á¿ÉĞ´   µÈ¼ÛÓÚ int const  *p = &a;
+	const int  *p = &a; //*påªè¯»  på¯è¯»å¯å†™   ç­‰ä»·äº int const  *p = &a;
 	
-	//*p = 100; //error Ö¸ÕëÖ¸ÏòµÄÖµ ²»¿ÉÒÔĞŞ¸Ä
+	//*p = 100; //error æŒ‡é’ˆæŒ‡å‘çš„å€¼ ä¸å¯ä»¥ä¿®æ”¹
 
 	int b = 20;
-	p = &b;  //success Ö¸ÕëµÄÖ¸Ïò¿ÉÒÔĞŞ¸Ä
+	p = &b;  //success æŒ‡é’ˆçš„æŒ‡å‘å¯ä»¥ä¿®æ”¹
 }
 
-//2¡¢const ĞŞÊÎµÄ p   ³ÆÎªÖ¸Õë³£Á¿
+//2ã€const ä¿®é¥°çš„ p   ç§°ä¸ºæŒ‡é’ˆå¸¸é‡
 void test02()
 {
 	int a = 10;
-	int *  const p = &a;//*p¿É¶Á¿ÉĞ´   pÖ»¶Á
+	int *  const p = &a;//*på¯è¯»å¯å†™   påªè¯»
 
-	*p = 20; //success  Ö¸ÕëÖ¸ÏòµÄÖµ ¿ÉÒÔĞŞ¸ÄµÄ
+	*p = 20; //success  æŒ‡é’ˆæŒ‡å‘çš„å€¼ å¯ä»¥ä¿®æ”¹çš„
 
 	int b = 20;
 
-	//p = &b; // error  Ö¸ÕëµÄÖ¸Ïò²»¿ÉÒÔĞŞ¸Ä
+	//p = &b; // error  æŒ‡é’ˆçš„æŒ‡å‘ä¸å¯ä»¥ä¿®æ”¹
 
 }
 
 
-//3¡¢const ĞŞÊÎ * ºÍ p
+//3ã€const ä¿®é¥° * å’Œ p
 void test03()
 {
 	int a = 10;
-	const int * const p = &a; //µÈ¼ÛÓÚ int const * const p = &a;
+	const int * const p = &a; //ç­‰ä»·äº int const * const p = &a;
 
-	//*p = 100;  error Ö¸ÕëÖ¸ÏòµÄÖµ²»¿ÉÒÔ¸Ä
+	//*p = 100;  error æŒ‡é’ˆæŒ‡å‘çš„å€¼ä¸å¯ä»¥æ”¹
 
 	int b = 20;
-	//p = &b;  errorÖ¸ÕëµÄÖ¸Ïò²»¿ÉÒÔ¸Ä
+	//p = &b;  erroræŒ‡é’ˆçš„æŒ‡å‘ä¸å¯ä»¥æ”¹
 
 }
 

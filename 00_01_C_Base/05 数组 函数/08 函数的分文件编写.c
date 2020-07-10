@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include "test.h" //Èç¹ûÓÃ×Ô¶¨ÒåµÄº¯Êı£¬ĞèÒª½«Í·ÎÄ¼ş°üº¬µ½µ±Ç°ÎÄ¼şÖĞ
+#include "test.h" //å¦‚æœç”¨è‡ªå®šä¹‰çš„å‡½æ•°ï¼Œéœ€è¦å°†å¤´æ–‡ä»¶åŒ…å«åˆ°å½“å‰æ–‡ä»¶ä¸­
 
 //int add(int a, int b)
 //{

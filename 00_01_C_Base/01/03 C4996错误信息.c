@@ -1,15 +1,15 @@
-//#define  _CRT_SECURE_NO_WARNINGS //¼ÓÈëºê ·ÀÖ¹C4996µÄ´íÎó¾¯¸æ
+//#define  _CRT_SECURE_NO_WARNINGS //åŠ å…¥å® é˜²æ­¢C4996çš„é”™è¯¯è­¦å‘Š
 //#pragma warning(disable:4996)
 #include <stdio.h>
-#include <stdlib.h> //systemº¯ÊýµÄÍ·ÎÄ¼þ
+#include <stdlib.h> //systemå‡½æ•°çš„å¤´æ–‡ä»¶
 
 int main()
 {
-	//ÔÚvsÖÐ ²»½¨ÒéÊ¹ÓÃ´«Í³µÄC¿âº¯Êý scanf  sprintf  Ê¹ÓÃ¾Í±¨´í£¬ÎªÁË·ÀÖ¹´íÎó£¬ÐèÒªÒýÈëÒ»¸öºê
+	//åœ¨vsä¸­ ä¸å»ºè®®ä½¿ç”¨ä¼ ç»Ÿçš„Cåº“å‡½æ•° scanf  sprintf  ä½¿ç”¨å°±æŠ¥é”™ï¼Œä¸ºäº†é˜²æ­¢é”™è¯¯ï¼Œéœ€è¦å¼•å…¥ä¸€ä¸ªå®
 
-	//½â¾ö·½Ê½1  ¼ÓÈëºê #define  _CRT_SECURE_NO_WARNINGS   ÍÆ¼ö£¡£¡£¡
-	//½â¾ö·½Ê½2  #pragma warning(disable:4996)
-	//½â¾ö·½Ê½3  ÊôÐÔÀïµÄÔ¤´¦ÀíÆ÷£¬Ô¤´¦Àí¶¨ÒåÖÐÌí¼Ó ºê _CRT_SECURE_NO_WARNINGS
+	//è§£å†³æ–¹å¼1  åŠ å…¥å® #define  _CRT_SECURE_NO_WARNINGS   æŽ¨èï¼ï¼ï¼
+	//è§£å†³æ–¹å¼2  #pragma warning(disable:4996)
+	//è§£å†³æ–¹å¼3  å±žæ€§é‡Œçš„é¢„å¤„ç†å™¨ï¼Œé¢„å¤„ç†å®šä¹‰ä¸­æ·»åŠ  å® _CRT_SECURE_NO_WARNINGS
 
 	char buf[1024] = { 0 };
 	sprintf(buf, "%s", "helloworld");

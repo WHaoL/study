@@ -3,18 +3,18 @@
 #include<string.h>
 #include<stdlib.h>
 
-//sizeof ͳ��һ������  ����һ������ ռ�õ��ڴ�ռ��С
+//sizeof 统计一个类型  或者一个变量 占用的内存空间大小
 void test01()
 {
-	printf("shortռ���ڴ�ռ�Ϊ��%d\n", sizeof(short)); //2
+	printf("short占用内存空间为：%d\n", sizeof(short)); //2
 
 	int a = 10;
-	printf("aռ���ڴ�ռ�Ϊ: %d\n", sizeof(a)); //4
-	printf("int ռ���ڴ�ռ�Ϊ: %d\n", sizeof(int)); //4
+	printf("a占用内存空间为: %d\n", sizeof(a)); //4
+	printf("int 占用内存空间为: %d\n", sizeof(int)); //4
 
-	printf("long ռ���ڴ�ռ�Ϊ: %d\n", sizeof(long)); //4
+	printf("long 占用内存空间为: %d\n", sizeof(long)); //4
 
-	printf("long long ռ���ڴ�ռ�Ϊ: %d\n", sizeof(long long)); // 8
+	printf("long long 占用内存空间为: %d\n", sizeof(long long)); // 8
 }
 
 int main(){

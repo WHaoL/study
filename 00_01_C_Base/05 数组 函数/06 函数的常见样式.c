@@ -4,27 +4,27 @@
 #include<stdlib.h>
 #include <time.h>
 
-//	1¡¢ÎŞ²ÎÎŞ·µ
+//	1ã€æ— å‚æ— è¿”
 void func1()
 {
 	printf("this is func1\n");
 }
 
-//	2¡¢ÓĞ²ÎÎŞ·µ
+//	2ã€æœ‰å‚æ— è¿”
 void func2(int a)
 {
 	printf("this is func2 a = %d\n",a);
-	return; //¿ÉÑ¡Ìí¼Ó
+	return; //å¯é€‰æ·»åŠ 
 }
 
-//	3¡¢ÎŞ²ÎÓĞ·µ
+//	3ã€æ— å‚æœ‰è¿”
 int func3()
 {
 	printf("this is func3\n");
 	return 1000;
 }
 
-//	4¡¢ÓĞ²ÎÓĞ·µ  ĞÎ²ÎÖĞµÄ±äÁ¿Ãû CÓïÑÔÏÂ ±ØĞëĞ´
+//	4ã€æœ‰å‚æœ‰è¿”  å½¢å‚ä¸­çš„å˜é‡å Cè¯­è¨€ä¸‹ å¿…é¡»å†™
 int func4(int a)
 {
 	printf("this is func4 a = %d\n",a);
@@ -33,21 +33,21 @@ int func4(int a)
 
 void test01()
 {
-	//1¡¢ÎŞ²ÎÎŞ·µ
+	//1ã€æ— å‚æ— è¿”
 	func1();
-	//2¡¢ ÓĞ²ÎÎŞ·µ
+	//2ã€ æœ‰å‚æ— è¿”
 	func2(10);
-	//3¡¢ÎŞ²ÎÓĞ·µ  ·µ»ØÖµ ¿ÉÒÔÔÚµ÷ÓÃÊ±ºò½ÓÊÜ»òÕß²»½ÓÊÜ
+	//3ã€æ— å‚æœ‰è¿”  è¿”å›å€¼ å¯ä»¥åœ¨è°ƒç”¨æ—¶å€™æ¥å—æˆ–è€…ä¸æ¥å—
     int num = func3();
 	printf("num = %d\n", num);
-	//4¡¢ÓĞ²ÎÓĞ·µ
+	//4ã€æœ‰å‚æœ‰è¿”
 	int num2 = func4(10000);
 	printf("num2 = %d\n", num2);
 
 }
 
 
-//¶¨Òåº¯Êı£¬»ñÈ¡ 1 ~  10Ö®¼äËæ»úÊı
+//å®šä¹‰å‡½æ•°ï¼Œè·å– 1 ~  10ä¹‹é—´éšæœºæ•°
 int getRandom(int min,int max)
 {
 
@@ -58,8 +58,8 @@ int getRandom(int min,int max)
 
 void test02()
 {
-	//ÉèÖÃËæ»úÊıÖÖ×Ó
-	srand((size_t)time(NULL)); //size_t µÈ¼ÛÓÚ unsigned int
+	//è®¾ç½®éšæœºæ•°ç§å­
+	srand((size_t)time(NULL)); //size_t ç­‰ä»·äº unsigned int
 
 	//printf("%d\n", time(NULL));
 

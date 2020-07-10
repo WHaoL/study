@@ -10,12 +10,12 @@ void test01()
 {
 
 	//a  ~ z
-	//�����ַ����� �������������Ӣ���ַ�
+	//创建字符数组 保存随机产生的英文字符
 
-	//��ʼ���ַ����� һ��16��0
+	//初始化字符数组 一共16个0
 	char buf[WORD_NUM + 1] = { 0 };
 
-	//�������Ӣ���ַ�
+	//产生随机英文字符
 	for (int i = 0; i < WORD_NUM; i++)
 	{
 		buf[i] = rand()%26 + 'a';  //  97 + 0  ~  97 + 25    a ~ z 
@@ -23,16 +23,16 @@ void test01()
 	printf("%s\n", buf);
 
 	
-	int count = 0;//ͳ����ȷ�ַ�
-	int startTime = 0; //��ʼͳ�Ƶ�ʱ��
-	int endTime = 0; //��ֹͳ�Ƶ�ʱ��
+	int count = 0;//统计正确字符
+	int startTime = 0; //开始统计的时间
+	int endTime = 0; //截止统计的时间
 
 
-	//�û���������ַ�
+	//用户输入产生字符
 	for (int i = 0; i < WORD_NUM;i++)
 	{
-		// getch���Բ�����س� ֱ��ȡ�ߵ�ch��  
-		// getchar();  ��Ҫ���س� ��ȷ������
+		// getch可以不输入回车 直接取走到ch中  
+		// getchar();  需要按回车 才确认输入
 		char ch = _getch();  
 
 		if (i == 0)
@@ -44,7 +44,7 @@ void test01()
 			count++;
 			printf("%c", ch);
 		}
-		else //������
+		else //打错情况
 		{
 			printf("_");
 		}
@@ -52,8 +52,8 @@ void test01()
 	endTime = time(NULL);
 	
 	printf("\n");
-	printf("��ȷ��Ϊ : %.2f%%\n", ((double)count / WORD_NUM * 100) );
-	printf("��ʱ��%d��\n", endTime - startTime);
+	printf("正确率为 : %.2f%%\n", ((double)count / WORD_NUM * 100) );
+	printf("用时：%d秒\n", endTime - startTime);
 }
 
 int main(){
