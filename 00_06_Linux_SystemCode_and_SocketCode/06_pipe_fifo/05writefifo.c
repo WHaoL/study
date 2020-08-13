@@ -9,13 +9,18 @@ int main()
 {
     //1、打开管道文件
     int fd = open("05test.fifo",O_WRONLY);
-    //2、不停的读数据
-    int num=0;
-    while(1)
+	
+    
+    int num = 0;
+	
+    while (1)
     {
-        char buf[1024];
-        sprintf(buf,"hello world ----%d\n",num++);
-        write(fd,buf,strlen(buf)+1);
+        char buf[1024] = {0};
+        memset(buf, 0, sizeof(buf));
+        sprintf(buf, "Hello I am writer ------ %d\n", num++);
+		
+		//2、不停的写数据
+        write(fd, buf, strlen(buf) + 1);
         sleep(1);
     }
     close(fd);

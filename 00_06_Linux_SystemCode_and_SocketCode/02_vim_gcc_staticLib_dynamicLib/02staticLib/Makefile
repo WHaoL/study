@@ -23,7 +23,7 @@ OBJFILES    = ./add.$(ObjSuf)\
 CC          = gcc
 LD          = ar rcs
 
-# 编译
+# 编译选项
 CFlag       = -w -g -ggdb -fshort-wchar -std=c11 $(INCLUDEPATH)
 #---------------------------------------------------------
 .SUFFIXES: .$(SrcSuf) .$(ObjSuf) .$(LibSuf)
@@ -41,7 +41,7 @@ clean:
 
 .$(SrcSuf).$(ObjSuf):
 	@echo "Compiling $(PROJECT) $<"
-	$(CC) -c $< -o $@ $(CFlag)
+	$(CC) $(CFlag) -c $< -o $@ 
 
 
 # [root@lwh 02staticLib]# make

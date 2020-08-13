@@ -5,23 +5,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    if(argc < 2)
+    if (argc < 2)
     {
-        printf("a.out dir\n");
+        printf("a.out dir: \n");
         exit(1);
     }
 
     int ret = chdir(argv[1]);
-    if(ret == -1)
+    if (ret == -1)
     {
         perror("chdir");
         exit(1);
     }
 
     int fd = open("chdir.txt", O_CREAT | O_RDWR, 0777);
-    if(fd == -1)
+    if (fd == -1)
     {
         perror("open");
         exit(1);

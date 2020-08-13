@@ -39,7 +39,7 @@ int main()
             //pid_t ret = waitpid(-1,NULL,0);//阻塞
             if(ret > 0)
             {
-                printf("我是父进程pid：%d,回收的子进程为pid：%d\n",getpid(),ret);
+                printf("我是父进程pid= %d , 回收的子进程的pid= %d\n", getpid(), ret);
             }
             else if(0 == ret)
             {
@@ -56,7 +56,7 @@ int main()
     else if(0 == pid)
     {
         //子进程
-        printf("我是子进程pid：%d\n",getpid());
+        printf("我是子进程，我的pid= %d\n", getpid());
         sleep(1);
         return 0;
     }

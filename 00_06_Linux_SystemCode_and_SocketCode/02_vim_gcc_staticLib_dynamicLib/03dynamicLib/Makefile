@@ -46,7 +46,7 @@ clean:
 
 .$(SrcSuf).$(ObjSuf):
 	@echo "Compiling $(PROJECT) $<"
-	$(CC) -c $< -o $@  $(CFlag)
+	$(CC) $(CFlag) -c $< -o $@  
 
 
 # [root@lwh 03dynamicLib]# make

@@ -12,10 +12,12 @@ int main()
     sigaddset(&myset,SIGINT);//ctrl+c；2号
     sigaddset(&myset,SIGQUIT);//ctrl+\；3号
     sigaddset(&myset,SIGKILL);//9号,(9(无条件杀死)、19(无条件暂停)不能被捕捉、阻塞、忽略)
-    //2、将自定义信号集数据设置到内核阻塞信号集中
+    
+	//2、将自定义信号集数据设置到内核阻塞信号集中
     sigset_t old;
     sigprocmask(SIG_BLOCK,&myset,&old);
-    //
+    
+	//
     int count = 0;
     while(1)
     {

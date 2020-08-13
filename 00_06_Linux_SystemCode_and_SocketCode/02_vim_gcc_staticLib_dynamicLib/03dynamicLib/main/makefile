@@ -29,8 +29,9 @@ LibSuf      = so
 
 OBJFILES    = ./main.$(ObjSuf)
 #---------------------------------------------------------
-#依赖库的库名
-#LIBS        = -l../libcalc.so
+#依赖的静态库库
+#LIBS        = -l../libcalc.a
+#依赖的动态库
 LIBS2       = -l calc
 #---------------------------------------------------------
 CC          = gcc
@@ -61,4 +62,4 @@ clean:
 
 .$(SrcSuf).$(ObjSuf):
 	@echo "Compiling $(PROJECT) $<"
-	$(CC) -c $< -o $@ $(CFlag) 
+	$(CC) $(CFlag) -c $< -o $@  

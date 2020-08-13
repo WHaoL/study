@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[])// a.out fileName
 {
     if(argc < 2)
     {

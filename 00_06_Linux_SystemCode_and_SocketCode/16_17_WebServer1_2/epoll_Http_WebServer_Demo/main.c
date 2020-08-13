@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include "server.h"
 #include <stdlib.h>
 #include <unistd.h>

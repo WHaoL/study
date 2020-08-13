@@ -5,7 +5,7 @@ int main(int argc, char* argv[])
 {
 	if(argc < 2)
 	{
-		printf("./a.out number");
+		printf("./a.out number：");
 		exit(1);
 	}
 

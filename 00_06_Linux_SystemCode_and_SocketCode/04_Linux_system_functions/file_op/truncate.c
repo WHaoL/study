@@ -3,17 +3,17 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[]) // a.out truncateFileName length
 {
-    if(argc < 3)
+    if (argc < 3)
     {
         printf("a.out filename size\n");
         exit(1);
     }
 
-    long int len = strtol(argv[2], NULL, 10); 
-    int  aa = truncate(argv[1], len);
-    if(aa == -1)
+    long int len = strtol(argv[2], NULL, 10);
+    int aa = truncate(argv[1], len);
+    if (aa == -1)
     {
         perror("truncate");
         exit(1);

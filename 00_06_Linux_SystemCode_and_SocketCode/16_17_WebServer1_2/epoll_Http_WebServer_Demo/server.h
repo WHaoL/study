@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 // 初始化监听的套接字
 int initListen(unsigned short port);
 // 初始化并启动epoll
