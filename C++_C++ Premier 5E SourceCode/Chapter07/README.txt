@@ -3,8 +3,8 @@ Sample data files are in the data directory:
 
      File           Programs that use that input file
      ----           --------
-   mainmath         mainmath		1
-   refparms         refparms		1
+   book_sales       avg_price		1     
+   add_item         add_item		1
 
 Programs not listed above print output and do
 not read any input
