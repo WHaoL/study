@@ -7,7 +7,7 @@ SrcSuf      = cpp
 ObjSuf      = o
 LibSuf      = so
 
-OBJFILES    = ./5_01_byteOrder.$(ObjSuf)
+OBJFILES    = ./5-1byteorder.$(ObjSuf)
 #---------------------------------------------------------
 CC          = g++
 CFlag       = -w -g -ggdb -fshort-wchar -std=c++11  
