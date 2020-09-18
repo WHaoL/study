@@ -10,41 +10,45 @@ ObjSuf      = o
 LibSuf      = so
 LibSuf2     = a
 #---------------------------------------------------------
-#src=fig1.8_P14IntCell.cpp
-#src+=fig1.11_P18.cpp
-#OBJFILES=$(src:.cpp=.o)
-
 OBJFILES    =  ./GameChannel.$(ObjSuf) 
 OBJFILES    += ./GameProtocol.$(ObjSuf)    
 OBJFILES    += ./GameRole.$(ObjSuf)     
 OBJFILES    += ./main.$(ObjSuf)   
 OBJFILES    += ./msg.pb.$(ObjSuf)    
 OBJFILES    += ./GameMsg.$(ObjSuf)       
-
 #---------------------------------------------------------
 # 头文件目录
-#INCLUDEPATH =  -I /usr/local/include/hiredis/
-#zinx.h ZinxTCP.h
-INCLUDEPATH += -I /usr/include/
-INCLUDEPATH += -I /usr/local/include
+INCLUDEPATH =  -I /usr/include/
+INCLUDEPATH += -I /usr/local/include 
+INCLUDEPATH += -I /usr/include/c++/4.8.2/
+INCLUDEPATH += -I /usr/local/include/hiredis/
+# /usr/include/zinx.h 
+# /usr/include/ZinxTCP.h
+# /usr/local/include/google/protobuf
+# /usr/include/c++/4.8.2/random
+# /usr/local/include/hiredis/hiredis.h
+
+
 # 库目录
 LIBPATH     =  -L /usr/local/lib/
-# libzinx.so
 LIBPATH     += -L /usr/lib/ 
-#/usr/local/lib/libprotobuf.so
-LIBPATH     += -L /usr/local/lib/
+# /usr/lib/libzinx.so
+# /usr/local/lib/libprotobuf.so
+# /usr/local/lib/libhiredis.so
 #---------------------------------------------------------
 CC          =   g++
 
 # 编译选项
 CFlag       =   $(INCLUDEPATH) -w -g -ggdb -fshort-wchar -std=c++11 -pthread
+#CFlag       =   $(INCLUDEPATH) -Wall -g -ggdb -fshort-wchar -std=c++11 -pthread
+
 
 # 链接选项
 LDFLAGS     +=  $(LIBPATH) 
-#LDFLAGS     +=  -l hiredis    
 LDFLAGS     +=  -l pthread         
 LDFLAGS     +=  -l zinx 
 LDFLAGS     +=  -l protobuf
+LDFLAGS     +=  -l hiredis    
 #---------------------------------------------------------
 .SUFFIXES: .$(SrcSuf) .$(ObjSuf) .$(LibSuf) .$(SrcSuf2) .$(LibSuf2) .$(SrcSuf3)
 
@@ -74,7 +78,6 @@ $(PROJECT):$(OBJFILES)
 clean:
 	@echo "Cleaning $(PROJECT) project files"
 	@rm -f $(OBJFILES) core
-
 #---------------------------------------------------------
 # make cleanall 删除 .o 文件 execute文件
 .PHONY:cleanobj
