@@ -8,7 +8,7 @@ class StdinChannel : public IChannel
 public:
     StdinChannel();
     virtual ~StdinChannel();
-    StdoutChannel *m_stdoutChannel = nullptr;
+    StdoutChannel *m_stdoutChannel = nullptr; //标准输出通道
 
 public:
     //继承自IChannel

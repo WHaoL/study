@@ -30,6 +30,14 @@ void ZinxKernel::run()
     //1 等输入(IO多路复用)(epoll)
     //2 调用通道的读取(或写出)函数
     //3 回显到标准输出
+
+    //反应堆模型
+    //先让epoll树监测input，
+    //    有input时，读入数据，并调用对应的处理函数对数据进行处理
+    //如果有数据需要output，让epoll把监测input改为监测output，
+    //    可写时，调用对应的处理函数发送数据
+    //让epoll把监测output改为监测input
+
     while (1)
     {
         struct epoll_event ar_stEvents[20];
@@ -38,28 +46,26 @@ void ZinxKernel::run()
         {
             if (EINTR == errno) // Error number interrupt
             {
-                //如果是被信号打断了
-                continue;
+                continue; //如果是被信号打断了
             }
         }
         for (int i = 0; i < ready_count; ++i)
         {
-            if (0 != (ar_stEvents[i].events & EPOLLIN))
+            if (EPOLLIN == (ar_stEvents[i].events & EPOLLIN)) //监测到有input
             {
-                //需要处理外部输入的数据
+                //处理外部输入的数据
                 /*1.读出数据*/
-                IChannel *pchannel = static_cast<IChannel *>(ar_stEvents[i].data.ptr);
-                std::string content = pchannel->ReadFd();
                 /*2.处理数据*/
-                pchannel->Data_Process(content);
+                IChannel *pchannel = static_cast<IChannel *>(ar_stEvents[i].data.ptr);
+                std::string content = pchannel->ReadFd(); //读出数据
+                pchannel->Data_Process(content);          //1、把数据存到缓存，2、把监测input改为监测input|output
             }
-            if (0 != (ar_stEvents[i].events & EPOLLOUT))
+            if (EPOLLOUT == (ar_stEvents[i].events & EPOLLOUT)) //监测到output可用
             {
                 //向外输出数据
                 IChannel *pchannel = static_cast<IChannel *>(ar_stEvents[i].data.ptr);
-                pchannel->flushout();
-                //删掉输出方向的epoll监听
-                ModChannel_DelOut(pchannel);
+                pchannel->flushout();        //把缓存区数据，发送出去
+                ModChannel_DelOut(pchannel); //2、把监测input|output改为监测input
             }
         }
     }
@@ -79,7 +85,7 @@ void ZinxKernel::AddChannel(IChannel *_pChannel) //把通道添加到epoll
 void ZinxKernel::DelChannel(IChannel *_pChannel) //把通道从epoll移除
 {
     epoll_ctl(m_EpollFd, EPOLL_CTL_DEL, _pChannel->GetFd(), nullptr);
-    _pChannel->Fini();//初始化和去初始化，顺序相反
+    _pChannel->Fini(); //初始化和去初始化，顺序相反
 }
 void ZinxKernel::ModChannel_AddOut(IChannel *_pChannel) //向epoll，给通道添加输出的监听
 {

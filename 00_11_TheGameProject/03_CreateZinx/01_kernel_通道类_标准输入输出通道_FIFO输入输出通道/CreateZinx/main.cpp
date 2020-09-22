@@ -30,7 +30,7 @@ int main()
  *[root@lwh CreateZinx]# mkfifo myfifo_output
  *
  *FIFO非阻塞打开时，测试步骤：先打开fifo的输出，再启动可执行程序
- *(因为非阻塞情况下，必须先打开fifo的输出端myfifo_output，然后在./execute时才可以打开fifo的输入端myfifo_inputt)
+ *(因为非阻塞情况下，必须先打开fifo的输出端myfifo_output，然后再./execute时才可以打开fifo的输入端myfifo_input)
  *
  * 在第一个终端启动 ./execute
  * 在第二个终端，把数据输入到fifo_input  

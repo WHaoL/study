@@ -4,16 +4,10 @@
 
 StdinChannel::StdinChannel() {}
 StdinChannel::~StdinChannel() {}
+
 //继承自IChannel
-bool StdinChannel::Init() 
-{
-    //打开文件
-    return true;
-}
-void StdinChannel::Fini() 
-{
-    //关闭文件
-}
+bool StdinChannel::Init() { return true; }
+void StdinChannel::Fini() {}
 std::string StdinChannel::ReadFd()
 {
     std::string ret;

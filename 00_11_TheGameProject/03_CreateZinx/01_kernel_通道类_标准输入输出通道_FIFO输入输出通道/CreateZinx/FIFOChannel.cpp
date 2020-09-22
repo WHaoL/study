@@ -15,6 +15,7 @@ FIFOChannel::~FIFOChannel()
 bool FIFOChannel::Init()
 {
     bool boolRet = false;
+    
     //打开文件
     int flag = O_RDONLY;
     if (false == isRead)
@@ -23,7 +24,7 @@ bool FIFOChannel::Init()
     }
 
     // open是一个阻塞函数,设置为非阻塞
-    //int fd = open(m_fifo_name.c_str(), flag );
+    // int fd = open(m_fifo_name.c_str(), flag );
     int fd = open(m_fifo_name.c_str(), (flag | O_NONBLOCK));
     if (fd >= 0)
     {
