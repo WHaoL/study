@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "queue.h"
 
-main( )
+int main( )
 {
     Queue Q;
     int i;

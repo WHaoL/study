@@ -7,8 +7,8 @@
         struct QueueRecord
         {
             int Capacity;
-            int Front;
-            int Rear;
+            int Front; // 队头下标
+            int Rear;  // 队尾下标 Rear = Front-1表明表尾空表
             int Size;
             ElementType *Array;
         };
