@@ -11,15 +11,15 @@ Max( int A, int B )
     return A > B ? A : B;
 }
 
-/* START: fig3_18.txt */
+/* START: fig3_18.txt */ // 多项式
         typedef struct
         {
-            int CoeffArray[ MaxDegree + 1 ];
-            int HighPower;
+            int CoeffArray[ MaxDegree + 1 ]; //多项式各项的系数
+            int HighPower;                   //多项式的最大的指数
         } *Polynomial;
 /* END */
 
-/* START: fig3_19.txt */
+/* START: fig3_19.txt */ // 将多项式初始化为零的过程
         void
         ZeroPolynomial( Polynomial Poly )
         {
@@ -31,7 +31,7 @@ Max( int A, int B )
         }
 /* END */
 
-/* START: fig3_20.txt */
+/* START: fig3_20.txt */ // 两个多项式相加的过程
         void
         AddPolynomial( const Polynomial Poly1, const Polynomial Poly2,
                        Polynomial PolySum )
@@ -48,7 +48,7 @@ Max( int A, int B )
         }
 /* END */
 
-/* START: fig3_21.txt */
+/* START: fig3_21.txt */ // 两个多项式相乘的过程
         void
         MultPolynomial( const Polynomial Poly1,
                         const Polynomial Poly2, Polynomial PolyProd )
@@ -94,7 +94,7 @@ PrintPoly( const Polynomial Q )
     printf( "%d\n", Q->CoeffArray[ 0 ] );
 }
 
-main( )
+int main( )
 {
     Polynomial P, Q;
 
@@ -102,10 +102,16 @@ main( )
     Q = malloc( sizeof( *Q ) );
 
     P->HighPower = 1; P->CoeffArray[ 0 ] = 1; P->CoeffArray[ 1 ] = 1;
-    MultPolynomial( P, P, Q );
-    MultPolynomial( Q, Q, P );
-    AddPolynomial( P, P, Q );
-    PrintPoly( Q );
+    PrintPoly(P);// 1x^1 + 1
+
+    MultPolynomial(P, P, Q);
+    PrintPoly(Q);//1x^2 + 2x^1 + 1
+
+    MultPolynomial(Q, Q, P);
+    PrintPoly(P);//1x^4 + 4x^3 + 6x^2 + 4x^1 + 1
+
+    AddPolynomial(P, P, Q);
+    PrintPoly(Q);//2x^4 + 8x^3 + 12x^2 + 8x^1 + 2
 
     return 0;
 }

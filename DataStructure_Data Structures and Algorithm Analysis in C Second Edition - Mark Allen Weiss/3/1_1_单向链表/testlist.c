@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "cursor.h"
+#include "list.h"
 
 void
 PrintList( const List L )
@@ -19,13 +19,12 @@ PrintList( const List L )
     }
 }
 
-main( )
+int main( )
 {
     List L;
     Position P;
     int i;
 
-    InitializeCursorSpace( );
     L = MakeEmpty( NULL );
     P = Header( L );
     PrintList( L );

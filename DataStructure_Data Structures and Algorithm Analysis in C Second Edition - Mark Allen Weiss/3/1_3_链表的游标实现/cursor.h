@@ -3,6 +3,7 @@
 
 /* START: fig3_28.txt */
         #ifndef _Cursor_H
+		#define _Cursor_H
 
         typedef int PtrToNode;
         typedef PtrToNode List;

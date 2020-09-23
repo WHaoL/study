@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "stackli.h"
 
-main( )
+int main( )
 {
     Stack S;
     int i;
