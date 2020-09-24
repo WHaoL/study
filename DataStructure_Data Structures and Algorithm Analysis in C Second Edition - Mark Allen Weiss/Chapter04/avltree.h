@@ -2,6 +2,7 @@
 
 /* START: fig4_35.txt */
         #ifndef _AvlTree_H
+        #define _AvlTree_H
 
         struct AvlNode;
         typedef struct AvlNode *Position;
