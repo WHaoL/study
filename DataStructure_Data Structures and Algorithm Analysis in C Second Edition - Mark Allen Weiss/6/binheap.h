@@ -3,6 +3,7 @@
 
 /* START: fig6_4.txt */
         #ifndef _BinHeap_H
+        #define _BinHeap_H
 
         struct HeapStruct;
         typedef struct HeapStruct *PriorityQueue;

@@ -2,6 +2,7 @@
         typedef int ElementType;
 
         #ifndef _PairHeap_H
+        #define _PairHeap_H
 
         struct PairNode;
         typedef struct PairNode *PairHeap;

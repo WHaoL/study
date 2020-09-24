@@ -3,6 +3,7 @@
 
 /* START: fig6_25.txt */
         #ifndef _LeftHeap_H
+        #define _LeftHeap_H
 
         struct TreeNode;
         typedef struct TreeNode *PriorityQueue;

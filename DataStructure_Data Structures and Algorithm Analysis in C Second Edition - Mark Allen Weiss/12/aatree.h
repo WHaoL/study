@@ -4,6 +4,7 @@
         typedef int ElementType;
 
         #ifndef _AATree_H
+		#define _AATree_H
 
         struct AANode;
         typedef struct AANode *Position;

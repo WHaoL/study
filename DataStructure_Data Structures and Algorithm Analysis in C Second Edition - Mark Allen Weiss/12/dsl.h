@@ -5,6 +5,7 @@
         #define Infinity (10000)
 
         #ifndef _SkipList_H
+        #define _SkipList_H
 
         struct SkipNode;
         typedef struct SkipNode *Position;

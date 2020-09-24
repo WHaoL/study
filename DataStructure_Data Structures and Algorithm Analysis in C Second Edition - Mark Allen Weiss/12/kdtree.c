@@ -76,7 +76,7 @@
         }
 /* END */
 
-main( )
+int main( )
 {
     KdTree T;
     ItemType It, L, H;

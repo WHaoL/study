@@ -10,7 +10,9 @@ ObjSuf      = o
 LibSuf      = so
 LibSuf2     = a
 
-OBJFILES    =  ./test.$(ObjSuf)    
+OBJFILES    =  ./queue.$(ObjSuf)  
+OBJFILES    +=  ./testque.$(ObjSuf)  
+
 #---------------------------------------------------------
 # 头文件目录
 INCLUDEPATH += -I /usr/include/

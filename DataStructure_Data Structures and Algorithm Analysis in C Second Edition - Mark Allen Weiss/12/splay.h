@@ -7,6 +7,7 @@
 
 /* START: fig12_5.txt */
         #ifndef _Splay_H
+        #define _Splay_H
 
         struct SplayNode;
         typedef struct SplayNode *SplayTree;

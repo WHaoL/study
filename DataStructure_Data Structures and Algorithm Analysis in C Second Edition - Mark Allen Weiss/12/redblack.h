@@ -5,6 +5,7 @@
         #define NegInfinity (-10000)
 
         #ifndef _RedBlack_H
+        #define _RedBlack_H
 
         struct RedBlackNode;
         typedef struct RedBlackNode *Position;

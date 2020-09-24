@@ -5,6 +5,7 @@
         #define Infinity 32767
 
         #ifndef _Treap_H
+        #define _Treap_H
 
         struct TreapNode;
         typedef struct TreapNode *Position;

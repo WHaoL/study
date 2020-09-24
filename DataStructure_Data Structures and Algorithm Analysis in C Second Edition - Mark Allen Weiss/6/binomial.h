@@ -3,6 +3,7 @@
         #define Infinity (30000L)
 
         #ifndef _BinHeap_H
+        #define _BinHeap_H
 
         #define MaxTrees (14)   /* Stores 2^14 -1 items */
         #define Capacity (16383)
