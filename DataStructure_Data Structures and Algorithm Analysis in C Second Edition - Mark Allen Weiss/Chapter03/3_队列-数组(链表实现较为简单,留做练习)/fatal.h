@@ -1,3 +1,6 @@
+//fatal.h 
+//打印错误信息并退出
+
 #include <stdio.h>
 #include <stdlib.h>
 

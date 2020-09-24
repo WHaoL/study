@@ -1,7 +1,7 @@
 #include "tree.h"
 #include <stdio.h>
 
-main( )
+int main( )
 {
     SearchTree T;
     Position P;

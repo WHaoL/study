@@ -39,7 +39,7 @@
         }
 /* END */
 
-/* START: fig4_19.txt */
+/* START: fig4_19.txt */ // 递归/非递归实现，此处演示递归实现
         Position
         FindMin( SearchTree T )
         {
@@ -53,7 +53,7 @@
         }
 /* END */
 
-/* START: fig4_20.txt */
+/* START: fig4_20.txt */ // 递归/非递归实现，此处演示非递归实现
         Position
         FindMax( SearchTree T )
         {
@@ -88,7 +88,8 @@
 /* 9*/      if( X > T->Element )
 /*10*/          T->Right = Insert( X, T->Right );
             /* Else X is in the tree already; we'll do nothing */
-
+// 传进来的T==NULL，返回的是新malloc的空间
+// 传件来的T!=NULL，执行完T->Left或T->Right的赋值以后，返回T自己(不改变原理的顺序)
 /*11*/      return T;  /* Do not forget this line!! */
         }
 /* END */
