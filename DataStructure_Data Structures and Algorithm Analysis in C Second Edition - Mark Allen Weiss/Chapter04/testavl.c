@@ -1,7 +1,7 @@
 #include "avltree.h"
 #include <stdio.h>
 
-main( )
+int main( )
 {
     AvlTree T;
     Position P;
