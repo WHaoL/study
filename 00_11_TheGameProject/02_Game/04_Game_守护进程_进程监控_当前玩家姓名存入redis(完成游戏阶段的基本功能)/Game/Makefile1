@@ -1,0 +1,8 @@
+all: game clean 
+
+game:./*.cpp /usr/lib/libzinx.a /usr/local/lib/libprotobuf.a /usr/local/lib/libhiredis.a
+	g++ -g -Wall -fshort-wchar -std=c++11 -pthread $^ -o $@ 
+
+.PHONY:clean
+clean:
+	@rm -rf *.o
