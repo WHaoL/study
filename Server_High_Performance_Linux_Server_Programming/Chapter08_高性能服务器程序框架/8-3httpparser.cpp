@@ -9,32 +9,63 @@
 #include <string.h>
 #include <fcntl.h>
 
+// 读缓冲区大小
 #define BUFFER_SIZE 4096
-enum CHECK_STATE { CHECK_STATE_REQUESTLINE = 0, CHECK_STATE_HEADER, CHECK_STATE_CONTENT };
-enum LINE_STATUS { LINE_OK = 0, LINE_BAD, LINE_OPEN };
-enum HTTP_CODE { NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION };
+
+//主状态机的两种可能状态，分别表示：当前正在分析请求行、当前正在分析头部字段
+enum CHECK_STATE { 	CHECK_STATE_REQUESTLINE = 0, 
+					CHECK_STATE_HEADER, 
+					CHECK_STATE_CONTENT };
+
+//从状态机的三种可能状态，即行的读取状态，分别表示：读取到一个完整的行、行出错和行数据尚且不完整
+enum LINE_STATUS { 	LINE_OK = 0, 
+					LINE_BAD, 
+					LINE_OPEN };
+					
+/*服务器处理HTTP请求的结果：NO_REQUEST	表示请求不完整，需要继续读取客户数据;
+							GET_REQUEST	表示获得了一个完整的客户请求;
+							BAD_REQUEST	表示客户请求有语法错误;
+							FORBIDDEN_REQUEST	表示客户对资源没有足够的访问权限
+							INTERNAL_ERROR表示	表示服务器内部错误;
+							CLOSED_CONNECTION	表示客户端已经关闭连接了*/
+enum HTTP_CODE{NO_REQUEST, GET_REQUEST, 
+				BAD_REQUEST, FORBIDDEN_REQUEST, 
+				INTERNAL_ERROR, CLOSED_CONNECTION };
+				
+//
 static const char* szret[] = { "I get a correct result\n", "Something wrong\n" };
 
+/* 从状态机，用于解析出一行内容 */
 LINE_STATUS parse_line( char* buffer, int& checked_index, int& read_index )
 {
-    char temp;
+	/*	checked_id_index指向buffer的正在分析的字节，
+		read_index指向buffer中的最后一个字节的下一个字节
+		即从[0, checked_index -1]是已分析完毕，[checked_index,read_index-1]待分析	*/
+
+	char temp;
     for ( ; checked_index < read_index; ++checked_index )
     {
         temp = buffer[ checked_index ];
+		
+		/*	如果当前的字符是'\r'，即回车符，则说明可能读取到一个完整的行	*/
         if ( temp == '\r' )
         {
+			//如果'\r'是最后一个被读入的客户端数据，则说明没有读取到一个完整的行，需要继续读取客户端数据
             if ( ( checked_index + 1 ) == read_index )
             {
                 return LINE_OPEN;
             }
+			//如果下一个字符是'\n'则说明读取到了完整的行
             else if ( buffer[ checked_index + 1 ] == '\n' )
             {
                 buffer[ checked_index++ ] = '\0';
                 buffer[ checked_index++ ] = '\0';
                 return LINE_OK;
             }
+			//否则说明HTTP请求存在语法问题
             return LINE_BAD;
         }
+		/*	如果当前的字符是'\n'，即换行符，则也说明可能读取到一个完整的行	*/
         else if( temp == '\n' )
         {
             if( ( checked_index > 1 ) &&  buffer[ checked_index - 1 ] == '\r' )
@@ -46,12 +77,15 @@ LINE_STATUS parse_line( char* buffer, int& checked_index, int& read_index )
             return LINE_BAD;
         }
     }
+	/* 如果所有内容都分析完毕也没有遇到'\r'字符，则返回LINE_OPEN，表示还需要继续读取客户端数据才能进一步分析*/
     return LINE_OPEN;
 }
 
+/* 分析请求行 */
 HTTP_CODE parse_requestline( char* szTemp, CHECK_STATE& checkstate )
 {
     char* szURL = strpbrk( szTemp, " \t" );
+	//如果请求行中没有空格和'\t'字符，则说明HTTP请求必有问题
     if ( ! szURL )
     {
         return BAD_REQUEST;

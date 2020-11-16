@@ -15,6 +15,7 @@ int main()
         perror("socket");
         exit(0);
     }
+	
     //2.绑定IP、Port
     struct sockaddr_in addr;
     addr.sin_port = htons(9898);
@@ -26,6 +27,7 @@ int main()
         perror("bind");
         exit(0);
     }
+	
     //3.设置监听
     ret = listen(lfd,128);
     if(ret == -1)
@@ -33,6 +35,7 @@ int main()
         perror("listen");
         exit(0);
     }
+	
     //4.创建epoll树
     int epfd = epoll_create(1);
     if(epfd == -1)
@@ -40,6 +43,7 @@ int main()
         perror("epoll_create");
         exit(0);
     }
+	
     //5.初始化epoll树
     struct epoll_event ev;
     ev.events = EPOLLIN;
@@ -49,6 +53,7 @@ int main()
     //创建结构体数组：存储epoll传出的fd及其状态
     struct epoll_event evs[1024];
     int lenevs = sizeof(evs)/sizeof(evs[0]);
+	
     //6.检测fd
     while(1)
     {
@@ -96,4 +101,3 @@ int main()
     close(lfd);
     return 0;
 }
-

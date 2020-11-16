@@ -56,8 +56,11 @@ int main()
         //1、重定向：将输出重定向到管道的写端
         dup2(fd[1],STDOUT_FILENO);
         //2、使用execlp，使子进程调用ps aux
-        execlp("ps","ps aux","aux",NULL);
-        perror("execlp");//execlp执行失败
+        //execlp("ps","ps aux","aux",NULL);
+        //perror("execlp");//execlp执行失败
+		printf("Hello!\n");
+		
+		
 		exit(-1);
     }
     else if(pid == -1)
