@@ -15,7 +15,7 @@ int main()
         exit(0);
     }
 
-    // 2. 绑定
+    // 2. 绑定本地
     struct sockaddr_un addr;
     addr.sun_family = AF_LOCAL;
     strcpy(addr.sun_path, "server.sock");
@@ -36,7 +36,7 @@ int main()
     }
 
     // 4. 等待, 接受连接请求
-    struct sockaddr_un addrCli;
+    struct sockaddr_un addrCli;//存储客户端的addr
     int len = sizeof(addrCli);
     printf("正在焦急等待客户端的连接...\n");
     int connfd = accept(fd, (struct sockaddr*)&addrCli, &len);

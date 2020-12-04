@@ -13,7 +13,7 @@ void cb_write(evutil_socket_t fd, short what, void *arg)
 {
     // 写数据
     static int num = 0;
-    char buf[1024];
+    char buf[1024] = {0};
     sprintf(buf, "hello, %d\n", num++);
     write(fd, buf, strlen(buf)+1);
 	
@@ -36,16 +36,16 @@ int main()
 	// 2.1创建事件处理框架
     struct event_base* base = event_base_new();
 	// 2.2创建事件
-    struct event* wev = event_new(base, fd, EV_WRITE|EV_PERSIST, cb_write, NULL);
+    struct event* w_ev = event_new(base, fd, EV_WRITE|EV_PERSIST, cb_write, NULL);
   
 	// 3.将事件添加到处理框架上
-    event_add(wev, NULL);
+    event_add(w_ev, NULL);
     
 	// 4.启动事件循环
     event_base_dispatch(base);
 
     // 5.资源释放
-    event_free(wev);
+    event_free(w_ev);
     event_base_free(base);
 
     return 0;
