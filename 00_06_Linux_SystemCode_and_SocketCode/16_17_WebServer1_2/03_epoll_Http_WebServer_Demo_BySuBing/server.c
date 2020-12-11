@@ -175,17 +175,19 @@ int parseRequestLine(int cfd, char * reqLine)
 	char path[4096];	// 路径
 	sscanf(reqLine, "%[^ ] %[^ ]", method, path);
 	printf("request line: %s\n", reqLine);
+	
 	// 判断客户端请求是不是get
 	if (strcasecmp(method, "get") != 0)
 	{
 		printf("用户提交的不是get请求, 忽略处理...\n");
 		return -1;
 	}
+	
 	// 转码
 	decode_str(path, path);
 	// 是get请求 -> 判断path中是目录还是文件
-	// path: /xxx/xxx ->  需要取得第一个/ 得到  ./xxx/xxx == xxx/xxx
-	// path: / -> 服务器资源根目录, 需要设置   ==> 对于当前进程来说 ./
+	// path: /xxx/xxx ->  需要取得第一个/ 得到  xxx/xxx == ./xxx/xxx
+	// path: / -> 服务器资源根目录, 需要设置   对于当前进程来说 == ./
 	char* file = NULL;	// 存储文件名, 使用的相对路径
 	if (strcmp(path, "/") == 0)
 	{
