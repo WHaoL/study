@@ -414,5 +414,5 @@ int main()
 	return 0;
 }
 
-// gcc test.c -o out -std=c99
+// gcc 1-11.c -o out -std=c99
 // ./out
