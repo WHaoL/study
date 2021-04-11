@@ -1,0 +1,12 @@
+[root@bogon sylar]# mkdir build
+[root@bogon sylar]# cd build/
+[root@bogon build]# pwd
+/home/lwh/workspace/sylar/build
+
+[root@bogon build]# cmake ../
+[root@bogon build]# make
+[root@bogon build]# ../bin/test_log 
+3
+WARN
+[root@bogon build]#
+

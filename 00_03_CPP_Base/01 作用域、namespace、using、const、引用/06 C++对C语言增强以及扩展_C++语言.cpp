@@ -59,7 +59,7 @@ void test05()
 
 	printf("ret = %d\n", a > b ? a : b);
 
-	(a < b ? a : b )= 100; //返回的是变量
+	(a < b ? a : b )= 100; //返回的是变量的引用
 
 	printf("a = %d\n", a); //100
 	printf("b = %d\n", b); //20

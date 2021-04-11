@@ -1,0 +1,98 @@
+[root@bogon sylar]# mkdir build
+[root@bogon sylar]# cd build/
+[root@bogon build]# pwd
+/home/lwh/workspace/sylar/build
+
+[root@bogon build]# cmake ../
+[root@bogon build]# make
+
+# 初步实现 LogFormatter的init()
+# 能把传进来的 string pattern 提取为一个个的子格式
+
+[root@bogon build]# ../bin/test_log 
+0
+0
+Test i= 0               m_pattern[i]=   %       166
+Test i= 0               str:            d       207
+Test i= 0               fmt:            %Y-%m-%d %H:%M:%S       223
+Test i= 20 n= 21        m_pattern[i]=   }       259
+Test i= 21              m_pattern[i]=   %       166
+isalpha: 0 23 %
+Test i= 21 n= 23        str:            T       197
+Test i= 22 n= 23        m_pattern[i]=   T       259
+Test i= 23              m_pattern[i]=   %       166
+isalpha: 0 25 %
+Test i= 23 n= 25        str:            t       197
+Test i= 24 n= 25        m_pattern[i]=   t       259
+Test i= 25              m_pattern[i]=   %       166
+isalpha: 0 27 %
+Test i= 25 n= 27        str:            T       197
+Test i= 26 n= 27        m_pattern[i]=   T       259
+Test i= 27              m_pattern[i]=   %       166
+isalpha: 0 29 %
+Test i= 27 n= 29        str:            N       197
+Test i= 28 n= 29        m_pattern[i]=   N       259
+Test i= 29              m_pattern[i]=   %       166
+isalpha: 0 31 %
+Test i= 29 n= 31        str:            T       197
+Test i= 30 n= 31        m_pattern[i]=   T       259
+Test i= 31              m_pattern[i]=   %       166
+isalpha: 0 33 %
+Test i= 31 n= 33        str:            F       197
+Test i= 32 n= 33        m_pattern[i]=   F       259
+Test i= 33              m_pattern[i]=   %       166
+isalpha: 0 35 [
+Test i= 33 n= 35        str:            T       197
+Test i= 34 n= 35        m_pattern[i]=   T       259
+Test i= 35              m_pattern[i]=   [       166
+Test i= 36              m_pattern[i]=   %       166
+isalpha: 0 38 ]
+Test i= 36 n= 38        str:            p       197
+Test i= 36              nstr:           [       252
+Test i= 37 n= 38        m_pattern[i]=   p       259
+Test i= 38              m_pattern[i]=   ]       166
+Test i= 39              m_pattern[i]=   %       166
+isalpha: 0 41 [
+Test i= 39 n= 41        str:            T       197
+Test i= 39              nstr:           ]       252
+Test i= 40 n= 41        m_pattern[i]=   T       259
+Test i= 41              m_pattern[i]=   [       166
+Test i= 42              m_pattern[i]=   %       166
+isalpha: 0 44 ]
+Test i= 42 n= 44        str:            c       197
+Test i= 42              nstr:           [       252
+Test i= 43 n= 44        m_pattern[i]=   c       259
+Test i= 44              m_pattern[i]=   ]       166
+Test i= 45              m_pattern[i]=   %       166
+isalpha: 0 47 %
+Test i= 45 n= 47        str:            T       197
+Test i= 45              nstr:           ]       252
+Test i= 46 n= 47        m_pattern[i]=   T       259
+Test i= 47              m_pattern[i]=   %       166
+isalpha: 0 49 :
+Test i= 47 n= 49        str:            f       197
+Test i= 48 n= 49        m_pattern[i]=   f       259
+Test i= 49              m_pattern[i]=   :       166
+Test i= 50              m_pattern[i]=   %       166
+isalpha: 0 52 %
+Test i= 50 n= 52        str:            l       197
+Test i= 50              nstr:           :       252
+Test i= 51 n= 52        m_pattern[i]=   l       259
+Test i= 52              m_pattern[i]=   %       166
+isalpha: 0 54 %
+Test i= 52 n= 54        str:            T       197
+Test i= 53 n= 54        m_pattern[i]=   T       259
+Test i= 54              m_pattern[i]=   %       166
+isalpha: 0 56 %
+Test i= 54 n= 56        str:            m       197
+Test i= 55 n= 56        m_pattern[i]=   m       259
+Test i= 56              m_pattern[i]=   %       166
+isalpha: 0 58 %
+Test i= 56 n= 58        str:            n       197
+Test i= 57 n= 58        m_pattern[i]=   n       259
+Test i= 58              m_pattern[i]=   %       166
+Test i= 59              m_pattern[i]=   %       166
+Test i= 59              nstr:           %       252
+Test i= 59 n= 60        m_pattern[i]=   %       259
+[root@bogon build]# 
+

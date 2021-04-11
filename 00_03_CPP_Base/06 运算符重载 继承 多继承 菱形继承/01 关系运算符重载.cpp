@@ -11,7 +11,7 @@ public:
 		this->m_Age = age;
 	}
 
-	//重载==
+	//
 	bool operator==(Person &p)
 	{
 		//if (this->m_Name == p.m_Name && this->m_Age == p.m_Age)
@@ -23,15 +23,15 @@ public:
 		return this->m_Name == p.m_Name && this->m_Age == p.m_Age;
 	}
 
-	//重载!=
+	//
 	bool operator!=(Person &p)
 	{
 		return !(this->m_Name == p.m_Name && this->m_Age == p.m_Age);
 	}
 
-	//姓名
+	//
 	string m_Name;
-	//年龄
+	//
 	int m_Age;
 };
 

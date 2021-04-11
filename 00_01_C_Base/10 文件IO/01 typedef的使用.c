@@ -5,7 +5,7 @@
 
 //typedef的使用
 
-//1、typedef 关键字   原名   别名；
+//1、typedef关键字   原名   别名；
 typedef int MYINT;
 
 void test01()

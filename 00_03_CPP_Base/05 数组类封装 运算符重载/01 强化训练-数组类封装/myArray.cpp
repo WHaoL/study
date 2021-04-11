@@ -38,6 +38,8 @@ MyArray::MyArray(const MyArray &arr)
 //根据位置设置数据
 void MyArray::setData(int pos, int data)
 {
+	if(pos < 0 || pos > m_Capacity-1)
+		return;
     this->pAddress[pos] = data;
 }
 
@@ -50,7 +52,10 @@ int MyArray::getData(int pos)
 //尾插
 void MyArray::pushBack(int data)
 {
-    this->pAddress[this->m_Size] = data;
+	if(m_Size >= m_Capacity)
+		return ;
+    
+	this->pAddress[this->m_Size] = data;
     this->m_Size++;
 }
 

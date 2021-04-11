@@ -41,11 +41,11 @@ public:
 
     //成员属性
 private:
-    int m_Capacity; //数组容量
+    int m_Capacity; //数组容量--数组一共可容纳多少个元素
 
-    int m_Size; //数组大小
+    int m_Size; //数组大小--当前有多少个元素
 
-    int *pAddress; //维护底层真实数组的指针
+    int *pAddress; //维护底层真实数组的指针--指向存储数据的空间
 };
 
 #endif

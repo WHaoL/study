@@ -1,0 +1,63 @@
+logs:
+    - name: root
+      level: info
+      formatter: "%d%T%m%n"
+      appenders:
+          - type: FileLogAppender
+            file: /home/lwh/outputLogs/root.txt
+          - type: StdoutLogAppender
+    - name: system
+      level: info
+      formatter: "%d%T%m%n"
+      appenders:
+          - type: FileLogAppender
+            file: /home/lwh/outputLogs/system.txt
+          - type: StdoutLogAppender
+
+system: 
+    port: 9900
+    value: 15
+    int_vec: 
+        - 10
+        - 20
+    int_list: [30,40]
+    int_set: [50,60,50]
+    int_unordered_set: [50,60,50]
+    string_int_map: 
+        k: 30
+        k2: 20
+        k3: 10
+    string_int_unordered_map: 
+        k: 30
+        k2: 20
+        k3: 10
+
+class: 
+    person:
+        name:  sylar
+        age:   31
+        sex:   true
+    map: 
+        sylar01: 
+            name: sylar01
+            age:  18
+            sex:  false
+        sylar02: 
+            name: sylar02
+            age:  40
+            sex:  true
+    map_vec: 
+        k1: 
+          - name: m11
+            age: 33
+            sex: true
+          - name: m12
+            age: 44
+            sex: false 
+        k2: 
+          - name: m21
+            age: 33
+            sex: true
+          - name: m12
+            age: 44
+            sex: false

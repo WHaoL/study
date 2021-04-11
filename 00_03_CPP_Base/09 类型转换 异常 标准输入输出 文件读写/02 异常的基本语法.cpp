@@ -32,7 +32,7 @@ int myDivision(int a ,int b)
 	{
 		//return -1; //在C语言下 返回-1代表异常的值.导致-1的结果无法区分是异常还是返回值
 
-		//throw 1; //抛出一个异常的值
+		//throw 1; //抛出一个int类型异常
 		//throw 'a'; //抛出一个char类型异常
 		//throw 3.14; //抛出double类型异常
 

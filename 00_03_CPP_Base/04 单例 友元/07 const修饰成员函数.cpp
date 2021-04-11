@@ -17,8 +17,8 @@ public:
 	//  const修饰的成员函数 称为 常函数 
 	void showM_A()const
 	{
-		//this = NULL; 指针的指向是不可以修改的
-		//this->m_A = 2000; //指针指向的值不可以修改
+		//this = NULL; this指针的指向是不可以修改的
+		//this->m_A = 2000; //const函数中，指针指向的值不可以修改
 		cout << "showM_A调用" << endl;
 		this->m_B = 1000;
 		cout << "m_A  = " << this->m_A << endl;

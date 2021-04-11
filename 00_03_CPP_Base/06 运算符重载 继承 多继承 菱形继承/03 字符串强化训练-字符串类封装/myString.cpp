@@ -1,17 +1,17 @@
 #include "myString.h"
 
 
-//ÖØÔØ <<
+//é‡è½½ <<
 ostream& operator<<(ostream& cout, MyString&str)
 {
 	cout << str.pString;
 	return cout;
 }
 
-//ÖØÔØ >>
+//é‡è½½ >>
 istream& operator>>(istream& cin, MyString&str)
 {
-	//ÏÈÅĞ¶ÏÔ­À´ÊÇ·ñÓĞÊı¾İ£¬Èç¹ûÓĞÏÈÊÍ·Å
+	//å…ˆåˆ¤æ–­åŸæ¥æ˜¯å¦æœ‰æ•°æ®ï¼Œå¦‚æœæœ‰å…ˆé‡Šæ”¾
 	if (str.pString!=NULL)
 	{
 		delete[] str.pString;
@@ -28,27 +28,27 @@ istream& operator>>(istream& cin, MyString&str)
 	return cin;
 }
 
-//ÓĞ²Î¹¹Ôì
+//æœ‰å‚æ„é€ 
 MyString::MyString(const char * str)
 {
-	//cout << "ÓĞ²Î¹¹Ôìº¯Êıµ÷ÓÃ" << endl;
+	//cout << "æœ‰å‚æ„é€ å‡½æ•°è°ƒç”¨" << endl;
 	this->pString = new char[strlen(str) + 1];
 	strcpy(this->pString, str);
 
 	this->m_Size = strlen(str);
 }
 
-//¿½±´¹¹Ôì
+//æ‹·è´æ„é€ 
 MyString::MyString(const MyString & str)
 {
-	//cout << "¿½±´¹¹Ôìº¯Êıµ÷ÓÃ" << endl;
+	//cout << "æ‹·è´æ„é€ å‡½æ•°è°ƒç”¨" << endl;
 	this->pString = new char[strlen(str.pString) + 1];
 	strcpy(this->pString, str.pString);
 
 	this->m_Size = strlen(str.pString);
 }
 
-//ÖØÔØ[]
+//é‡è½½[]
 char& MyString::operator[](int pos)
 {
 	return this->pString[pos];
@@ -56,7 +56,7 @@ char& MyString::operator[](int pos)
 
 MyString& MyString::operator=(const char * str)
 {
-	//ÏÈÊÍ·Å¸É¾»£¬ÔÙÉî¿½±´
+	//å…ˆé‡Šæ”¾å¹²å‡€ï¼Œå†æ·±æ‹·è´
 	if (this->pString!=NULL)
 	{
 		delete[] this->pString;
@@ -72,7 +72,7 @@ MyString& MyString::operator=(const char * str)
 
 MyString& MyString::operator=(const MyString& str)
 {
-	//ÏÈÊÍ·Å¸É¾»£¬ÔÙÉî¿½±´
+	//å…ˆé‡Šæ”¾å¹²å‡€ï¼Œå†æ·±æ‹·è´
 	if (this->pString != NULL)
 	{
 		delete[] this->pString;
@@ -88,12 +88,10 @@ MyString& MyString::operator=(const MyString& str)
 
 MyString MyString::operator+(const char * str)
 {
-	//¼ÙÉè ×ÔÉí abc  ´«ÈëµÄÊÇ def
+	//å‡è®¾ è‡ªèº« abc  ä¼ å…¥çš„æ˜¯ def
 
 	int newSize = this->m_Size + strlen(str) + 1;
-
 	char * temp = new char[newSize];
-
 	memset(temp, 0, newSize);
 
 	strcat(temp, this->pString);
@@ -109,9 +107,7 @@ MyString MyString::operator+(const char * str)
 MyString MyString::operator+(const MyString& str)
 {
 	int newSize = this->m_Size + strlen(str.pString) + 1;
-
 	char * temp = new char[newSize];
-
 	memset(temp, 0, newSize);
 
 	strcat(temp, this->pString);
@@ -142,12 +138,12 @@ bool MyString::operator==(const MyString& str)
 	return false;
 }
 
-//Îö¹¹
+//ææ„
 MyString::~MyString()
 {
 	if (this->pString != NULL)
 	{
-		//cout << "Îö¹¹º¯Êıµ÷ÓÃ" << endl;
+		//cout << "ææ„å‡½æ•°è°ƒç”¨" << endl;
 		delete[] this->pString;
 		this->pString = NULL;
 	}

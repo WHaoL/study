@@ -1,0 +1,20 @@
+[root@bogon sylar]# mkdir build
+[root@bogon sylar]# cd build/
+[root@bogon build]# pwd
+/home/lwh/workspace/sylar/build
+
+[root@bogon build]# cmake ../
+[root@bogon build]# make
+
+
+[root@bogon build]# ../bin/test_log 
+Filename        /home/lwh/workspace/sylar/tests/test_log.cpp
+Line            34
+ThreadId        20347
+ThreadName      test_log
+FiberId         0
+Time            1617200977
+Level           DEBUG
+Content test_fmt: HHHHHHHKKKKKLLLLLIIOHJHKJHJK
+[root@bogon build]# 
+
